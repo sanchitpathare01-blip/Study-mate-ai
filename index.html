@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Character encoding for standard text rendering -->
+  <meta charset="UTF-8">
+  <!-- Responsive viewport setting for mobile, tablet, and desktop screens -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate AI - Smart Study Assistant</title>
+  
+  <!-- External Stylesheet (to be implemented in Phase 2) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Application Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <h1>StudyMate AI</h1>
+        <p>Your intelligent study companion for summaries, quizzes, and flashcards.</p>
+      </div>
+
+      <!-- Theme Toggle Button -->
+      <button type="button" id="theme-toggle-btn" aria-label="Toggle dark and light theme">
+        🌓 Toggle Theme
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main>
+
+    <!-- Settings Section (API Configuration) -->
+    <section id="settings-section" aria-labelledby="settings-heading">
+      <h2 id="settings-heading">API Configuration</h2>
+      <div class="settings-form-group">
+        <label for="api-key-input">Gemini API Key:</label>
+        <input 
+          type="password" 
+          id="api-key-input" 
+          name="apiKey" 
+          placeholder="Paste your Gemini API key here" 
+          autocomplete="off"
+        >
+        <button type="button" id="save-settings-btn">Save Key</button>
+      </div>
+      <p id="settings-status" class="status-hint">Keys are saved locally in your browser.</p>
+    </section>
+
+    <!-- Notes & Topic Input Section -->
+    <section id="input-section" aria-labelledby="input-heading">
+      <h2 id="input-heading">Input Study Material</h2>
+      
+      <div class="input-form-group">
+        <label for="notes-input">Enter class notes, lecture transcript, or study topic:</label>
+        <textarea 
+          id="notes-input" 
+          name="notes" 
+          rows="8" 
+          placeholder="Type or paste your study notes here..."
+        ></textarea>
+      </div>
+
+      <!-- Character Counter Display -->
+      <div id="char-counter" class="char-counter" aria-live="polite">
+        <span>Characters: </span>
+        <span id="char-count">0</span>
+      </div>
+
+      <!-- Action Button -->
+      <button type="button" id="generate-btn">Generate Study Material</button>
+    </section>
+
+    <!-- Accessible Status & Error Message Box -->
+    <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
+
+    <!-- Loading Indicator (Hidden by default) -->
+    <div id="loading-spinner" class="loading-indicator" hidden aria-live="assertive">
+      <span class="spinner-icon" aria-hidden="true"></span>
+      <p>Generating your study material, please wait...</p>
+    </div>
+
+    <!-- Outputs Section -->
+    <section id="output-section" aria-labelledby="output-heading">
+      <h2 id="output-heading">Generated Study Aids</h2>
+
+      <!-- Output Tabs Navigation -->
+      <div class="tabs-nav" role="tablist" aria-label="Study Aid Categories">
+        <button 
+          type="button" 
+          role="tab" 
+          id="tab-summary" 
+          aria-selected="true" 
+          aria-controls="panel-summary" 
+          class="tab-btn active"
+        >
+          Summary
+        </button>
+        <button 
+          type="button" 
+          role="tab" 
+          id="tab-quiz" 
+          aria-selected="false" 
+          aria-controls="panel-quiz" 
+          class="tab-btn"
+        >
+          Quiz
+        </button>
+        <button 
+          type="button" 
+          role="tab" 
+          id="tab-flashcards" 
+          aria-selected="false" 
+          aria-controls="panel-flashcards" 
+          class="tab-btn"
+        >
+          Flashcards
+        </button>
+      </div>
+
+      <!-- Tab Panel 1: Summary -->
+      <section 
+        id="panel-summary" 
+        role="tabpanel" 
+        aria-labelledby="tab-summary" 
+        tabindex="0" 
+        class="tab-panel"
+      >
+        <div class="panel-header">
+          <h3>Topic Summary</h3>
+          <div class="summary-actions">
+            <button type="button" id="copy-summary-btn" class="action-btn">Copy Summary</button>
+            <button type="button" id="download-summary-btn" class="action-btn">Download Summary</button>
+            <button type="button" id="read-aloud-btn" class="action-btn">Read Aloud</button>
+          </div>
+        </div>
+
+        <div id="summary-content" class="output-content">
+          <p class="placeholder-text">Your generated summary will appear here after clicking "Generate Study Material".</p>
+        </div>
+      </section>
+
+      <!-- Tab Panel 2: Quiz -->
+      <section 
+        id="panel-quiz" 
+        role="tabpanel" 
+        aria-labelledby="tab-quiz" 
+        tabindex="0" 
+        class="tab-panel" 
+        hidden
+      >
+        <div class="panel-header">
+          <h3>Practice Quiz</h3>
+        </div>
+
+        <div id="quiz-questions" class="quiz-container">
+          <p class="placeholder-text">Your 5 practice questions will appear here after generation.</p>
+        </div>
+
+        <div id="quiz-results" class="quiz-results-area" aria-live="polite"></div>
+
+        <div class="quiz-actions">
+          <button type="button" id="submit-quiz-btn" class="action-btn">Submit Quiz</button>
+          <button type="button" id="retry-quiz-btn" class="action-btn" hidden>Retry Quiz</button>
+        </div>
+      </section>
+
+      <!-- Tab Panel 3: Flashcards -->
+      <section 
+        id="panel-flashcards" 
+        role="tabpanel" 
+        aria-labelledby="tab-flashcards" 
+        tabindex="0" 
+        class="tab-panel" 
+        hidden
+      >
+        <div class="panel-header">
+          <h3>Flashcards</h3>
+          <div id="card-progress" class="card-progress-indicator" aria-live="polite">
+            Card 0 of 0
+          </div>
+        </div>
+
+        <div class="flashcard-wrapper">
+          <div id="flashcard-card" class="flashcard" tabindex="0" role="region" aria-label="Flashcard content">
+            <div id="flashcard-front" class="card-face card-front">
+              <p class="placeholder-text">Front of card: Question or concept will appear here.</p>
+            </div>
+            <div id="flashcard-back" class="card-face card-back">
+              <p class="placeholder-text">Back of card: Answer or explanation will appear here.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard-controls">
+          <div class="nav-controls">
+            <button type="button" id="prev-card-btn" class="action-btn">Previous</button>
+            <button type="button" id="next-card-btn" class="action-btn">Next</button>
+          </div>
+          <div class="mastery-controls">
+            <button type="button" id="known-card-btn" class="action-btn btn-known">Known</button>
+            <button type="button" id="unknown-card-btn" class="action-btn btn-unknown">Not Known</button>
+          </div>
+        </div>
+      </section>
+
+    </section>
+
+  </main>
+
+  <!-- External JavaScript (to be implemented in Phase 3) -->
+  <script src="script.js" defer></script>
+</body>
+</html>
