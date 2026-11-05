@@ -1,214 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+
 <head>
-  <!-- Character encoding for standard text rendering -->
   <meta charset="UTF-8">
-  <!-- Responsive viewport setting for mobile, tablet, and desktop screens -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyMate AI - Smart Study Assistant</title>
-  
-  <!-- External Stylesheet (to be implemented in Phase 2) -->
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="StudyMate AI - Your personal AI study companion. Transform notes into summaries, interactive quizzes, and smart flashcards.">
+  <title>StudyMate AI — Study Smarter. Not Harder.</title>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/landing.css">
 </head>
-<body>
 
-  <!-- Application Header -->
-  <header>
-    <div class="header-container">
-      <div class="brand">
-        <h1>StudyMate AI</h1>
-        <p>Your intelligent study companion for summaries, quizzes, and flashcards.</p>
+<body id="top">
+
+  <!-- ========================================================================
+       Header & Navigation
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
+        <span class="brand-icon" aria-hidden="true">✦</span>
+        <span>StudyMate<span class="gradient-text">.ai</span></span>
+      </a>
+
+      <!-- Desktop & Mobile Navigation Links -->
+      <nav id="nav-menu" class="nav-menu" aria-label="Main Navigation">
+        <a href="#top" class="nav-link active">Home</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">About</a>
+        <a href="login.html" class="nav-link">Login</a>
+        <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+      </nav>
+
+      <!-- Right Header Actions (Theme Toggle & Mobile Menu) -->
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
+          <!-- Icon injected by theme.js -->
+        </button>
+        <button type="button" id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
-
-      <!-- Theme Toggle Button -->
-      <button type="button" id="theme-toggle-btn" aria-label="Toggle dark and light theme">
-        🌓 Toggle Theme
-      </button>
     </div>
   </header>
 
-  <!-- Main Content Wrapper -->
-  <main>
-
-    <!-- Settings Section (API Configuration) -->
-    <section id="settings-section" aria-labelledby="settings-heading">
-      <h2 id="settings-heading">API Configuration</h2>
-      <div class="settings-form-group">
-        <label for="api-key-input">Gemini API Key:</label>
-        <input 
-          type="password" 
-          id="api-key-input" 
-          name="apiKey" 
-          placeholder="Paste your Gemini API key here" 
-          autocomplete="off"
-        >
-        <button type="button" id="save-settings-btn">Save Key</button>
-      </div>
-      <p id="settings-status" class="status-hint">Keys are saved locally in your browser.</p>
-    </section>
-
-    <!-- Notes & Topic Input Section -->
-    <section id="input-section" aria-labelledby="input-heading">
-      <h2 id="input-heading">Input Study Material</h2>
-      
-      <div class="input-form-group">
-        <label for="notes-input">Enter class notes, lecture transcript, or study topic:</label>
-        <textarea 
-          id="notes-input" 
-          name="notes" 
-          rows="8" 
-          placeholder="Type or paste your study notes here..."
-        ></textarea>
+  <!-- ========================================================================
+       Hero Section
+       ======================================================================== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-badge-wrapper">
+        <span class="badge badge-purple">AI-Powered Learning Suite</span>
       </div>
 
-      <!-- Character Counter Display -->
-      <div id="char-counter" class="char-counter" aria-live="polite">
-        <span>Characters: </span>
-        <span id="char-count">0</span>
+      <h1 class="hero-title">
+        Study Smarter. <span class="gradient-text">Not Harder.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Your personal AI study companion. Transform your notes into easy summaries, interactive quizzes and smart flashcards.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="signup.html" class="btn btn-primary btn-lg">Get Started Free →</a>
+        <a href="#features" class="btn btn-outline btn-lg">Explore Features</a>
       </div>
 
-      <!-- Action Button -->
-      <button type="button" id="generate-btn">Generate Study Material</button>
-    </section>
+      <!-- Dashboard Preview Mockup (Visual Mockup) -->
+      <div class="preview-mockup-container">
+        <div class="preview-badge-overlay">
+          <span class="badge badge-purple">✨ Interactive Preview Mockup</span>
+        </div>
 
-    <!-- Accessible Status & Error Message Box -->
-    <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
+        <div class="preview-mockup-frame">
+          <div class="mockup-window-bar">
+            <div class="mockup-dots">
+              <span class="mockup-dot dot-red"></span>
+              <span class="mockup-dot dot-yellow"></span>
+              <span class="mockup-dot dot-green"></span>
+            </div>
+            <div class="mockup-window-title">StudyMate AI — Workspace Dashboard Preview</div>
+            <div style="width: 40px;"></div>
+          </div>
 
-    <!-- Loading Indicator (Hidden by default) -->
-    <div id="loading-spinner" class="loading-indicator" hidden aria-live="assertive">
-      <span class="spinner-icon" aria-hidden="true"></span>
-      <p>Generating your study material, please wait...</p>
+          <div class="mockup-body">
+            <!-- Mockup Sidebar Tabs -->
+            <div class="mockup-sidebar">
+              <div class="mockup-nav-item active" data-preview-tab="summary">
+                <span>📝</span> AI Summary
+              </div>
+              <div class="mockup-nav-item" data-preview-tab="quiz">
+                <span>🎯</span> Smart Quiz
+              </div>
+              <div class="mockup-nav-item" data-preview-tab="flashcards">
+                <span>🃏</span> Flashcards
+              </div>
+              <div class="mockup-nav-item" data-preview-tab="history">
+                <span>🕒</span> Study History
+              </div>
+            </div>
+
+            <!-- Mockup Active View -->
+            <div class="mockup-content">
+              <!-- Summary Tab Mockup -->
+              <div id="preview-tab-summary" class="mockup-tab-content active">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="badge badge-purple">Generated Summary</span>
+                  <span style="font-size: var(--font-xs); color: var(--text-muted);">Topic: Cellular Respiration</span>
+                </div>
+                <div class="mockup-summary-box">
+                  <h4>Key Takeaways & Core Concepts</h4>
+                  <ul>
+                    <li><strong>Glycolysis:</strong> Anaerobic pathway occurring in cytoplasm yielding 2 pyruvate + 2 ATP.</li>
+                    <li><strong>Krebs Cycle:</strong> Aerobic process in mitochondrial matrix generating electron carriers NADH & FADH2.</li>
+                    <li><strong>Oxidative Phosphorylation:</strong> Electron transport chain generating the majority of cellular ATP.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Quiz Tab Mockup -->
+              <div id="preview-tab-quiz" class="mockup-tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="badge badge-purple">Practice Question 1 of 5</span>
+                  <span style="font-size: var(--font-xs); color: var(--success);">Difficulty: Intermediate</span>
+                </div>
+                <div class="mockup-quiz-question">
+                  <p><strong>Where does the Krebs cycle take place in eukaryotic cells?</strong></p>
+                  <div class="mockup-quiz-options">
+                    <div class="mockup-quiz-opt">A) Outer mitochondrial membrane</div>
+                    <div class="mockup-quiz-opt is-correct">B) Mitochondrial matrix (Correct)</div>
+                    <div class="mockup-quiz-opt">C) Cellular cytoplasm</div>
+                    <div class="mockup-quiz-opt">D) Endoplasmic reticulum</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Flashcards Tab Mockup -->
+              <div id="preview-tab-flashcards" class="mockup-tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="badge badge-purple">Flashcard 1 of 12</span>
+                  <span style="font-size: var(--font-xs); color: var(--text-muted); cursor: pointer;">💡 Click card to flip</span>
+                </div>
+                <div id="preview-mockup-flashcard" class="mockup-card-view" style="cursor: pointer;">
+                  <p class="mockup-card-text" style="font-size: var(--font-lg); font-weight: 600; color: var(--text-primary);">
+                    Question: What is the primary biological purpose of Photosynthesis?
+                  </p>
+                  <p style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-4);">
+                    (Click anywhere to see the answer)
+                  </p>
+                </div>
+              </div>
+
+              <!-- History Tab Mockup -->
+              <div id="preview-tab-history" class="mockup-tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="badge badge-purple">Recent Sessions</span>
+                  <span style="font-size: var(--font-xs); color: var(--text-muted);">Synced</span>
+                </div>
+                <div class="mockup-summary-box">
+                  <ul>
+                    <li>Biology Chapter 4 — Summary & 10 Quiz Questions (Yesterday)</li>
+                    <li>Macroeconomics Fundamentals — 24 Flashcards (3 days ago)</li>
+                    <li>Computer Architecture — Pipeline hazards review (Last week)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- Outputs Section -->
-    <section id="output-section" aria-labelledby="output-heading">
-      <h2 id="output-heading">Generated Study Aids</h2>
-
-      <!-- Output Tabs Navigation -->
-      <div class="tabs-nav" role="tablist" aria-label="Study Aid Categories">
-        <button 
-          type="button" 
-          role="tab" 
-          id="tab-summary" 
-          aria-selected="true" 
-          aria-controls="panel-summary" 
-          class="tab-btn active"
-        >
-          Summary
-        </button>
-        <button 
-          type="button" 
-          role="tab" 
-          id="tab-quiz" 
-          aria-selected="false" 
-          aria-controls="panel-quiz" 
-          class="tab-btn"
-        >
-          Quiz
-        </button>
-        <button 
-          type="button" 
-          role="tab" 
-          id="tab-flashcards" 
-          aria-selected="false" 
-          aria-controls="panel-flashcards" 
-          class="tab-btn"
-        >
-          Flashcards
-        </button>
+  <!-- ========================================================================
+       Features Section
+       ======================================================================== -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Core Features</p>
+        <h2 class="section-title">Everything You Need to Ace Your Exams</h2>
+        <p class="section-description">
+          StudyMate AI turns hours of tedious reading into actionable study aids tailored to your learning style.
+        </p>
       </div>
 
-      <!-- Tab Panel 1: Summary -->
-      <section 
-        id="panel-summary" 
-        role="tabpanel" 
-        aria-labelledby="tab-summary" 
-        tabindex="0" 
-        class="tab-panel"
-      >
-        <div class="panel-header">
-          <h3>Topic Summary</h3>
-          <div class="summary-actions">
-            <button type="button" id="copy-summary-btn" class="action-btn">Copy Summary</button>
-            <button type="button" id="download-summary-btn" class="action-btn">Download Summary</button>
-            <button type="button" id="read-aloud-btn" class="action-btn">Read Aloud</button>
-          </div>
+      <div class="features-grid">
+        <!-- Feature 1: AI Summary -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">📝</div>
+          <h3>AI Summary</h3>
+          <p>Convert lengthy notes, lecture transcripts, and complex textbook chapters into simple, understandable summaries in seconds.</p>
         </div>
 
-        <div id="summary-content" class="output-content">
-          <p class="placeholder-text">Your generated summary will appear here after clicking "Generate Study Material".</p>
-        </div>
-      </section>
-
-      <!-- Tab Panel 2: Quiz -->
-      <section 
-        id="panel-quiz" 
-        role="tabpanel" 
-        aria-labelledby="tab-quiz" 
-        tabindex="0" 
-        class="tab-panel" 
-        hidden
-      >
-        <div class="panel-header">
-          <h3>Practice Quiz</h3>
+        <!-- Feature 2: Smart Quiz -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🎯</div>
+          <h3>Smart Quiz</h3>
+          <p>Test your knowledge with AI-generated multiple choice questions with instant explanations to reinforce key concepts.</p>
         </div>
 
-        <div id="quiz-questions" class="quiz-container">
-          <p class="placeholder-text">Your 5 practice questions will appear here after generation.</p>
-        </div>
-
-        <div id="quiz-results" class="quiz-results-area" aria-live="polite"></div>
-
-        <div class="quiz-actions">
-          <button type="button" id="submit-quiz-btn" class="action-btn">Submit Quiz</button>
-          <button type="button" id="retry-quiz-btn" class="action-btn" hidden>Retry Quiz</button>
-        </div>
-      </section>
-
-      <!-- Tab Panel 3: Flashcards -->
-      <section 
-        id="panel-flashcards" 
-        role="tabpanel" 
-        aria-labelledby="tab-flashcards" 
-        tabindex="0" 
-        class="tab-panel" 
-        hidden
-      >
-        <div class="panel-header">
+        <!-- Feature 3: Flashcards -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🃏</div>
           <h3>Flashcards</h3>
-          <div id="card-progress" class="card-progress-indicator" aria-live="polite">
-            Card 0 of 0
+          <p>Learn and revise important concepts interactively with flip cards designed for rapid recall and active memory training.</p>
+        </div>
+
+        <!-- Feature 4: Study History -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🕒</div>
+          <h3>Study History</h3>
+          <p>Access your previous study sessions, review past quiz scores, and revisit created flashcards anytime, anywhere.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       How It Works Section
+       ======================================================================== -->
+  <section id="how-it-works" class="section how-it-works-section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Workflow</p>
+        <h2 class="section-title">How It Works in 3 Simple Steps</h2>
+        <p class="section-description">
+          Getting started is effortless. Turn your raw study material into mastery in minutes.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Enter your notes or topic</h3>
+          <p>Paste your class lecture notes, textbook passages, or simply type any subject you want to master.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Generate study materials</h3>
+          <p>Our intelligent system parses the content and extracts core principles, key definitions, and test questions.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Learn, practice and revise</h3>
+          <p>Read the executive summary, test yourself with practice quizzes, and flip flashcards until you master the topic.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Benefits Section
+       ======================================================================== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Why Choose StudyMate AI</p>
+        <h2 class="section-title">Designed for Serious Students</h2>
+        <p class="section-description">
+          Engineered to give you high retention in a fraction of your regular study time.
+        </p>
+      </div>
+
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <span class="benefit-check" aria-hidden="true">✓</span>
+          <div>
+            <h4>Save study time</h4>
+            <p>Cut down reading time by up to 60% with concise, high-yield bulleted summaries.</p>
           </div>
         </div>
 
-        <div class="flashcard-wrapper">
-          <div id="flashcard-card" class="flashcard" tabindex="0" role="region" aria-label="Flashcard content">
-            <div id="flashcard-front" class="card-face card-front">
-              <p class="placeholder-text">Front of card: Question or concept will appear here.</p>
-            </div>
-            <div id="flashcard-back" class="card-face card-back">
-              <p class="placeholder-text">Back of card: Answer or explanation will appear here.</p>
-            </div>
+        <div class="benefit-item">
+          <span class="benefit-check" aria-hidden="true">✓</span>
+          <div>
+            <h4>Understand difficult topics</h4>
+            <p>Break down convoluted academic jargon into clear, bite-sized explanations.</p>
           </div>
         </div>
 
-        <div class="flashcard-controls">
-          <div class="nav-controls">
-            <button type="button" id="prev-card-btn" class="action-btn">Previous</button>
-            <button type="button" id="next-card-btn" class="action-btn">Next</button>
-          </div>
-          <div class="mastery-controls">
-            <button type="button" id="known-card-btn" class="action-btn btn-known">Known</button>
-            <button type="button" id="unknown-card-btn" class="action-btn btn-unknown">Not Known</button>
+        <div class="benefit-item">
+          <span class="benefit-check" aria-hidden="true">✓</span>
+          <div>
+            <h4>Improve exam preparation</h4>
+            <p>Simulate realistic test conditions with auto-graded quizzes and feedback.</p>
           </div>
         </div>
-      </section>
 
-    </section>
+        <div class="benefit-item">
+          <span class="benefit-check" aria-hidden="true">✓</span>
+          <div>
+            <h4>Track your learning progress</h4>
+            <p>Monitor your study consistency, review past notes, and never lose your progress.</p>
+          </div>
+        </div>
+      </div>
 
-  </main>
+      <!-- Call to Action Banner -->
+      <div class="cta-banner">
+        <h2>Ready to Supercharge Your Grades?</h2>
+        <p>Join students who study smarter with AI-assisted summaries, quizzes, and flashcards.</p>
+        <a href="signup.html" class="btn btn-secondary btn-lg">Create Free Account →</a>
+      </div>
+    </div>
+  </section>
 
-  <!-- External JavaScript (to be implemented in Phase 3) -->
-  <script src="script.js" defer></script>
+  <!-- ========================================================================
+       Footer
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">
+            <span class="brand-icon" aria-hidden="true">✦</span>
+            <span>StudyMate<span class="gradient-text">.ai</span></span>
+          </a>
+          <p>Your intelligent companion for academic excellence, active recall, and smart revision.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#top">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">About</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Features</h4>
+          <ul class="footer-links">
+            <li><a href="#features">AI Summaries</a></li>
+            <li><a href="#features">Practice Quizzes</a></li>
+            <li><a href="#features">Flashcard Decks</a></li>
+            <li><a href="#features">Study History</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact & Info</h4>
+          <ul class="footer-links">
+            <li><span style="color: var(--text-muted);">Email:</span> support@studymate.ai</li>
+            <li><span style="color: var(--text-muted);">Location:</span> Pune, India</li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 StudyMate AI. Built with precision for students and lifelong learners.</p>
+        <p>Phase 1 Foundation Release</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/pages/landing.js"></script>
 </body>
 </html>
