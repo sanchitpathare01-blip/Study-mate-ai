@@ -1,0 +1,123 @@
+/* ==========================================================================
+   StudyMate AI - Authentication Pages (Login & Signup)
+   ========================================================================== */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-page);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.auth-header {
+  padding: var(--space-6) var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4) var(--space-12);
+  position: relative;
+}
+
+/* Background glow effects */
+.auth-glow-top {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(124, 58, 237, 0.12);
+  position: relative;
+  z-index: 1;
+}
+
+.auth-card-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.auth-card-header h1 {
+  font-size: var(--font-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.auth-card-header p {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  font-size: var(--font-sm);
+}
+
+.auth-forgot-link {
+  color: var(--primary-light);
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: var(--font-sm);
+}
+
+.auth-forgot-link:hover {
+  text-decoration: underline;
+}
+
+.auth-footer-text {
+  text-align: center;
+  margin-top: var(--space-6);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+.auth-footer-text a {
+  color: var(--primary-light);
+  font-weight: 600;
+}
+
+.auth-footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* Password strength hint or match indicator */
+.password-hint {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+/* Modal styling overrides for auth reset */
+#forgot-password-modal .form-group {
+  margin-bottom: 0;
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your StudyMate AI account. Start transforming notes into summaries, quizzes and flashcards.">
+  <title>Sign Up — StudyMate AI</title>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/auth.css">
+</head>
+
+<body class="auth-page">
+
+  <!-- Fullscreen Loading Overlay for Auth State Verification -->
+  <div id="auth-loading-overlay" class="loading-overlay">
+    <div class="spinner spinner-lg"></div>
+    <p>Verifying session...</p>
+  </div>
+
+  <!-- Header with Brand & Theme Toggle -->
+  <header class="auth-header">
+    <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
+      <span class="brand-icon" aria-hidden="true">✦</span>
+      <span>StudyMate<span class="gradient-text">.ai</span></span>
+    </a>
+
+    <div class="nav-actions">
+      <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
+        <!-- Icon injected by theme.js -->
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="auth-main">
+    <div class="auth-glow-top"></div>
+
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <h1>Create an Account</h1>
+        <p>Start studying smarter with AI-generated study aids</p>
+      </div>
+
+      <form id="signup-form" class="auth-form" novalidate>
+        <!-- Full Name Field -->
+        <div class="form-group">
+          <label for="name-input" class="form-label">Full Name</label>
+          <div class="form-input-wrapper">
+            <input 
+              type="text" 
+              id="name-input" 
+              name="name" 
+              class="form-input" 
+              placeholder="e.g. Sanchit Pathare" 
+              autocomplete="name" 
+              required
+            >
+          </div>
+          <span id="name-error" class="form-error">Please enter your full name.</span>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email-input" class="form-label">Email Address</label>
+          <div class="form-input-wrapper">
+            <input 
+              type="email" 
+              id="email-input" 
+              name="email" 
+              class="form-input" 
+              placeholder="you@example.com" 
+              autocomplete="email" 
+              required
+            >
+          </div>
+          <span id="email-error" class="form-error">Please enter a valid email address.</span>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password-input" class="form-label">Password</label>
+          <div class="form-input-wrapper">
+            <input 
+              type="password" 
+              id="password-input" 
+              name="password" 
+              class="form-input" 
+              placeholder="At least 6 characters" 
+              autocomplete="new-password" 
+              required
+            >
+            <button type="button" class="password-toggle-btn" data-target="password-input" aria-label="Toggle password visibility">
+              👁️
+            </button>
+          </div>
+          <p class="password-hint">Must be at least 6 characters long.</p>
+          <span id="password-error" class="form-error">Password must be at least 6 characters.</span>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="form-group">
+          <label for="confirm-password-input" class="form-label">Confirm Password</label>
+          <div class="form-input-wrapper">
+            <input 
+              type="password" 
+              id="confirm-password-input" 
+              name="confirmPassword" 
+              class="form-input" 
+              placeholder="Repeat your password" 
+              autocomplete="new-password" 
+              required
+            >
+            <button type="button" class="password-toggle-btn" data-target="confirm-password-input" aria-label="Toggle confirm password visibility">
+              👁️
+            </button>
+          </div>
+          <span id="confirm-password-error" class="form-error">Passwords do not match.</span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: var(--space-4);">
+          Create Account
+        </button>
+      </form>
+
+      <p class="auth-footer-text">
+        Already have an account? <a href="login.html">Log In</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- Module Script -->
+  <script type="module" src="js/pages/signup.js"></script>
+</body>
+</html>
