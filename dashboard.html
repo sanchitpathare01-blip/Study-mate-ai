@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StudyMate AI Dashboard - Overview of your AI summaries, quizzes and study streak.">
+  <title>Dashboard — StudyMate AI</title>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/dashboard.css">
+</head>
+
+<body class="dashboard-page">
+
+  <!-- Fullscreen Loading Overlay for Protected Route Check -->
+  <div id="auth-loading-overlay" class="loading-overlay">
+    <div class="spinner spinner-lg"></div>
+    <p>Loading your study dashboard...</p>
+  </div>
+
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- ========================================================================
+       Sidebar Navigation
+       ======================================================================== -->
+  <aside id="sidebar" class="sidebar" aria-label="Dashboard Navigation">
+    <div class="sidebar-header">
+      <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
+        <span class="brand-icon" aria-hidden="true">✦</span>
+        <span>StudyMate<span class="gradient-text">.ai</span></span>
+      </a>
+      <button type="button" id="sidebar-close-btn" class="modal-close-btn" style="display: none;" aria-label="Close sidebar">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-category">Main Workspace</span>
+      <a href="dashboard.html" class="sidebar-link active" aria-current="page">
+        <span class="sidebar-link-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <button type="button" class="sidebar-link" data-phase2-feature="AI Summary Generator">
+        <span class="sidebar-link-icon">📝</span>
+        <span>Summary</span>
+        <span class="sidebar-badge">Phase 2</span>
+      </button>
+      <button type="button" class="sidebar-link" data-phase2-feature="Smart Quiz Generator">
+        <span class="sidebar-link-icon">🎯</span>
+        <span>Quiz</span>
+        <span class="sidebar-badge">Phase 2</span>
+      </button>
+      <button type="button" class="sidebar-link" data-phase2-feature="Interactive Flashcards">
+        <span class="sidebar-link-icon">🃏</span>
+        <span>Flashcards</span>
+        <span class="sidebar-badge">Phase 2</span>
+      </button>
+      <button type="button" class="sidebar-link" data-phase2-feature="Study History & Archive">
+        <span class="sidebar-link-icon">🕒</span>
+        <span>History</span>
+        <span class="sidebar-badge">Phase 2</span>
+      </button>
+
+      <span class="nav-category" style="margin-top: var(--space-4);">Account & App</span>
+      <a href="settings.html" class="sidebar-link">
+        <span class="sidebar-link-icon">⚙️</span>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user-card">
+        <div id="user-avatar-badge" class="user-avatar">U</div>
+        <div class="user-meta">
+          <span id="user-display-name" class="user-meta-name">Student</span>
+          <span id="user-display-email" class="user-meta-email">loading...</span>
+        </div>
+      </div>
+      <button type="button" id="sidebar-logout-btn" class="btn btn-ghost btn-block btn-sm" style="color: var(--error); margin-top: var(--space-1);">
+        🚪 Log Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       Main Content Area
+       ======================================================================== -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="dashboard-topbar">
+      <div style="display: flex; align-items: center; gap: var(--space-4);">
+        <button type="button" id="topbar-toggle-btn" class="topbar-mobile-toggle" aria-label="Toggle navigation menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <h2 class="topbar-title">Dashboard Overview</h2>
+      </div>
+
+      <div class="topbar-actions">
+        <span class="badge badge-purple">Phase 1 Release</span>
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
+          <!-- Injected by theme.js -->
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Page Content -->
+    <main class="dashboard-content">
+      <!-- Personalized Welcome Banner -->
+      <section class="welcome-banner">
+        <div class="welcome-text">
+          <h1>Welcome back, <span id="welcome-user-name" class="gradient-text">Student</span> 👋</h1>
+          <p>Ready to power through your study material today?</p>
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary" data-phase2-feature="New Study Session">
+            + New Study Session
+          </button>
+        </div>
+      </section>
+
+      <!-- Quick-Access Cards -->
+      <section>
+        <div class="section-heading-sm">
+          <span>Quick Study Aids</span>
+          <span style="font-size: var(--font-xs); color: var(--text-muted);">AI Generation Core</span>
+        </div>
+
+        <div class="quick-cards-grid">
+          <!-- Card 1: AI Summary -->
+          <div class="quick-card">
+            <div>
+              <div class="quick-card-top">
+                <div class="quick-card-icon">📝</div>
+                <span class="badge badge-purple">Coming in Phase 2</span>
+              </div>
+              <h3>AI Summary</h3>
+              <p>Condense complex textbook chapters and lecture notes into high-yield, structured bullet points.</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-block" data-phase2-feature="AI Summary Generator">
+              Launch Summary →
+            </button>
+          </div>
+
+          <!-- Card 2: Smart Quiz -->
+          <div class="quick-card">
+            <div>
+              <div class="quick-card-top">
+                <div class="quick-card-icon">🎯</div>
+                <span class="badge badge-purple">Coming in Phase 2</span>
+              </div>
+              <h3>Smart Quiz</h3>
+              <p>Generate 5-question multiple choice quizzes from your notes to test retention and comprehension.</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-block" data-phase2-feature="Smart Quiz Generator">
+              Start Quiz →
+            </button>
+          </div>
+
+          <!-- Card 3: Flashcards -->
+          <div class="quick-card">
+            <div>
+              <div class="quick-card-top">
+                <div class="quick-card-icon">🃏</div>
+                <span class="badge badge-purple">Coming in Phase 2</span>
+              </div>
+              <h3>Interactive Flashcards</h3>
+              <p>Practice with interactive digital flip cards utilizing spaced repetition for active memory recall.</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-block" data-phase2-feature="Interactive Flashcards">
+              Open Flashcards →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2-Column Section: Progress & 30-Day Streak Calendar -->
+      <div class="dashboard-grid-2col">
+        <!-- Daily Progress Placeholder -->
+        <section class="dashboard-panel">
+          <div class="card-header">
+            <h4>Daily Study Progress</h4>
+            <span class="badge badge-warning">Phase 3 Tracker</span>
+          </div>
+          <div class="card-body">
+            <p>Track your daily revision target and study questions answered.</p>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill"></div>
+            </div>
+            <div class="progress-stats">
+              <span>Goal: 1 of 3 materials reviewed</span>
+              <span>33% Completed</span>
+            </div>
+            <p style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-4);">
+              Full daily progress telemetry and goal setting will be unlocked in Phase 3.
+            </p>
+          </div>
+        </section>
+
+        <!-- 30-Day Study Streak Calendar Placeholder -->
+        <section class="dashboard-panel">
+          <div class="card-header">
+            <h4>30-Day Study Streak</h4>
+            <span class="badge badge-purple">Streak: 3 Days 🔥</span>
+          </div>
+          <div class="card-body">
+            <p>Consistency is key to long-term memory consolidation.</p>
+            <!-- Mockup Calendar Grid -->
+            <div class="calendar-grid">
+              <div class="cal-day">1</div>
+              <div class="cal-day">2</div>
+              <div class="cal-day has-streak">3</div>
+              <div class="cal-day has-streak">4</div>
+              <div class="cal-day has-streak today">5</div>
+              <div class="cal-day">6</div>
+              <div class="cal-day">7</div>
+              <div class="cal-day">8</div>
+              <div class="cal-day">9</div>
+              <div class="cal-day">10</div>
+              <div class="cal-day">11</div>
+              <div class="cal-day">12</div>
+              <div class="cal-day">13</div>
+              <div class="cal-day">14</div>
+            </div>
+            <p style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-3);">
+              Interactive daily check-in and streak tracking logic will be implemented in Phase 3.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Recent Sessions Placeholder -->
+      <section class="dashboard-panel">
+        <div class="card-header">
+          <h4>Recent Study Sessions</h4>
+          <span class="badge badge-purple">Session History</span>
+        </div>
+        <div class="empty-state">
+          <span class="empty-state-icon" aria-hidden="true">📚</span>
+          <h4>No recent sessions yet</h4>
+          <p>Once AI study generation is enabled in Phase 2, your created summaries, quizzes, and decks will appear here automatically.</p>
+          <button type="button" class="btn btn-outline btn-sm" data-phase2-feature="New Session">
+            Create First Session (Phase 2)
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Phase 2 Feature Placeholder Modal -->
+  <div id="phase2-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="phase2-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="phase2-modal-title" class="modal-title">Feature Coming in Phase 2</h3>
+        <button type="button" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 2.5rem; text-align: center; margin-bottom: var(--space-3);">✨</div>
+        <h4 id="phase2-feature-name" style="text-align: center; margin-bottom: var(--space-2); color: var(--primary-light);">
+          AI Feature
+        </h4>
+        <p style="text-align: center;">
+          This feature will be fully integrated with Gemini AI in <strong>Phase 2</strong>.
+          Phase 1 provides the authentication foundation, responsive dashboard shell, and user management.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-modal-close>Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div id="logout-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="logout-modal-title" class="modal-title">Sign Out</h3>
+        <button type="button" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to sign out of your StudyMate AI account?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+        <button type="button" id="confirm-logout-btn" class="btn btn-danger">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module Script -->
+  <script type="module" src="js/pages/dashboard.js"></script>
+</body>
+</html>
