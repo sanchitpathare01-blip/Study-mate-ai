@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse, search and manage your past AI study sessions on StudyMate AI.">
+  <title>Study History — StudyMate AI</title>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/dashboard.css">
+  <link rel="stylesheet" href="css/pages/history.css">
+</head>
+
+<body class="dashboard-page">
+
+  <!-- Fullscreen Loading Overlay for Protected Route Check -->
+  <div id="auth-loading-overlay" class="loading-overlay">
+    <div class="spinner spinner-lg"></div>
+    <p>Loading your study history...</p>
+  </div>
+
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- ========================================================================
+       Sidebar Navigation
+       ======================================================================== -->
+  <aside id="sidebar" class="sidebar" aria-label="Dashboard Navigation">
+    <div class="sidebar-header">
+      <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
+        <span class="brand-icon" aria-hidden="true">✦</span>
+        <span>StudyMate<span class="gradient-text">.ai</span></span>
+      </a>
+      <button type="button" id="sidebar-close-btn" class="modal-close-btn" style="display: none;" aria-label="Close sidebar">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-category">Main Workspace</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <span class="sidebar-link-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="study.html" class="sidebar-link">
+        <span class="sidebar-link-icon">⚡</span>
+        <span>Create Material</span>
+      </a>
+      <a href="study.html?tab=summary" class="sidebar-link">
+        <span class="sidebar-link-icon">📝</span>
+        <span>Summary</span>
+      </a>
+      <a href="study.html?tab=quiz" class="sidebar-link">
+        <span class="sidebar-link-icon">🎯</span>
+        <span>Quiz</span>
+      </a>
+      <a href="study.html?tab=flashcards" class="sidebar-link">
+        <span class="sidebar-link-icon">🃏</span>
+        <span>Flashcards</span>
+      </a>
+      <a href="history.html" class="sidebar-link active" aria-current="page">
+        <span class="sidebar-link-icon">🕒</span>
+        <span>History</span>
+      </a>
+
+      <span class="nav-category" style="margin-top: var(--space-4);">Account &amp; App</span>
+      <a href="settings.html" class="sidebar-link">
+        <span class="sidebar-link-icon">⚙️</span>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user-card">
+        <div id="user-avatar-badge" class="user-avatar">U</div>
+        <div class="user-meta">
+          <span id="user-display-name" class="user-meta-name">Student</span>
+          <span id="user-display-email" class="user-meta-email">loading...</span>
+        </div>
+      </div>
+      <button type="button" id="sidebar-logout-btn" class="btn btn-ghost btn-block btn-sm" style="color: var(--error); margin-top: var(--space-1);">
+        🚪 Log Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       Main Content Area
+       ======================================================================== -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="dashboard-topbar">
+      <div style="display: flex; align-items: center; gap: var(--space-4);">
+        <button type="button" id="topbar-toggle-btn" class="topbar-mobile-toggle" aria-label="Toggle navigation menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <h2 class="topbar-title">Study History</h2>
+      </div>
+
+      <div class="topbar-actions">
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
+          <!-- Injected by theme.js -->
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Page Content -->
+    <main class="dashboard-content">
+
+      <!-- Page Header Row -->
+      <section class="history-page-header">
+        <div>
+          <h1 class="history-page-title">Your Study Sessions</h1>
+          <p class="history-page-subtitle">Review, revisit or delete any past session. Opening a session never re-calls the AI.</p>
+        </div>
+        <div class="history-header-actions">
+          <a href="study.html" class="btn btn-primary btn-sm">+ New Session</a>
+          <button type="button" id="clear-all-btn" class="btn btn-danger btn-sm" style="display: none;">🗑 Clear All</button>
+        </div>
+      </section>
+
+      <!-- Search & Stats Row -->
+      <section class="history-controls-row">
+        <div class="history-search-wrapper">
+          <span class="history-search-icon">🔍</span>
+          <input
+            type="search"
+            id="history-search-input"
+            class="history-search-input"
+            placeholder="Search sessions by topic…"
+            aria-label="Search study sessions"
+            autocomplete="off"
+          >
+        </div>
+        <div class="history-stats-row">
+          <span id="history-count-label" class="history-count-label">— sessions</span>
+        </div>
+      </section>
+
+      <!-- Session Cards Grid -->
+      <section id="sessions-grid" class="sessions-grid" aria-label="Study session list" aria-live="polite">
+        <!-- Cards injected by history.js -->
+      </section>
+
+      <!-- Loading State (shown while fetching from Firestore) -->
+      <div id="history-loading" class="history-loading" aria-live="polite">
+        <div class="spinner spinner-lg"></div>
+        <p>Loading your sessions…</p>
+      </div>
+
+      <!-- Empty State (shown when no sessions exist) -->
+      <div id="history-empty" class="history-empty" style="display: none;" aria-live="polite">
+        <div class="history-empty-icon">📚</div>
+        <h3>No study sessions yet</h3>
+        <p>Generate your first summary, quiz or flashcard set to see it here.</p>
+        <a href="study.html" class="btn btn-primary" style="margin-top: var(--space-4);">Create First Session</a>
+      </div>
+
+      <!-- No Search Results State -->
+      <div id="history-no-results" class="history-empty" style="display: none;" aria-live="polite">
+        <div class="history-empty-icon">🔎</div>
+        <h3>No matching sessions</h3>
+        <p>Try a different search term.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       Delete Session Confirmation Modal
+       ======================================================================== -->
+  <div id="delete-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="delete-modal-title" class="modal-title">Delete Session</h3>
+        <button type="button" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to permanently delete the session <strong id="delete-session-topic"></strong>?</p>
+        <p style="color: var(--text-muted); font-size: var(--font-sm); margin-top: var(--space-2);">This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+        <button type="button" id="confirm-delete-btn" class="btn btn-danger">Delete Session</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clear All Confirmation Modal -->
+  <div id="clear-all-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="clear-all-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="clear-all-modal-title" class="modal-title">Clear All Sessions</h3>
+        <button type="button" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>This will permanently delete <strong>all</strong> of your study sessions.</p>
+        <p style="color: var(--error); font-size: var(--font-sm); margin-top: var(--space-2);">⚠️ This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+        <button type="button" id="confirm-clear-all-btn" class="btn btn-danger">Yes, Delete All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div id="logout-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="logout-modal-title" class="modal-title">Sign Out</h3>
+        <button type="button" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to sign out of your StudyMate AI account?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+        <button type="button" id="confirm-logout-btn" class="btn btn-danger">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module Script -->
+  <script type="module" src="js/pages/history.js"></script>
+</body>
+
+</html>

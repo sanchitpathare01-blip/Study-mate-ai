@@ -48,28 +48,28 @@
         <span class="sidebar-link-icon">📊</span>
         <span>Dashboard</span>
       </a>
-      <a href="dashboard.html" class="sidebar-link" data-phase2-link>
+      <a href="study.html" class="sidebar-link">
+        <span class="sidebar-link-icon">⚡</span>
+        <span>Create Material</span>
+      </a>
+      <a href="study.html?tab=summary" class="sidebar-link">
         <span class="sidebar-link-icon">📝</span>
         <span>Summary</span>
-        <span class="sidebar-badge">Phase 2</span>
       </a>
-      <a href="dashboard.html" class="sidebar-link" data-phase2-link>
+      <a href="study.html?tab=quiz" class="sidebar-link">
         <span class="sidebar-link-icon">🎯</span>
         <span>Quiz</span>
-        <span class="sidebar-badge">Phase 2</span>
       </a>
-      <a href="dashboard.html" class="sidebar-link" data-phase2-link>
+      <a href="study.html?tab=flashcards" class="sidebar-link">
         <span class="sidebar-link-icon">🃏</span>
         <span>Flashcards</span>
-        <span class="sidebar-badge">Phase 2</span>
       </a>
-      <a href="dashboard.html" class="sidebar-link" data-phase2-link>
+      <a href="history.html" class="sidebar-link">
         <span class="sidebar-link-icon">🕒</span>
         <span>History</span>
-        <span class="sidebar-badge">Phase 2</span>
       </a>
 
-      <span class="nav-category" style="margin-top: var(--space-4);">Account & App</span>
+      <span class="nav-category" style="margin-top: var(--space-4);">Account &amp; App</span>
       <a href="settings.html" class="sidebar-link active" aria-current="page">
         <span class="sidebar-link-icon">⚙️</span>
         <span>Settings</span>
@@ -104,7 +104,7 @@
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
         </button>
-        <h2 class="topbar-title">Preferences & Settings</h2>
+        <h2 class="topbar-title">Preferences &amp; Settings</h2>
       </div>
 
       <div class="topbar-actions">
@@ -179,42 +179,56 @@
           </div>
         </section>
 
-        <!-- 3. AI Service Configuration Placeholder (Phase 2) -->
+        <!-- 3. AI Service Configuration (Phase 2 — Active) -->
         <section class="settings-section-card">
           <div class="settings-section-header">
             <div>
               <h2>⚡ AI Service Configuration</h2>
-              <p>Gemini AI Integration Configuration</p>
+              <p>Gemini AI Integration — Server-side key management</p>
             </div>
-            <span class="badge badge-purple">Coming in Phase 2</span>
+            <span class="badge badge-purple">Phase 2 — Active</span>
           </div>
 
-          <div class="placeholder-callout">
-            <h4>
-              <span>🔒</span> Gemini API Key Integration
-            </h4>
-            <p>
-              In Phase 2, you will be able to supply your own Google Gemini API key or use application-managed AI endpoints to generate instant summaries, practice quizzes, and spaced-repetition flashcards.
-            </p>
-            <div class="form-group" style="margin-top: var(--space-4); margin-bottom: 0;">
-              <label for="gemini-key-placeholder" class="form-label">Gemini API Key</label>
-              <input 
-                type="password" 
-                id="gemini-key-placeholder" 
-                class="form-input" 
-                value="••••••••••••••••••••••••••••••••" 
-                disabled 
-                style="opacity: 0.6; cursor: not-allowed;"
-              >
+          <!-- Status indicator -->
+          <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-lg); margin-bottom: var(--space-5);">
+            <span style="font-size: 1.5rem;">✅</span>
+            <div>
+              <p style="font-weight: 600; color: var(--success); margin: 0;">Gemini AI is configured and active</p>
+              <p style="font-size: var(--font-xs); color: var(--text-muted); margin: 0; margin-top: 2px;">
+                The API key is stored securely as a Netlify environment variable — it is never exposed in your browser or in source code.
+              </p>
             </div>
           </div>
+
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3) 0; border-bottom: 1px solid var(--border);">
+              <span style="font-size: var(--font-sm); color: var(--text-secondary);">AI Model</span>
+              <span style="font-size: var(--font-sm); font-weight: 600; color: var(--primary-light);">gemini-2.5-flash</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3) 0; border-bottom: 1px solid var(--border);">
+              <span style="font-size: var(--font-sm); color: var(--text-secondary);">API Key Storage</span>
+              <span style="font-size: var(--font-sm); font-weight: 600; color: var(--success);">🔒 Server-side only</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3) 0; border-bottom: 1px solid var(--border);">
+              <span style="font-size: var(--font-sm); color: var(--text-secondary);">Backend Function</span>
+              <span style="font-size: var(--font-sm); font-weight: 600; color: var(--text-primary);">Netlify Serverless</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3) 0;">
+              <span style="font-size: var(--font-sm); color: var(--text-secondary);">Response Format</span>
+              <span style="font-size: var(--font-sm); font-weight: 600; color: var(--text-primary);">Structured JSON</span>
+            </div>
+          </div>
+
+          <p style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-4); padding: var(--space-3); background: var(--surface-2); border-radius: var(--radius-md);">
+            ℹ️ To change the API key or model, update the <code>GEMINI_API_KEY</code> and <code>GEMINI_MODEL</code> environment variables in your Netlify project settings. Changes take effect on the next deployment.
+          </p>
         </section>
 
         <!-- 4. Account Management & Logout -->
         <section class="settings-section-card">
           <div class="settings-section-header">
             <div>
-              <h2>🛡️ Account Security & Session</h2>
+              <h2>🛡️ Account Security &amp; Session</h2>
               <p>Manage your active session or log out safely</p>
             </div>
           </div>
@@ -254,5 +268,5 @@
   <!-- Module Script -->
   <script type="module" src="js/pages/settings.js"></script>
 </body>
-</html>
 
+</html>

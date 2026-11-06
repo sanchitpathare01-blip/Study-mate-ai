@@ -47,28 +47,28 @@
         <span class="sidebar-link-icon">📊</span>
         <span>Dashboard</span>
       </a>
-      <button type="button" class="sidebar-link" data-phase2-feature="AI Summary Generator">
+      <a href="study.html" class="sidebar-link">
+        <span class="sidebar-link-icon">⚡</span>
+        <span>Create Material</span>
+      </a>
+      <a href="study.html?tab=summary" class="sidebar-link">
         <span class="sidebar-link-icon">📝</span>
         <span>Summary</span>
-        <span class="sidebar-badge">Phase 2</span>
-      </button>
-      <button type="button" class="sidebar-link" data-phase2-feature="Smart Quiz Generator">
+      </a>
+      <a href="study.html?tab=quiz" class="sidebar-link">
         <span class="sidebar-link-icon">🎯</span>
         <span>Quiz</span>
-        <span class="sidebar-badge">Phase 2</span>
-      </button>
-      <button type="button" class="sidebar-link" data-phase2-feature="Interactive Flashcards">
+      </a>
+      <a href="study.html?tab=flashcards" class="sidebar-link">
         <span class="sidebar-link-icon">🃏</span>
         <span>Flashcards</span>
-        <span class="sidebar-badge">Phase 2</span>
-      </button>
-      <button type="button" class="sidebar-link" data-phase2-feature="Study History & Archive">
+      </a>
+      <a href="history.html" class="sidebar-link">
         <span class="sidebar-link-icon">🕒</span>
         <span>History</span>
-        <span class="sidebar-badge">Phase 2</span>
-      </button>
+      </a>
 
-      <span class="nav-category" style="margin-top: var(--space-4);">Account & App</span>
+      <span class="nav-category" style="margin-top: var(--space-4);">Account &amp; App</span>
       <a href="settings.html" class="sidebar-link">
         <span class="sidebar-link-icon">⚙️</span>
         <span>Settings</span>
@@ -107,7 +107,7 @@
       </div>
 
       <div class="topbar-actions">
-        <span class="badge badge-purple">Phase 1 Release</span>
+        <span class="badge badge-purple">Phase 2 — Live</span>
         <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
           <!-- Injected by theme.js -->
         </button>
@@ -116,6 +116,7 @@
 
     <!-- Main Page Content -->
     <main class="dashboard-content">
+
       <!-- Personalized Welcome Banner -->
       <section class="welcome-banner">
         <div class="welcome-text">
@@ -123,9 +124,40 @@
           <p>Ready to power through your study material today?</p>
         </div>
         <div>
-          <button type="button" class="btn btn-primary" data-phase2-feature="New Study Session">
-            + New Study Session
-          </button>
+          <a href="study.html" class="btn btn-primary">+ New Study Session</a>
+        </div>
+      </section>
+
+      <!-- Live Stats Row -->
+      <section>
+        <div class="section-heading-sm">
+          <span>Your Progress</span>
+          <span style="font-size: var(--font-xs); color: var(--text-muted);">Live from Firestore</span>
+        </div>
+        <div class="quick-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">
+          <!-- Total sessions stat -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-5);">
+            <div style="font-size: 2rem; margin-bottom: var(--space-2);">📚</div>
+            <div id="stat-total-sessions" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
+            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-1);">Total Sessions</div>
+          </div>
+          <!-- Latest quiz score stat -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-5);">
+            <div style="font-size: 2rem; margin-bottom: var(--space-2);">🎯</div>
+            <div id="stat-latest-score" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
+            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-1);">Latest Quiz Score</div>
+          </div>
+          <!-- Flashcards reviewed stat -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-5);">
+            <div style="font-size: 2rem; margin-bottom: var(--space-2);">🃏</div>
+            <div id="stat-flashcards" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
+            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-1);">Flashcards Generated</div>
+          </div>
+          <!-- History link stat card -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-5); display: flex; flex-direction: column; justify-content: center; gap: var(--space-3);">
+            <div style="font-size: 2rem;">🕒</div>
+            <a href="history.html" class="btn btn-outline btn-sm">View History</a>
+          </div>
         </div>
       </section>
 
@@ -133,7 +165,7 @@
       <section>
         <div class="section-heading-sm">
           <span>Quick Study Aids</span>
-          <span style="font-size: var(--font-xs); color: var(--text-muted);">AI Generation Core</span>
+          <span style="font-size: var(--font-xs); color: var(--text-muted);">AI Generation — Phase 2 Active</span>
         </div>
 
         <div class="quick-cards-grid">
@@ -142,14 +174,14 @@
             <div>
               <div class="quick-card-top">
                 <div class="quick-card-icon">📝</div>
-                <span class="badge badge-purple">Coming in Phase 2</span>
+                <span class="badge badge-purple">Live</span>
               </div>
               <h3>AI Summary</h3>
               <p>Condense complex textbook chapters and lecture notes into high-yield, structured bullet points.</p>
             </div>
-            <button type="button" class="btn btn-secondary btn-block" data-phase2-feature="AI Summary Generator">
+            <a href="study.html?tab=summary" class="btn btn-secondary btn-block">
               Launch Summary →
-            </button>
+            </a>
           </div>
 
           <!-- Card 2: Smart Quiz -->
@@ -157,14 +189,14 @@
             <div>
               <div class="quick-card-top">
                 <div class="quick-card-icon">🎯</div>
-                <span class="badge badge-purple">Coming in Phase 2</span>
+                <span class="badge badge-purple">Live</span>
               </div>
               <h3>Smart Quiz</h3>
               <p>Generate 5-question multiple choice quizzes from your notes to test retention and comprehension.</p>
             </div>
-            <button type="button" class="btn btn-secondary btn-block" data-phase2-feature="Smart Quiz Generator">
+            <a href="study.html?tab=quiz" class="btn btn-secondary btn-block">
               Start Quiz →
-            </button>
+            </a>
           </div>
 
           <!-- Card 3: Flashcards -->
@@ -172,14 +204,14 @@
             <div>
               <div class="quick-card-top">
                 <div class="quick-card-icon">🃏</div>
-                <span class="badge badge-purple">Coming in Phase 2</span>
+                <span class="badge badge-purple">Live</span>
               </div>
               <h3>Interactive Flashcards</h3>
-              <p>Practice with interactive digital flip cards utilizing spaced repetition for active memory recall.</p>
+              <p>Practice with interactive 3D flip cards. Mark each card as Known or Needs Revision.</p>
             </div>
-            <button type="button" class="btn btn-secondary btn-block" data-phase2-feature="Interactive Flashcards">
+            <a href="study.html?tab=flashcards" class="btn btn-secondary btn-block">
               Open Flashcards →
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -211,7 +243,7 @@
         <section class="dashboard-panel">
           <div class="card-header">
             <h4>30-Day Study Streak</h4>
-            <span class="badge badge-purple">Streak: 3 Days 🔥</span>
+            <span class="badge badge-purple">Phase 3 🔥</span>
           </div>
           <div class="card-body">
             <p>Consistency is key to long-term memory consolidation.</p>
@@ -233,51 +265,30 @@
               <div class="cal-day">14</div>
             </div>
             <p style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-3);">
-              Interactive daily check-in and streak tracking logic will be implemented in Phase 3.
+              Interactive daily check-in and streak tracking will be implemented in Phase 3.
             </p>
           </div>
         </section>
       </div>
 
-      <!-- Recent Sessions Placeholder -->
+      <!-- Recent Sessions (live from Firestore) -->
       <section class="dashboard-panel">
         <div class="card-header">
           <h4>Recent Study Sessions</h4>
-          <span class="badge badge-purple">Session History</span>
+          <a href="history.html" style="font-size: var(--font-sm); color: var(--primary-light); text-decoration: none;">View All →</a>
         </div>
-        <div class="empty-state">
-          <span class="empty-state-icon" aria-hidden="true">📚</span>
-          <h4>No recent sessions yet</h4>
-          <p>Once AI study generation is enabled in Phase 2, your created summaries, quizzes, and decks will appear here automatically.</p>
-          <button type="button" class="btn btn-outline btn-sm" data-phase2-feature="New Session">
-            Create First Session (Phase 2)
-          </button>
+        <div id="recent-sessions-container">
+          <!-- Injected by dashboard.js -->
+          <div class="empty-state">
+            <span class="empty-state-icon" aria-hidden="true">📚</span>
+            <h4>No sessions yet</h4>
+            <p>Your study sessions will appear here once you generate your first summary, quiz or flashcard set.</p>
+            <a href="study.html" class="btn btn-outline btn-sm" style="margin-top: var(--space-3);">Create First Session</a>
+          </div>
         </div>
       </section>
-    </main>
-  </div>
 
-  <!-- Phase 2 Feature Placeholder Modal -->
-  <div id="phase2-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="phase2-modal-title" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3 id="phase2-modal-title" class="modal-title">Feature Coming in Phase 2</h3>
-        <button type="button" class="modal-close-btn" aria-label="Close modal">✕</button>
-      </div>
-      <div class="modal-body">
-        <div style="font-size: 2.5rem; text-align: center; margin-bottom: var(--space-3);">✨</div>
-        <h4 id="phase2-feature-name" style="text-align: center; margin-bottom: var(--space-2); color: var(--primary-light);">
-          AI Feature
-        </h4>
-        <p style="text-align: center;">
-          This feature will be fully integrated with Gemini AI in <strong>Phase 2</strong>.
-          Phase 1 provides the authentication foundation, responsive dashboard shell, and user management.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-modal-close>Got It</button>
-      </div>
-    </div>
+    </main>
   </div>
 
   <!-- Logout Confirmation Modal -->
@@ -300,5 +311,5 @@
   <!-- Module Script -->
   <script type="module" src="js/pages/dashboard.js"></script>
 </body>
-</html>
 
+</html>
