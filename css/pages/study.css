@@ -1,0 +1,662 @@
+/* ==========================================================================
+   StudyMate AI - Study Materials Generator & Workspace Styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Generator Input Container & Selectors
+   ----------------------------------------------------------------------- */
+.study-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.study-input-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.study-header {
+  margin-bottom: var(--space-6);
+}
+
+.study-header h1 {
+  font-size: var(--font-3xl);
+  margin-bottom: var(--space-2);
+}
+
+.study-header p {
+  color: var(--text-secondary);
+  font-size: var(--font-base);
+}
+
+/* Pill Selectors (Mode, Style, Difficulty) */
+.selector-group-label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pill-selector {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.pill-btn {
+  flex: 1;
+  min-width: 130px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--bg-card-alt);
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.pill-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--primary-light);
+  color: var(--text-primary);
+}
+
+.pill-btn.active {
+  background: var(--gradient-subtle);
+  border-color: var(--primary);
+  color: var(--primary-light);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.15);
+}
+
+.pill-subtitle {
+  font-size: 11px;
+  font-weight: normal;
+  color: var(--text-muted);
+}
+
+.pill-btn.active .pill-subtitle {
+  color: var(--text-secondary);
+}
+
+/* Input Area */
+.input-wrapper-container {
+  margin-bottom: var(--space-6);
+}
+
+.study-textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 1rem;
+  font-size: var(--font-sm);
+  line-height: 1.6;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  resize: vertical;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.study-textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+.char-counter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+}
+
+/* --------------------------------------------------------------------------
+   2. Results Workspace & Tabs
+   ----------------------------------------------------------------------- */
+.workspace-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  margin-top: var(--space-4);
+  display: none; /* Shown after generation or session loaded */
+}
+
+.workspace-card.is-visible {
+  display: block;
+}
+
+.workspace-header {
+  padding: var(--space-6) var(--space-8);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--bg-card-alt);
+}
+
+.workspace-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.workspace-tabs-nav {
+  display: flex;
+  gap: var(--space-2);
+  border-bottom: 2px solid var(--border-subtle);
+  padding: 0 var(--space-8);
+  background: var(--bg-surface);
+}
+
+.workspace-tab-btn {
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: all var(--transition-fast);
+}
+
+.workspace-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.workspace-tab-btn.active {
+  color: var(--primary-light);
+  border-bottom-color: var(--primary);
+}
+
+.workspace-tab-panel {
+  display: none;
+  padding: var(--space-8);
+  animation: fadeIn 0.25s ease;
+}
+
+.workspace-tab-panel.active {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   3. Summary View Styles
+   ----------------------------------------------------------------------- */
+.summary-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.tts-controls-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-default);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+}
+
+.tts-status-label {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.tts-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 1s infinite alternate;
+  display: none;
+}
+
+.tts-pulse.is-speaking {
+  display: inline-block;
+}
+
+@keyframes pulse {
+  from { opacity: 0.4; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.2); }
+}
+
+.summary-content-body {
+  font-size: var(--font-base);
+  line-height: 1.75;
+  color: var(--text-primary);
+  margin-bottom: var(--space-8);
+}
+
+.summary-content-body p {
+  margin-bottom: var(--space-4);
+}
+
+.summary-keypoints-box {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.summary-keypoints-box h4 {
+  font-size: var(--font-base);
+  margin-bottom: var(--space-3);
+  color: var(--primary-light);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.keypoints-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.keypoints-list li {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+.keypoints-list li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--primary-light);
+  font-size: var(--font-sm);
+}
+
+.keywords-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-4);
+}
+
+.keyword-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  color: var(--primary-light);
+  border-radius: var(--radius-full);
+  font-size: var(--font-xs);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   4. Quiz View Styles
+   ----------------------------------------------------------------------- */
+.quiz-wrapper {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.quiz-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.quiz-dots-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.quiz-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-default);
+  background: var(--bg-card-alt);
+  color: var(--text-secondary);
+  font-size: var(--font-xs);
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.quiz-dot.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.quiz-dot.answered {
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.question-box {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.question-text {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: var(--space-5);
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.option-btn {
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  transition: all var(--transition-fast);
+}
+
+.option-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-focus);
+}
+
+.option-btn.selected {
+  background: rgba(124, 58, 237, 0.15);
+  border-color: var(--primary);
+  color: var(--primary-light);
+  font-weight: 600;
+}
+
+.option-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--font-xs);
+  flex-shrink: 0;
+}
+
+.option-btn.selected .option-indicator {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+/* Post-submission Review Styles */
+.option-btn.is-correct {
+  background: var(--success-bg) !important;
+  border-color: var(--success) !important;
+  color: var(--success) !important;
+}
+
+.option-btn.is-wrong {
+  background: var(--error-bg) !important;
+  border-color: var(--error) !important;
+  color: var(--error) !important;
+}
+
+.explanation-box {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid var(--info);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  display: none;
+}
+
+.explanation-box.is-visible {
+  display: block;
+}
+
+.quiz-score-card {
+  text-align: center;
+  padding: var(--space-8);
+  background: var(--bg-card-alt);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+  margin-bottom: var(--space-8);
+}
+
+.score-badge-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-3xl);
+  font-weight: 800;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   5. Flashcards View Styles (3D Flip Animation)
+   ----------------------------------------------------------------------- */
+.flashcards-workspace {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.flashcard-progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+.flashcard-status-counts {
+  display: flex;
+  gap: var(--space-3);
+  font-size: var(--font-xs);
+}
+
+.status-pill {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+}
+
+.status-pill.known {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.status-pill.needs-revision {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.status-pill.unreviewed {
+  background: var(--bg-card-alt);
+  color: var(--text-muted);
+}
+
+/* 3D Scene Container */
+.flashcard-scene {
+  width: 100%;
+  height: 340px;
+  perspective: 1200px;
+  cursor: pointer;
+  margin-bottom: var(--space-6);
+}
+
+.flashcard-card-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.flashcard-card-3d.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.card-face-front {
+  background: var(--bg-surface);
+}
+
+.card-face-back {
+  background: var(--bg-card-alt);
+  transform: rotateY(180deg);
+  border-color: var(--border-focus);
+}
+
+.card-face-tag {
+  font-size: var(--font-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary-light);
+}
+
+.card-main-text {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-primary);
+  max-width: 90%;
+  margin: auto;
+}
+
+.card-hint {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+}
+
+/* Flashcard Bottom Controls */
+.flashcard-nav-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.mastery-btn-group {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.btn-mastery-known {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.btn-mastery-known:hover,
+.btn-mastery-known.active {
+  background: var(--success);
+  color: #ffffff;
+}
+
+.btn-mastery-revision {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.btn-mastery-revision:hover,
+.btn-mastery-revision.active {
+  background: var(--warning);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .pill-selector {
+    flex-direction: column;
+  }
+  .flashcard-scene {
+    height: 280px;
+  }
+  .flashcard-nav-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+

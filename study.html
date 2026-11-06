@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Generate AI summaries, 5-question quizzes, and interactive flashcards with StudyMate AI.">
+  <title>Study Materials Generator — StudyMate AI</title>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/dashboard.css">
+  <link rel="stylesheet" href="css/pages/study.css">
+</head>
+
+<body class="dashboard-page">
+
+  <!-- Fullscreen Loading Overlay for Protected Route Check -->
+  <div id="auth-loading-overlay" class="loading-overlay">
+    <div class="spinner spinner-lg"></div>
+    <p>Loading study workspace...</p>
+  </div>
+
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <!-- ========================================================================
+       Sidebar Navigation
+       ======================================================================== -->
+  <aside id="sidebar" class="sidebar" aria-label="Dashboard Navigation">
+    <div class="sidebar-header">
+      <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
+        <span class="brand-icon" aria-hidden="true">✦</span>
+        <span>StudyMate<span class="gradient-text">.ai</span></span>
+      </a>
+      <button type="button" id="sidebar-close-btn" class="modal-close-btn" style="display: none;" aria-label="Close sidebar">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-category">Main Workspace</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <span class="sidebar-link-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="study.html" class="sidebar-link active" aria-current="page">
+        <span class="sidebar-link-icon">⚡</span>
+        <span>Create Material</span>
+      </a>
+      <a href="study.html?tab=summary" class="sidebar-link" id="nav-summary-link">
+        <span class="sidebar-link-icon">📝</span>
+        <span>Summary</span>
+      </a>
+      <a href="study.html?tab=quiz" class="sidebar-link" id="nav-quiz-link">
+        <span class="sidebar-link-icon">🎯</span>
+        <span>Quiz</span>
+      </a>
+      <a href="study.html?tab=flashcards" class="sidebar-link" id="nav-flashcards-link">
+        <span class="sidebar-link-icon">🃏</span>
+        <span>Flashcards</span>
+      </a>
+      <a href="history.html" class="sidebar-link">
+        <span class="sidebar-link-icon">🕒</span>
+        <span>History</span>
+      </a>
+
+      <span class="nav-category" style="margin-top: var(--space-4);">Account & App</span>
+      <a href="settings.html" class="sidebar-link">
+        <span class="sidebar-link-icon">⚙️</span>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user-card">
+        <div id="user-avatar-badge" class="user-avatar">U</div>
+        <div class="user-meta">
+          <span id="user-display-name" class="user-meta-name">Student</span>
+          <span id="user-display-email" class="user-meta-email">loading...</span>
+        </div>
+      </div>
+      <button type="button" id="sidebar-logout-btn" class="btn btn-ghost btn-block btn-sm" style="color: var(--error); margin-top: var(--space-1);">
+        🚪 Log Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       Main Content Area
+       ======================================================================== -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="dashboard-topbar">
+      <div style="display: flex; align-items: center; gap: var(--space-4);">
+        <button type="button" id="topbar-toggle-btn" class="topbar-mobile-toggle" aria-label="Toggle navigation menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <h2 class="topbar-title">AI Study Assistant</h2>
+      </div>
+
+      <div class="topbar-actions">
+        <span class="badge badge-purple">Phase 2 Active</span>
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
+          <!-- Injected by theme.js -->
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Page Content -->
+    <main class="dashboard-content">
+      <div class="study-container">
+
+        <!-- ====================================================================
+             1. Study Generation Input Card
+             ==================================================================== -->
+        <section class="study-input-card" id="generation-input-section">
+          <div class="study-header">
+            <h1>Create Your Study Materials</h1>
+            <p>Turn your notes into summaries, quizzes and flashcards with AI.</p>
+          </div>
+
+          <!-- Input Mode Selector -->
+          <div class="selector-group-label">
+            <span>Input Format:</span>
+          </div>
+          <div class="pill-selector" id="mode-selector" role="radiogroup" aria-label="Input mode selector">
+            <button type="button" class="pill-btn active" data-mode="notes" role="radio" aria-checked="true">
+              <span>📄 Paste Notes</span>
+              <span class="pill-subtitle">Paste lectures, slides, articles</span>
+            </button>
+            <button type="button" class="pill-btn" data-mode="topic" role="radio" aria-checked="false">
+              <span>💡 Enter a Topic</span>
+              <span class="pill-subtitle">Type any academic subject</span>
+            </button>
+          </div>
+
+          <!-- Input Field Container -->
+          <div class="input-wrapper-container">
+            <label for="study-input-text" class="form-label" id="input-label-text">
+              Enter or Paste Your Study Notes:
+            </label>
+            <textarea 
+              id="study-input-text" 
+              class="study-textarea" 
+              placeholder="Paste your class notes, textbook passage, or lecture transcript here..."
+              required
+            ></textarea>
+            <div class="char-counter-bar">
+              <span>Characters: <strong id="char-count">0</strong> / 30,000</span>
+              <span id="char-hint" style="color: var(--text-muted);">Minimum 5 characters</span>
+            </div>
+          </div>
+
+          <!-- Explanation Style Selector -->
+          <div class="selector-group-label">
+            <span>Explanation Style:</span>
+          </div>
+          <div class="pill-selector" id="style-selector" role="radiogroup" aria-label="Explanation style selector">
+            <button type="button" class="pill-btn" data-style="simple" role="radio" aria-checked="false">
+              <span>🌱 Simple</span>
+              <span class="pill-subtitle">Easy language & analogies</span>
+            </button>
+            <button type="button" class="pill-btn active" data-style="detailed" role="radio" aria-checked="true">
+              <span>🔍 Detailed</span>
+              <span class="pill-subtitle">Deep academic breakdown</span>
+            </button>
+            <button type="button" class="pill-btn" data-style="exam-focused" role="radio" aria-checked="false">
+              <span>🎯 Exam-focused</span>
+              <span class="pill-subtitle">Definitions, formulas, key points</span>
+            </button>
+          </div>
+
+          <!-- Quiz Difficulty Selector -->
+          <div class="selector-group-label">
+            <span>Quiz Difficulty:</span>
+          </div>
+          <div class="pill-selector" id="difficulty-selector" role="radiogroup" aria-label="Quiz difficulty selector">
+            <button type="button" class="pill-btn" data-difficulty="easy" role="radio" aria-checked="false">
+              <span>🟢 Easy</span>
+              <span class="pill-subtitle">Direct recall questions</span>
+            </button>
+            <button type="button" class="pill-btn active" data-difficulty="medium" role="radio" aria-checked="true">
+              <span>🟡 Medium</span>
+              <span class="pill-subtitle">Conceptual comprehension</span>
+            </button>
+            <button type="button" class="pill-btn" data-difficulty="hard" role="radio" aria-checked="false">
+              <span>🔴 Hard</span>
+              <span class="pill-subtitle">Scenario analysis & synthesis</span>
+            </button>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: var(--space-4); margin-top: var(--space-6); flex-wrap: wrap;">
+            <button type="button" id="generate-btn" class="btn btn-primary btn-lg" style="flex: 1; min-width: 240px;">
+              ✨ Generate Study Materials
+            </button>
+            <button type="button" id="clear-input-btn" class="btn btn-outline btn-lg">
+              Clear Input
+            </button>
+          </div>
+        </section>
+
+        <!-- Generation Loading Card -->
+        <div id="generation-spinner" class="study-input-card" style="display: none; text-align: center; padding: var(--space-12);">
+          <div class="spinner spinner-lg" style="margin-bottom: var(--space-4);"></div>
+          <h3 id="spinner-status-title" style="margin-bottom: var(--space-2);">Synthesizing Study Materials...</h3>
+          <p id="spinner-status-desc" style="color: var(--text-secondary); max-width: 480px; margin: 0 auto;">
+            Gemini AI is extracting core concepts, formulating 5 multiple-choice questions, and assembling flashcards.
+          </p>
+        </div>
+
+        <!-- ====================================================================
+             2. Study Workspace (Summary, Quiz, Flashcards)
+             ==================================================================== -->
+        <section class="workspace-card" id="results-workspace">
+          <!-- Session Header & Meta Bar -->
+          <div class="workspace-header">
+            <div class="workspace-title-row">
+              <div>
+                <span class="badge badge-purple" id="ws-badge-style">Detailed Style</span>
+                <span class="badge badge-warning" id="ws-badge-difficulty">Medium Difficulty</span>
+                <h2 id="ws-session-topic" style="font-size: var(--font-2xl); margin-top: var(--space-2);">
+                  Session Topic
+                </h2>
+              </div>
+              <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                <button type="button" id="new-material-btn" class="btn btn-outline btn-sm">
+                  + Create New
+                </button>
+                <a href="history.html" class="btn btn-secondary btn-sm">
+                  🕒 View in History
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workspace Tabs Navigation -->
+          <div class="workspace-tabs-nav" role="tablist">
+            <button type="button" class="workspace-tab-btn active" id="tab-btn-summary" data-target="panel-summary" role="tab" aria-selected="true">
+              <span>📝</span>
+              <span>AI Summary</span>
+            </button>
+            <button type="button" class="workspace-tab-btn" id="tab-btn-quiz" data-target="panel-quiz" role="tab" aria-selected="false">
+              <span>🎯</span>
+              <span>Smart Quiz (5 Qs)</span>
+            </button>
+            <button type="button" class="workspace-tab-btn" id="tab-btn-flashcards" data-target="panel-flashcards" role="tab" aria-selected="false">
+              <span>🃏</span>
+              <span>Interactive Flashcards</span>
+            </button>
+          </div>
+
+          <!-- ------------------------------------------------------------------
+               Tab Panel 1: AI Summary Generator
+               ------------------------------------------------------------------ -->
+          <div class="workspace-tab-panel active" id="panel-summary" role="tabpanel" aria-labelledby="tab-btn-summary">
+            <!-- Toolbar & Text-to-Speech Controls -->
+            <div class="summary-toolbar">
+              <!-- Text-to-Speech Bar -->
+              <div class="tts-controls-bar">
+                <span class="tts-pulse" id="tts-pulse-indicator"></span>
+                <span class="tts-status-label" id="tts-status-text">Read Aloud:</span>
+                <button type="button" id="tts-play-btn" class="btn btn-ghost btn-sm" aria-label="Play speech">▶ Play</button>
+                <button type="button" id="tts-pause-btn" class="btn btn-ghost btn-sm" aria-label="Pause speech" disabled>⏸ Pause</button>
+                <button type="button" id="tts-stop-btn" class="btn btn-ghost btn-sm" aria-label="Stop speech" disabled>⏹ Stop</button>
+              </div>
+
+              <!-- Export & Action Buttons -->
+              <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                <button type="button" id="copy-summary-btn" class="btn btn-outline btn-sm">
+                  📋 Copy Summary
+                </button>
+                <button type="button" id="download-summary-btn" class="btn btn-outline btn-sm">
+                  📥 Download (.md)
+                </button>
+                <button type="button" id="regenerate-summary-btn" class="btn btn-secondary btn-sm">
+                  🔄 Regenerate
+                </button>
+              </div>
+            </div>
+
+            <!-- Summary Body -->
+            <h3 id="summary-display-title" style="margin-bottom: var(--space-4); color: var(--primary-light);">
+              Summary Title
+            </h3>
+
+            <div id="summary-display-content" class="summary-content-body">
+              <!-- Content injected dynamically -->
+            </div>
+
+            <!-- Key Takeaways Box -->
+            <div class="summary-keypoints-box">
+              <h4>
+                <span>💡</span> Key Takeaways & Exam Points
+              </h4>
+              <ul class="keypoints-list" id="summary-keypoints-list">
+                <!-- Points injected dynamically -->
+              </ul>
+            </div>
+
+            <!-- Keywords Container -->
+            <div>
+              <p style="font-size: var(--font-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted);">
+                Key Academic Concepts:
+              </p>
+              <div class="keywords-container" id="summary-keywords-container">
+                <!-- Badges injected dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------------
+               Tab Panel 2: AI Quiz Generator
+               ------------------------------------------------------------------ -->
+          <div class="workspace-tab-panel" id="panel-quiz" role="tabpanel" aria-labelledby="tab-btn-quiz">
+            <div class="quiz-wrapper">
+              <!-- Quiz Header & 5-question Navigation Dots -->
+              <div class="quiz-progress-header">
+                <div>
+                  <span id="quiz-question-counter" style="font-size: var(--font-sm); font-weight: 700; color: var(--primary-light);">
+                    Question 1 of 5
+                  </span>
+                  <span id="quiz-difficulty-tag" class="badge badge-warning" style="margin-left: var(--space-2);">Medium</span>
+                </div>
+                <div class="quiz-dots-nav" id="quiz-dots-nav">
+                  <button type="button" class="quiz-dot active" data-q-idx="0">1</button>
+                  <button type="button" class="quiz-dot" data-q-idx="1">2</button>
+                  <button type="button" class="quiz-dot" data-q-idx="2">3</button>
+                  <button type="button" class="quiz-dot" data-q-idx="3">4</button>
+                  <button type="button" class="quiz-dot" data-q-idx="4">5</button>
+                </div>
+              </div>
+
+              <!-- Question Card -->
+              <div class="question-box" id="quiz-active-card">
+                <h4 class="question-text" id="quiz-question-text">
+                  Question prompt appears here?
+                </h4>
+
+                <div class="options-list" id="quiz-options-list">
+                  <!-- 4 options injected dynamically -->
+                </div>
+
+                <div class="explanation-box" id="quiz-explanation-box">
+                  <strong>Explanation:</strong>
+                  <span id="quiz-explanation-text"></span>
+                </div>
+              </div>
+
+              <!-- Quiz Navigation Buttons -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-6);">
+                <button type="button" id="quiz-prev-btn" class="btn btn-outline" disabled>
+                  ← Previous
+                </button>
+                <div style="display: flex; gap: var(--space-3);">
+                  <button type="button" id="quiz-next-btn" class="btn btn-secondary">
+                    Next Question →
+                  </button>
+                  <button type="button" id="quiz-submit-btn" class="btn btn-primary" style="display: none;">
+                    ✓ Submit Quiz
+                  </button>
+                </div>
+              </div>
+
+              <!-- Score Summary Card (Visible after submission) -->
+              <div id="quiz-result-summary" style="display: none; margin-top: var(--space-8);">
+                <div class="quiz-score-card">
+                  <div class="score-badge-circle" id="quiz-final-score-circle">
+                    4/5
+                  </div>
+                  <h3 id="quiz-final-score-title">Great Job!</h3>
+                  <p id="quiz-final-score-desc" style="color: var(--text-secondary); margin-bottom: var(--space-6);">
+                    You scored 80% on this assessment.
+                  </p>
+                  <div style="display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap;">
+                    <button type="button" id="retake-quiz-btn" class="btn btn-primary">
+                      🔄 Retake Quiz
+                    </button>
+                    <a href="dashboard.html" class="btn btn-outline">
+                      Back to Dashboard
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------------
+               Tab Panel 3: Interactive Flashcards
+               ------------------------------------------------------------------ -->
+          <div class="workspace-tab-panel" id="panel-flashcards" role="tabpanel" aria-labelledby="tab-btn-flashcards">
+            <div class="flashcards-workspace">
+              <!-- Flashcard Progress Bar -->
+              <div class="flashcard-progress-bar">
+                <span id="flashcard-card-indicator" style="font-weight: 700;">
+                  Card 1 of 8
+                </span>
+                <div class="flashcard-status-counts">
+                  <span class="status-pill known" id="count-known">Known: 0</span>
+                  <span class="status-pill needs-revision" id="count-revision">Need Revision: 0</span>
+                  <span class="status-pill unreviewed" id="count-unreviewed">Unreviewed: 8</span>
+                </div>
+              </div>
+
+              <!-- 3D Flip Card Scene -->
+              <div class="flashcard-scene" id="flashcard-scene" tabindex="0" role="button" aria-label="Flashcard - Click or press space to flip">
+                <div class="flashcard-card-3d" id="flashcard-card-3d">
+                  <!-- Front Face (Question) -->
+                  <div class="card-face card-face-front">
+                    <span class="card-face-tag">Question / Concept</span>
+                    <p class="card-main-text" id="fc-front-text">Front of card text...</p>
+                    <span class="card-hint">💡 Click or press Space to flip to answer</span>
+                  </div>
+
+                  <!-- Back Face (Answer) -->
+                  <div class="card-face card-face-back">
+                    <span class="card-face-tag">Answer & Explanation</span>
+                    <p class="card-main-text" id="fc-back-text">Back of card answer...</p>
+                    <span class="card-hint">💡 Click to flip back to question</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Flashcard Navigation & Mastery Controls -->
+              <div class="flashcard-nav-controls">
+                <div style="display: flex; gap: var(--space-2);">
+                  <button type="button" id="fc-prev-btn" class="btn btn-outline btn-sm" disabled>
+                    ← Previous
+                  </button>
+                  <button type="button" id="fc-flip-btn" class="btn btn-secondary btn-sm">
+                    🔄 Flip Card
+                  </button>
+                  <button type="button" id="fc-next-btn" class="btn btn-outline btn-sm">
+                    Next →
+                  </button>
+                </div>
+
+                <div class="mastery-btn-group">
+                  <button type="button" id="fc-mark-known-btn" class="btn btn-mastery-known btn-sm">
+                    ✓ Known
+                  </button>
+                  <button type="button" id="fc-mark-revision-btn" class="btn btn-mastery-revision btn-sm">
+                    ⚠ Need Revision
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div id="logout-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="logout-modal-title" class="modal-title">Sign Out</h3>
+        <button type="button" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to sign out of your StudyMate AI account?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+        <button type="button" id="confirm-logout-btn" class="btn btn-danger">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module Script -->
+  <script type="module" src="js/pages/study.js"></script>
+</body>
+</html>
+
