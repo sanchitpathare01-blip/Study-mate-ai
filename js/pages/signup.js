@@ -110,5 +110,23 @@ document.addEventListener('DOMContentLoaded', () => {
       errorSpan.classList.add('is-visible');
     }
   }
+
+  // 1-Click Demo Access
+  const demoBtn = document.getElementById('demo-mode-btn');
+  if (demoBtn) {
+    demoBtn.addEventListener('click', async () => {
+      setButtonLoading(demoBtn, true, 'Starting Demo...');
+      try {
+        await registerUser('Sanchit Pathare', 'sanchitpathare01@gmail.com', 'demo123456');
+        showToast('Demo session started! Loading dashboard...', 'success', 1500);
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 800);
+      } catch (err) {
+        setButtonLoading(demoBtn, false);
+        window.location.href = 'dashboard.html';
+      }
+    });
+  }
 });
 

@@ -9,15 +9,7 @@
 
 import { initTheme } from '../theme.js';
 import { requireAuth, logoutUser } from '../auth.js';
-import { db } from '../firebase-config.js';
-import {
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { createSession, getSessionById, updateSessionData } from '../session-store.js';
 import { showToast, setButtonLoading, openModal, closeModal, escapeHtml } from '../ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -255,10 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const data = result.data;
 
-        // Save as ONE complete study session in Firestore
-        const newSessionRef = doc(collection(db, 'users', currentUser.uid, 'sessions'));
-        const newSessionId = newSessionRef.id;
-
         const sessionPayload = {
           topic: data.topic,
           originalMaterial: inputText,
@@ -267,12 +255,10 @@ document.addEventListener('DOMContentLoaded', () => {
           summary: data.summary,
           quiz: data.quiz,
           flashcards: data.flashcards,
-          quizResult: null,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
+          quizResult: null
         };
 
-        await setDoc(newSessionRef, sessionPayload);
+        const newSessionId = await createSession(currentUser.uid, sessionPayload);
 
         // Update local state
         currentSessionId = newSessionId;
@@ -298,22 +284,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. Load Existing Session From Firestore (Does NOT call Gemini again)
+  // 4. Load Existing Session (Does NOT call Gemini again)
   async function loadSessionFromFirestore(sessionId) {
     if (!currentUser) return;
 
     try {
-      const sessionDocRef = doc(db, 'users', currentUser.uid, 'sessions', sessionId);
-      const sessionSnap = await getDoc(sessionDocRef);
+      const session = await getSessionById(currentUser.uid, sessionId);
 
-      if (!sessionSnap.exists()) {
+      if (!session) {
         showToast('Requested study session was not found.', 'warning');
         return;
       }
 
       currentSessionId = sessionId;
       currentSessionData = {
-        ...sessionSnap.data(),
+        ...session,
         id: sessionId
       };
 
@@ -732,16 +717,12 @@ Created with StudyMate AI
         completedAt: serverTimestamp()
       };
 
-      // Save quiz result in Firestore under the same study session
+      // Save quiz result under the study session
       try {
-        const sessionDocRef = doc(db, 'users', currentUser.uid, 'sessions', currentSessionId);
-        await updateDoc(sessionDocRef, {
-          quizResult,
-          updatedAt: serverTimestamp()
-        });
+        await updateSessionData(currentUser.uid, currentSessionId, { quizResult });
         currentSessionData.quizResult = quizResult;
       } catch (err) {
-        console.warn('Failed to update quiz result in Firestore:', err);
+        console.warn('Failed to update quiz result:', err);
       }
 
       setButtonLoading(quizSubmitBtn, false);
@@ -899,15 +880,11 @@ Created with StudyMate AI
       }, 350);
     }
 
-    // Persist to Firestore
+    // Persist flashcard status
     try {
-      const sessionDocRef = doc(db, 'users', currentUser.uid, 'sessions', currentSessionId);
-      await updateDoc(sessionDocRef, {
-        flashcards: cards,
-        updatedAt: serverTimestamp()
-      });
+      await updateSessionData(currentUser.uid, currentSessionId, { flashcards: cards });
     } catch (err) {
-      console.warn('Could not save flashcard status to Firestore:', err);
+      console.warn('Could not save flashcard status:', err);
     }
   }
 

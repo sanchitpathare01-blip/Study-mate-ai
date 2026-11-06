@@ -15,56 +15,10 @@ import { initTheme } from '../theme.js';
 import { requireAuth, logoutUser } from '../auth.js';
 import { openModal, closeModal, showToast } from '../ui.js';
 import {
-  getFirestore,
-  collection,
-  getDocs,
-  deleteDoc,
-  doc,
-  orderBy,
-  query
-} from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
-import { getApp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
-
-// ─── Firestore helpers ────────────────────────────────────────────────────────
-
-function getDb() {
-  return getFirestore(getApp());
-}
-
-/**
- * Fetch all sessions for a given user UID, ordered by createdAt descending.
- * @param {string} uid
- * @returns {Promise<Array>} Array of { id, ...data } session objects
- */
-async function fetchSessions(uid) {
-  const db = getDb();
-  const sessionsRef = collection(db, 'users', uid, 'sessions');
-  const q = query(sessionsRef, orderBy('createdAt', 'desc'));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-}
-
-/**
- * Delete a single session document.
- * @param {string} uid
- * @param {string} sessionId
- */
-async function deleteSession(uid, sessionId) {
-  const db = getDb();
-  await deleteDoc(doc(db, 'users', uid, 'sessions', sessionId));
-}
-
-/**
- * Delete all sessions for a user. Runs sequentially to avoid Firestore limits.
- * @param {string} uid
- * @param {string[]} sessionIds
- */
-async function deleteAllSessions(uid, sessionIds) {
-  const db = getDb();
-  for (const id of sessionIds) {
-    await deleteDoc(doc(db, 'users', uid, 'sessions', id));
-  }
-}
+  listUserSessions,
+  deleteUserSession,
+  clearAllUserSessions
+} from '../session-store.js';
 
 // ─── Rendering ────────────────────────────────────────────────────────────────
 
@@ -293,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadSessions() {
     showLoading();
     try {
-      allSessions = await fetchSessions(currentUid);
+      allSessions = await listUserSessions(currentUid);
       updateCountLabel(allSessions.length);
 
       if (!allSessions.length) {
@@ -319,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmDeleteBtn.textContent = 'Deleting…';
 
       try {
-        await deleteSession(currentUid, pendingDeleteId);
+        await deleteUserSession(currentUid, pendingDeleteId);
         // Remove from local list
         allSessions = allSessions.filter((s) => s.id !== pendingDeleteId);
         closeModal(deleteModal);
@@ -356,8 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmClearAllBtn.textContent = 'Deleting all…';
 
       try {
-        const ids = allSessions.map((s) => s.id);
-        await deleteAllSessions(currentUid, ids);
+        await clearAllUserSessions(currentUid);
         allSessions = [];
         closeModal(clearAllModal);
         showToast('All sessions deleted.', 'success');
@@ -447,3 +400,4 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSessions();
   });
 });
+

@@ -3,8 +3,8 @@
  */
 
 import { initTheme, getCurrentTheme, setTheme } from '../theme.js';
-import { requireAuth, logoutUser } from '../auth.js';
-import { db } from '../firebase-config.js';
+import { requireAuth, logoutUser, setDemoUser } from '../auth.js';
+import { db, auth, isFirebaseConfigured } from '../firebase-config.js';
 import { updateProfile } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import { doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { openModal, closeModal, showToast, setButtonLoading } from '../ui.js';
@@ -63,18 +63,27 @@ document.addEventListener('DOMContentLoaded', () => {
       setButtonLoading(saveProfileBtn, true, 'Saving...');
 
       try {
-        // 1. Update Firebase Auth displayName
-        await updateProfile(currentUser, { displayName: newName });
+        if (currentUser.isDemo) {
+          currentUser.displayName = newName;
+          setDemoUser(currentUser);
+        } else {
+          // 1. Update Firebase Auth displayName
+          if (auth && auth.currentUser) {
+            await updateProfile(auth.currentUser, { displayName: newName });
+          }
 
-        // 2. Update Firestore user document
-        try {
-          const userDocRef = doc(db, 'users', currentUser.uid);
-          await updateDoc(userDocRef, {
-            name: newName,
-            updatedAt: serverTimestamp()
-          });
-        } catch (dbErr) {
-          console.warn("Could not update Firestore document:", dbErr);
+          // 2. Update Firestore user document
+          if (db && isFirebaseConfigured()) {
+            try {
+              const userDocRef = doc(db, 'users', currentUser.uid);
+              await updateDoc(userDocRef, {
+                name: newName,
+                updatedAt: serverTimestamp()
+              });
+            } catch (dbErr) {
+              console.warn("Could not update Firestore document:", dbErr);
+            }
+          }
         }
 
         // Update UI

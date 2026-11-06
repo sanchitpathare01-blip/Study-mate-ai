@@ -10,35 +10,7 @@
 import { initTheme } from '../theme.js';
 import { requireAuth, logoutUser } from '../auth.js';
 import { openModal, closeModal, showToast } from '../ui.js';
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  orderBy,
-  query,
-  limit
-} from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
-import { getApp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
-
-// ─── Firestore helpers ────────────────────────────────────────────────────────
-
-function getDb() {
-  return getFirestore(getApp());
-}
-
-/**
- * Load the most-recent N sessions for the user.
- * @param {string} uid
- * @param {number} maxItems
- * @returns {Promise<Array>}
- */
-async function loadRecentSessions(uid, maxItems = 10) {
-  const db = getDb();
-  const ref = collection(db, 'users', uid, 'sessions');
-  const q   = query(ref, orderBy('createdAt', 'desc'), limit(maxItems));
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-}
+import { listUserSessions } from '../session-store.js';
 
 // ─── Stats calculation ────────────────────────────────────────────────────────
 
@@ -145,9 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userDisplayEmail) userDisplayEmail.textContent = email;
     if (userAvatarBadge)  userAvatarBadge.textContent  = initial;
 
-    // Load live stats & recent sessions from Firestore
+    // Load live stats & recent sessions
     try {
-      const sessions = await loadRecentSessions(user.uid);
+      const sessions = await listUserSessions(user.uid, 10);
       const { total, latestScore, totalFlashcards } = calcStats(sessions);
 
       const statTotal   = document.getElementById('stat-total-sessions');

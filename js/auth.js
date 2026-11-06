@@ -1,5 +1,10 @@
 /**
- * StudyMate AI - Firebase Authentication & User State Service
+ * StudyMate AI - Authentication & User State Service
+ * 
+ * Supports two seamless operational modes:
+ *  1. Cloud Firebase Auth: Active when valid Firebase project credentials are provided.
+ *  2. Local Demo Mode: Automatically activates when Firebase credentials are not yet configured,
+ *     allowing users to test all features (AI Summaries, Quizzes, Flashcards, History) immediately.
  */
 
 import { auth, db, isFirebaseConfigured } from './firebase-config.js';
@@ -22,6 +27,44 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getCurrentTheme } from './theme.js';
 
+const DEMO_USER_STORAGE_KEY = 'studymate_demo_user';
+
+/**
+ * Get the currently logged-in demo user from local storage
+ * @returns {object|null}
+ */
+export function getDemoUser() {
+  try {
+    const raw = localStorage.getItem(DEMO_USER_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * Save demo user to local storage
+ * @param {object} user
+ */
+export function setDemoUser(user) {
+  try {
+    localStorage.setItem(DEMO_USER_STORAGE_KEY, JSON.stringify(user));
+  } catch (e) {
+    console.warn("Could not save demo user to localStorage", e);
+  }
+}
+
+/**
+ * Clear demo user
+ */
+export function clearDemoUser() {
+  try {
+    localStorage.removeItem(DEMO_USER_STORAGE_KEY);
+  } catch (e) {
+    // Ignore
+  }
+}
+
 /**
  * Register a new user with Email, Password and Name
  * @param {string} name
@@ -31,9 +74,16 @@ import { getCurrentTheme } from './theme.js';
  */
 export async function registerUser(name, email, password) {
   if (!isFirebaseConfigured()) {
-    throw new Error(
-      "Firebase is not configured yet. Please update 'js/firebase-config.js' with your Firebase project keys."
-    );
+    // Local Demo Registration
+    const demoUser = {
+      uid: 'demo_user_' + Date.now().toString(36),
+      displayName: name.trim(),
+      email: email.trim().toLowerCase(),
+      isDemo: true,
+      createdAt: new Date().toISOString()
+    };
+    setDemoUser(demoUser);
+    return { user: demoUser };
   }
 
   // 1. Create auth user in Firebase Authentication
@@ -74,9 +124,16 @@ export async function registerUser(name, email, password) {
  */
 export async function loginUser(email, password, rememberMe = true) {
   if (!isFirebaseConfigured()) {
-    throw new Error(
-      "Firebase is not configured yet. Please update 'js/firebase-config.js' with your Firebase project keys."
-    );
+    // Local Demo Login
+    const existing = getDemoUser();
+    const demoUser = {
+      uid: existing ? existing.uid : 'demo_user_default',
+      displayName: existing ? existing.displayName : (email.split('@')[0] || 'Student'),
+      email: email.trim().toLowerCase(),
+      isDemo: true
+    };
+    setDemoUser(demoUser);
+    return { user: demoUser };
   }
 
   const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
@@ -89,11 +146,16 @@ export async function loginUser(email, password, rememberMe = true) {
  * Log out the current user and redirect to login
  */
 export async function logoutUser() {
-  if (!auth) {
-    window.location.href = 'login.html';
-    return;
+  clearDemoUser();
+
+  if (isFirebaseConfigured() && auth) {
+    try {
+      await signOut(auth);
+    } catch (e) {
+      console.warn("SignOut error:", e);
+    }
   }
-  await signOut(auth);
+
   window.location.href = 'login.html';
 }
 
@@ -103,13 +165,14 @@ export async function logoutUser() {
  */
 export async function resetPassword(email) {
   if (!isFirebaseConfigured()) {
-    throw new Error("Firebase is not configured yet. Please configure your Firebase project credentials.");
+    // Simulated reset in demo mode
+    return true;
   }
   await sendPasswordResetEmail(auth, email.trim());
 }
 
 /**
- * Guard protected pages (dashboard.html, settings.html).
+ * Guard protected pages (dashboard.html, settings.html, study.html, history.html).
  * Redirects unauthenticated users to login.html.
  * @param {Function} onAuthenticated - Callback receiving (user, userData)
  */
@@ -117,9 +180,31 @@ export function requireAuth(onAuthenticated) {
   const loadingOverlay = document.getElementById('auth-loading-overlay');
 
   if (!isFirebaseConfigured()) {
-    // If Firebase is not configured, show instructional banner on page
+    let demoUser = getDemoUser();
+
+    // In demo mode, if there's no stored demo user yet, create a default session for instant access
+    if (!demoUser) {
+      demoUser = {
+        uid: 'demo_user_default',
+        displayName: 'Sanchit Pathare',
+        email: 'sanchitpathare01@gmail.com',
+        isDemo: true
+      };
+      setDemoUser(demoUser);
+    }
+
     showConfigurationBanner();
-    if (loadingOverlay) loadingOverlay.classList.add('is-hidden');
+
+    if (loadingOverlay) {
+      loadingOverlay.classList.add('is-hidden');
+    }
+
+    if (typeof onAuthenticated === 'function') {
+      onAuthenticated(demoUser, {
+        name: demoUser.displayName,
+        email: demoUser.email
+      });
+    }
     return;
   }
 
@@ -161,14 +246,20 @@ export function redirectIfAuthenticated() {
   const loadingOverlay = document.getElementById('auth-loading-overlay');
 
   if (!isFirebaseConfigured()) {
+    const demoUser = getDemoUser();
+    if (demoUser) {
+      window.location.href = 'dashboard.html';
+      return;
+    }
     showConfigurationBanner();
-    if (loadingOverlay) loadingOverlay.classList.add('is-hidden');
+    if (loadingOverlay) {
+      loadingOverlay.classList.add('is-hidden');
+    }
     return;
   }
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Already authenticated -> redirect to dashboard
       window.location.href = 'dashboard.html';
     } else {
       if (loadingOverlay) {
@@ -179,7 +270,7 @@ export function redirectIfAuthenticated() {
 }
 
 /**
- * Display helper banner if Firebase keys have not been added yet
+ * Display helper banner when running in demo/offline mode
  */
 function showConfigurationBanner() {
   const existing = document.getElementById('firebase-config-notice');
@@ -192,22 +283,24 @@ function showConfigurationBanner() {
     top: 16px;
     left: 50%;
     transform: translateX(-50%);
-    background: #1e1b4b;
-    border: 1px solid #7c3aed;
+    background: rgba(30, 27, 75, 0.95);
+    border: 1px solid rgba(139, 92, 246, 0.5);
+    backdrop-filter: blur(8px);
     color: #e0e7ff;
-    padding: 12px 20px;
-    border-radius: 12px;
-    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 9999px;
+    font-size: 13px;
     z-index: 9999;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    max-width: 90%;
-    text-align: center;
+    max-width: 92%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
   `;
   notice.innerHTML = `
-    <strong>Firebase Setup Required:</strong> To enable real authentication, update
-    <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">js/firebase-config.js</code> with your Firebase project keys.
-    <a href="README.md" target="_blank" style="color: #a5b4fc; text-decoration: underline; margin-left: 8px;">View Setup Guide</a>
-    <button type="button" onclick="this.parentElement.remove()" style="margin-left: 12px; background: transparent; border: none; color: #fff; cursor: pointer; font-weight: bold;">✕</button>
+    <span>⚡ <strong>Demo Mode:</strong> Using browser storage. Add keys to <code>js/firebase-config.js</code> anytime for cloud sync.</span>
+    <button type="button" aria-label="Dismiss notice" onclick="this.parentElement.remove()" style="background: transparent; border: none; color: #a5b4fc; cursor: pointer; font-size: 16px; line-height: 1; padding: 2px 4px;">✕</button>
   `;
   document.body.prepend(notice);
 }
@@ -245,4 +338,3 @@ export function getFriendlyErrorMessage(error) {
       return error.message || 'An error occurred during authentication. Please try again.';
   }
 }
-
