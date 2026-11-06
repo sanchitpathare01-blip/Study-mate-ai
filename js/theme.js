@@ -94,3 +94,4 @@ export function initTheme() {
 if (typeof window !== 'undefined') {
   initTheme();
 }
+

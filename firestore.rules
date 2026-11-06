@@ -9,3 +9,4 @@ service cloud.firestore {
     // Future Phase 2 and 3 rules (Summaries, Quizzes, Flashcards) will be scoped under user ownership
   }
 }
+

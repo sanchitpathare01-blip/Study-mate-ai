@@ -46,3 +46,4 @@ try {
 }
 
 export { app, auth, db, firebaseConfig };
+

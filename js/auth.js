@@ -245,3 +245,4 @@ export function getFriendlyErrorMessage(error) {
       return error.message || 'An error occurred during authentication. Please try again.';
   }
 }
+

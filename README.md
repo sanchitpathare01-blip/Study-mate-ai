@@ -155,3 +155,4 @@ service cloud.firestore {
 - [x] **Phase 1 (Completed):** Foundation, Design System, Responsive Landing Page, Firebase Authentication, Protected Dashboard Shell, and Settings.
 - [ ] **Phase 2 (Upcoming):** Gemini API Integration, Notes Input Processing, AI Summary Generation, 5-Question Quiz Generator, and Interactive Flashcards.
 - [ ] **Phase 3 (Upcoming):** Daily Study Progress Tracking, 30-Day Streak Consolidation, Spaced Repetition Algorithms, and Export Features.
+
