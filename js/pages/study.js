@@ -612,12 +612,13 @@ Created with StudyMate AI
 
     const quiz = currentSessionData.quiz;
     const q = quiz[currentQuestionIdx];
+    const currentAnswer = userAnswers[currentQuestionIdx];
+    const isAnswered = currentAnswer !== null;
 
     const counter = document.getElementById('quiz-question-counter');
     const qText = document.getElementById('quiz-question-text');
     const optionsContainer = document.getElementById('quiz-options-list');
     const explanationBox = document.getElementById('quiz-explanation-box');
-    const explanationText = document.getElementById('quiz-explanation-text');
     const prevBtn = document.getElementById('quiz-prev-btn');
     const nextBtn = document.getElementById('quiz-next-btn');
     const submitBtn = document.getElementById('quiz-submit-btn');
@@ -625,13 +626,21 @@ Created with StudyMate AI
     if (counter) counter.textContent = `Question ${currentQuestionIdx + 1} of 5`;
     if (qText) qText.textContent = q.question;
 
-    // Update dots
+    // Update dots with immediate correct/wrong feedback
     document.querySelectorAll('.quiz-dot').forEach((dot, idx) => {
       dot.classList.toggle('active', idx === currentQuestionIdx);
-      dot.classList.toggle('answered', userAnswers[idx] !== null);
+      const ans = userAnswers[idx];
+      const answered = ans !== null;
+      dot.classList.toggle('answered', answered);
+
+      dot.classList.remove('is-correct', 'is-wrong');
+      if (answered && quiz[idx]) {
+        const isRight = ans === quiz[idx].correctAnswer;
+        dot.classList.add(isRight ? 'is-correct' : 'is-wrong');
+      }
     });
 
-    // Populate options
+    // Populate options with immediate right/wrong reveal
     if (optionsContainer) {
       optionsContainer.innerHTML = '';
       const letters = ['A', 'B', 'C', 'D'];
@@ -641,34 +650,55 @@ Created with StudyMate AI
         optBtn.type = 'button';
         optBtn.className = 'option-btn';
 
-        const isSelected = userAnswers[currentQuestionIdx] === optIdx;
+        const isSelected = currentAnswer === optIdx;
         if (isSelected) optBtn.classList.add('selected');
 
-        // Review mode styling if submitted
-        if (isQuizSubmitted) {
+        let statusTag = '';
+        if (isAnswered) {
           const isCorrect = optIdx === q.correctAnswer;
           const isWrongSelection = isSelected && !isCorrect;
 
-          if (isCorrect) optBtn.classList.add('is-correct');
-          if (isWrongSelection) optBtn.classList.add('is-wrong');
-          optBtn.disabled = true;
+          if (isCorrect) {
+            optBtn.classList.add('is-correct');
+            statusTag = `<span class="option-status-tag correct">✓ Correct Answer</span>`;
+          } else if (isWrongSelection) {
+            optBtn.classList.add('is-wrong');
+            statusTag = `<span class="option-status-tag wrong">✗ Incorrect</span>`;
+          }
+          optBtn.disabled = true; // Lock question once answered
         } else {
           optBtn.addEventListener('click', () => selectAnswer(optIdx));
         }
 
         optBtn.innerHTML = `
-          <span class="option-indicator">${letters[optIdx]}</span>
-          <span>${escapeHtml(opt)}</span>
+          <div style="display: flex; align-items: center; gap: var(--space-3); flex: 1; text-align: left;">
+            <span class="option-indicator">${letters[optIdx]}</span>
+            <span>${escapeHtml(opt)}</span>
+          </div>
+          ${statusTag}
         `;
         optionsContainer.appendChild(optBtn);
       });
     }
 
-    // Explanation display
-    if (explanationBox && explanationText) {
-      if (isQuizSubmitted) {
+    // Immediate Explanation Display
+    if (explanationBox) {
+      if (isAnswered) {
         explanationBox.classList.add('is-visible');
-        explanationText.textContent = q.explanation || 'Option is correct.';
+        const isRight = currentAnswer === q.correctAnswer;
+        const feedbackHeader = isRight
+          ? `<span style="color: var(--success); font-weight: 700;">✓ Correct!</span>`
+          : `<span style="color: var(--error); font-weight: 700;">✗ Incorrect.</span>`;
+
+        explanationBox.innerHTML = `
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span style="font-size: 1.15rem;" aria-hidden="true">💡</span>
+            <div>${feedbackHeader} <strong>Explanation:</strong></div>
+          </div>
+          <p id="quiz-explanation-text" style="margin: 0; line-height: 1.6; color: var(--text-primary);">
+            ${escapeHtml(q.explanation || 'Option is correct.')}
+          </p>
+        `;
       } else {
         explanationBox.classList.remove('is-visible');
       }
@@ -680,7 +710,8 @@ Created with StudyMate AI
     if (nextBtn && submitBtn) {
       if (currentQuestionIdx === 4) {
         nextBtn.style.display = 'none';
-        submitBtn.style.display = isQuizSubmitted ? 'none' : 'inline-flex';
+        submitBtn.style.display = 'inline-flex';
+        submitBtn.textContent = isQuizSubmitted ? '✓ Overall Marks & Review' : '✓ Submit & View Overall Marks';
       } else {
         nextBtn.style.display = 'inline-flex';
         submitBtn.style.display = 'none';
@@ -689,9 +720,17 @@ Created with StudyMate AI
   }
 
   function selectAnswer(optIdx) {
-    if (isQuizSubmitted) return;
+    if (userAnswers[currentQuestionIdx] !== null) return; // Prevent changing after marked
     userAnswers[currentQuestionIdx] = optIdx;
     displayCurrentQuestion();
+
+    // If on the last question, automatically scroll slightly if needed so the submit button is in view
+    if (currentQuestionIdx === 4) {
+      const submitBtn = document.getElementById('quiz-submit-btn');
+      if (submitBtn) {
+        submitBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
   }
 
   function goToQuestion(idx) {
@@ -723,9 +762,18 @@ Created with StudyMate AI
 
   if (quizSubmitBtn) {
     quizSubmitBtn.addEventListener('click', async () => {
+      if (isQuizSubmitted) {
+        const summaryCard = document.getElementById('quiz-result-summary');
+        if (summaryCard) {
+          summaryCard.style.display = 'block';
+          summaryCard.scrollIntoView({ behavior: 'smooth' });
+        }
+        return;
+      }
+
       const unansweredCount = userAnswers.filter((a) => a === null).length;
       if (unansweredCount > 0) {
-        const confirmSubmit = confirm(`You have ${unansweredCount} unanswered question(s). Are you sure you want to submit?`);
+        const confirmSubmit = confirm(`You have ${unansweredCount} unanswered question(s). Are you sure you want to view your final score?`);
         if (!confirmSubmit) return;
       }
 
@@ -748,7 +796,7 @@ Created with StudyMate AI
         percentage,
         userAnswers,
         difficulty: currentSessionData.difficulty,
-        completedAt: serverTimestamp()
+        completedAt: new Date().toISOString()
       };
 
       // Save quiz result under the study session
@@ -776,25 +824,27 @@ Created with StudyMate AI
   function showQuizScoreCard(score, percentage) {
     const summaryCard = document.getElementById('quiz-result-summary');
     const circle = document.getElementById('quiz-final-score-circle');
+    const pctBadge = document.getElementById('quiz-final-score-pct');
     const title = document.getElementById('quiz-final-score-title');
     const desc = document.getElementById('quiz-final-score-desc');
 
     if (summaryCard) summaryCard.style.display = 'block';
     if (circle) circle.textContent = `${score}/5`;
+    if (pctBadge) pctBadge.textContent = `${percentage}% Overall Score`;
 
     if (title && desc) {
       if (score === 5) {
-        title.textContent = '🌟 Perfect Score!';
+        title.textContent = '🌟 Perfect Score (5/5)!';
         desc.textContent = `Incredible work! You answered 100% correctly. You have fully mastered this topic!`;
       } else if (score >= 4) {
         title.textContent = '🎉 Great Job!';
-        desc.textContent = `You scored ${percentage}%. You have a strong grasp of the material.`;
+        desc.textContent = `You scored ${percentage}% (${score} out of 5 correct). You have a strong grasp of the material!`;
       } else if (score >= 3) {
         title.textContent = '👍 Good Effort!';
-        desc.textContent = `You scored ${percentage}%. Review the explanations below to solidify your understanding.`;
+        desc.textContent = `You scored ${percentage}% (${score} out of 5 correct). Review the explanations to solidify your understanding.`;
       } else {
         title.textContent = '📚 Needs Review';
-        desc.textContent = `You scored ${percentage}%. Check the summary and flashcards, then give it another try!`;
+        desc.textContent = `You scored ${percentage}% (${score} out of 5 correct). Review the summary and flashcards, then give it another try!`;
       }
     }
 
