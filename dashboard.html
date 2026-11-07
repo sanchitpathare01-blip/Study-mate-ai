@@ -113,7 +113,7 @@
           </svg>
         </button>
 
-        <!-- Search Box Pill -->
+        <!-- Search Box Pill (Reference Match) -->
         <div class="topbar-search-box">
           <span style="font-size: 14px; opacity: 0.6;" aria-hidden="true">🔍</span>
           <input type="search" class="topbar-search-input" placeholder="Search anything..." aria-label="Search dashboard">
@@ -139,106 +139,28 @@
     <main class="dashboard-content">
 
       <!-- ====================================================================
-           1. Creative Welcome Hero Section (Illustrated & Distinctive)
+           1. Welcome Section (Clean Match to Reference - NO crude cartoon avatar!)
            ==================================================================== -->
-      <section class="dashboard-welcome-hero">
-        <div class="welcome-hero-content">
-          <div class="welcome-badge-pill">
-            <span>✨</span>
-            <span id="welcome-date">Loading date...</span>
-          </div>
-
-          <h1 class="welcome-heading">
-            Welcome back, <span id="welcome-user-name" class="welcome-user-highlight">Student</span>!
-          </h1>
-          <p id="welcome-motivational-text" class="welcome-subtext">
-            Ready to make today count? 🚀
-          </p>
-
-          <div class="welcome-hero-ctas">
-            <a href="study.html" class="btn-hero-study">
-              + New Study Session →
-            </a>
-            <a href="history.html" class="btn btn-outline" style="border-radius: var(--radius-full); padding: 0.75rem 1.4rem; font-weight: 700;">
-              View History
-            </a>
-          </div>
+      <section class="dashboard-welcome-section">
+        <div class="welcome-text-col">
+          <h1 class="welcome-heading">Welcome back, <span id="welcome-user-name">sanchitpathare01</span>!</h1>
+          <p id="welcome-motivational-text" class="welcome-subtext">Ready to make today count? 🚀</p>
         </div>
 
-        <!-- Right Side: Speech Bubble Cloud + Illustrated 3D Student Composition -->
-        <div class="welcome-hero-visual">
-          <!-- Playful Speech Bubble Cloud -->
-          <div class="motivational-cloud-badge" id="motivational-cloud-badge">
-            <span class="cloud-sparkle">✦</span>
-            <span>Small steps every day lead to big results.</span>
-          </div>
-
-          <!-- Illustrated 3D Desk & Student Art -->
-          <svg class="welcome-art-svg" viewBox="0 0 280 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="welDeskGrad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#5F4A8B"/>
-                <stop offset="100%" stop-color="#382B55"/>
-              </linearGradient>
-              <linearGradient id="welHoodieGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#7B65AA"/>
-                <stop offset="100%" stop-color="#5F4A8B"/>
-              </linearGradient>
-            </defs>
-
-            <!-- Floating Study Objects & Sparkles -->
-            <circle cx="45" cy="45" r="4" fill="#F4C65B"/>
-            <circle cx="240" cy="50" r="3" fill="#F4C65B"/>
-            <circle cx="65" cy="110" r="2.5" fill="#5F4A8B"/>
-
-            <!-- Floating Flashcard -->
-            <rect x="25" y="60" width="46" height="32" rx="6" fill="#E5DDF3" stroke="#5F4A8B" stroke-width="1.2" transform="rotate(-12 25 60)"/>
-            <text x="36" y="80" font-size="9" fill="#5F4A8B" font-weight="bold">AI ✦</text>
-
-            <!-- Desk Surface -->
-            <ellipse cx="140" cy="180" rx="125" ry="14" fill="#382B55" opacity="0.12"/>
-            <path d="M 30 168 Q 140 156 250 168 L 240 184 Q 140 174 40 184 Z" fill="url(#welDeskGrad)"/>
-
-            <!-- Books Stacked on Left -->
-            <rect x="52" y="152" width="38" height="7" rx="2" fill="#E5DDF3"/>
-            <rect x="49" y="144" width="42" height="7" rx="2" fill="#F4C65B"/>
-            <rect x="54" y="136" width="34" height="7" rx="2" fill="#5F4A8B"/>
-
-            <!-- Student in Purple Hoodie -->
-            <path d="M 112 165 C 112 110, 168 110, 168 165 Z" fill="url(#welHoodieGrad)"/>
-            <rect x="134" y="90" width="12" height="15" rx="3" fill="#F4C5B5"/>
-            <ellipse cx="140" cy="74" rx="18" ry="21" fill="#F4C5B5"/>
-            <!-- Hair -->
-            <path d="M 122 68 C 122 48, 158 48, 158 68 C 158 54, 142 50, 122 68 Z" fill="#201C29"/>
-            <!-- Glasses -->
-            <rect x="128" y="70" width="10" height="8" rx="2" fill="none" stroke="#382B55" stroke-width="1.5"/>
-            <rect x="142" y="70" width="10" height="8" rx="2" fill="none" stroke="#382B55" stroke-width="1.5"/>
-            <line x1="138" y1="74" x2="142" y2="74" stroke="#382B55" stroke-width="1.5"/>
-            <!-- Headphones -->
-            <path d="M 120 74 C 117 46, 163 46, 160 74" stroke="#5F4A8B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-            <rect x="117" y="68" width="5" height="12" rx="2.5" fill="#382B55"/>
-            <rect x="158" y="68" width="5" height="12" rx="2.5" fill="#382B55"/>
-
-            <!-- Laptop Open -->
-            <polygon points="90,165 140,165 152,130 102,130" fill="#312B3E"/>
-            <circle cx="127" cy="147" r="5" fill="#FFFFFF" opacity="0.9"/>
-            <text x="127" y="149" font-size="5" fill="#5F4A8B" text-anchor="middle">🎓</text>
-
-            <!-- Study Mug on Right -->
-            <rect x="205" y="146" width="16" height="20" rx="3" fill="#FFFFFF" stroke="#E5DDF3" stroke-width="1.2"/>
-            <path d="M 221 150 C 226 150, 226 162, 221 162" stroke="#5F4A8B" stroke-width="1.5" fill="none"/>
-          </svg>
+        <!-- Playful Cloud Motivational Badge (Matches Reference Top-Right of Welcome Area) -->
+        <div class="motivational-cloud-badge" id="motivational-cloud-badge">
+          Small steps every day lead to big results.
         </div>
       </section>
 
       <!-- ====================================================================
-           2. Distinctive 5-Statistics Cards (Pastel Tints & Organic Depth)
+           2. 5-Statistics Cards Row (Exact Match to Reference Mockup)
            ==================================================================== -->
-      <section>
+      <section class="dashboard-stats-section">
         <div class="overall-stats-grid">
           <!-- Stat 1: Total Sessions -->
-          <div class="stat-card-organic stat-card-sessions">
-            <div class="stat-icon-badge">
+          <div class="stat-card-white">
+            <div class="stat-icon-wrapper icon-purple">
               📚
             </div>
             <div class="stat-meta">
@@ -248,8 +170,8 @@
           </div>
 
           <!-- Stat 2: Quizzes Completed -->
-          <div class="stat-card-organic stat-card-quizzes">
-            <div class="stat-icon-badge">
+          <div class="stat-card-white">
+            <div class="stat-icon-wrapper icon-gold">
               🏆
             </div>
             <div class="stat-meta">
@@ -259,8 +181,8 @@
           </div>
 
           <!-- Stat 3: Avg. Quiz Score -->
-          <div class="stat-card-organic stat-card-score">
-            <div class="stat-icon-badge">
+          <div class="stat-card-white">
+            <div class="stat-icon-wrapper icon-orange">
               ⭐
             </div>
             <div class="stat-meta">
@@ -270,8 +192,8 @@
           </div>
 
           <!-- Stat 4: Flashcards Mastered -->
-          <div class="stat-card-organic stat-card-flashcards">
-            <div class="stat-icon-badge">
+          <div class="stat-card-white">
+            <div class="stat-icon-wrapper icon-lavender">
               🗂️
             </div>
             <div class="stat-meta">
@@ -281,8 +203,8 @@
           </div>
 
           <!-- Stat 5: Day Streak -->
-          <div class="stat-card-organic stat-card-streak">
-            <div class="stat-icon-badge">
+          <div class="stat-card-white">
+            <div class="stat-icon-wrapper icon-amber">
               🔥
             </div>
             <div class="stat-meta">
@@ -299,45 +221,33 @@
       <div class="dashboard-grid-2col">
 
         <!-- Column 1: 30-Day Study Streak with Golden Crown -->
-        <section class="dashboard-panel panel-streak-custom">
+        <section class="dashboard-panel">
           <div class="panel-title-row">
-            <div>
-              <h3 class="panel-title">Your 30-Day Study Streak</h3>
-              <span id="calendar-month-title" style="font-size: var(--font-xs); color: var(--text-muted); font-weight: 500;">Current Month Activity</span>
-            </div>
-            <span id="streak-header-badge" class="badge badge-purple">Streak: 0 Days 🔥</span>
+            <h3 class="panel-title">Your 30-Day Study Streak</h3>
           </div>
 
           <div class="streak-calendar-wrapper">
-            <!-- Left: Circular Days Grid -->
-            <div>
-              <!-- Calendar Weekdays -->
-              <div class="calendar-weekday-headers" aria-hidden="true">
-                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-              </div>
+            <!-- Left: Circular Days Grid (Days 1 to 28/30/31) -->
+            <div class="calendar-days-container">
               <div id="calendar-grid" class="calendar-days-dots-grid" aria-label="30-Day streak calendar">
                 <!-- Injected dynamically by dashboard.js -->
               </div>
-              <!-- Legend dots -->
-              <div class="streak-calendar-legend">
-                <span class="legend-pill"><span class="legend-dot-comp"></span> Completed</span>
-                <span class="legend-pill"><span class="legend-dot-tod"></span> Today</span>
-                <span class="legend-pill"><span class="legend-dot-mut"></span> Missed</span>
-              </div>
             </div>
 
-            <!-- Right: Golden Crown Achievement Badge (Arched with Laurel) -->
+            <!-- Right: Golden Crown Achievement Badge (Matches Reference Exactly) -->
             <div class="streak-achievement-box">
-              <div class="crown-icon-glow">👑</div>
+              <div class="crown-icon">👑</div>
               <div id="streak-big-number" class="streak-big-number">0</div>
               <div class="streak-badge-label">Day Streak</div>
               <div id="streak-crown-phrase" class="streak-status-phrase">Amazing!</div>
-              <div class="streak-laurel-accent">✦ ✦ ✦</div>
             </div>
           </div>
 
           <!-- Hidden telemetry elements to preserve full streak.js compatibility -->
           <div style="display: none;">
+            <span id="welcome-date"></span>
+            <span id="calendar-month-title"></span>
+            <span id="streak-header-badge"></span>
             <span id="streak-motivational-banner"></span>
             <span id="streak-motivational-text"></span>
             <span id="streak-current-num">0</span>
@@ -357,7 +267,7 @@
         </section>
 
         <!-- Column 2: Weekly Activity Area Chart -->
-        <section class="dashboard-panel panel-weekly-custom">
+        <section class="dashboard-panel">
           <div class="panel-title-row">
             <h3 class="panel-title">Weekly Activity</h3>
             <div class="chart-legend">
@@ -380,15 +290,10 @@
       <!-- ====================================================================
            4. Recent Study Sessions Panel
            ==================================================================== -->
-      <section class="recent-sessions-panel" style="position: relative; overflow: hidden;">
+      <section class="dashboard-panel recent-sessions-panel" style="position: relative;">
         <div class="panel-title-row">
-          <div>
-            <h3 class="panel-title">Recent Study Sessions</h3>
-            <p style="font-size: var(--font-xs); color: var(--text-muted); margin: 2px 0 0;">Zero latency review of your latest AI study materials</p>
-          </div>
-          <a href="history.html" class="btn btn-ghost btn-sm" style="color: var(--primary); font-weight: 700; border: 1.5px solid rgba(95,74,139,0.18); border-radius: var(--radius-full); padding: 0.4rem 1rem;">
-            View All →
-          </a>
+          <h3 class="panel-title">Recent Study Sessions</h3>
+          <a href="history.html" class="view-all-link">View All →</a>
         </div>
 
         <div id="recent-sessions-container">
@@ -405,8 +310,9 @@
 
         <!-- Botanical purple leaf accent overlapping the bottom-right corner -->
         <svg class="dashboard-bottom-leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M100 100 C 60 90, 30 50, 20 0 C 60 20, 90 60, 100 100 Z" fill="#5F4A8B" fill-opacity="0.12"/>
-          <path d="M100 100 Q 60 50 20 0" stroke="#5F4A8B" stroke-width="2" stroke-opacity="0.2"/>
+          <path d="M100 100 C 60 90, 30 50, 20 0 C 60 20, 90 60, 100 100 Z" fill="#5F4A8B" fill-opacity="0.18"/>
+          <path d="M100 80 C 70 70, 50 40, 40 10 C 70 30, 90 60, 100 80 Z" fill="#382B55" fill-opacity="0.12"/>
+          <path d="M100 100 Q 60 50 20 0" stroke="#5F4A8B" stroke-width="2.5" stroke-opacity="0.3"/>
         </svg>
       </section>
 
