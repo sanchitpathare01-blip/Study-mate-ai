@@ -25,9 +25,9 @@
 .settings-section-card {
   background: #FFFFFF;
   border: 1.5px solid rgba(95, 74, 139, 0.14);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-3xl);
   padding: var(--space-8);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 6px 20px rgba(95, 74, 139, 0.06);
 }
 
 [data-theme="dark"] .settings-section-card {

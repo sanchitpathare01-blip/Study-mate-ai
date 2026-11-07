@@ -267,12 +267,12 @@
 }
 
 .study-art-card {
-  background: #FFFFFF;
-  border: 1.5px solid rgba(95, 74, 139, 0.14);
-  border-radius: var(--radius-2xl);
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFDF5 60%, rgba(229, 221, 243, 0.5) 100%);
+  border: 1.5px solid rgba(95, 74, 139, 0.16);
+  border-radius: var(--radius-3xl);
   padding: var(--space-6);
   text-align: center;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 24px rgba(95, 74, 139, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -293,9 +293,9 @@
 .why-studymate-card {
   background: #FFFFFF;
   border: 1.5px solid rgba(95, 74, 139, 0.14);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-3xl);
   padding: var(--space-6) var(--space-7);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 24px rgba(95, 74, 139, 0.06);
 }
 
 [data-theme="dark"] .why-studymate-card {

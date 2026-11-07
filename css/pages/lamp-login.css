@@ -423,9 +423,9 @@
 .lamp-login-card {
   width: 100%;
   max-width: 440px;
-  background: #FEFACD;
+  background: #FFFDF5;
   border: 1.5px solid rgba(95, 74, 139, 0.2);
-  border-radius: 40px;
+  border-radius: 90px 90px 32px 32px;
   padding: var(--space-10) var(--space-8);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
   position: relative;

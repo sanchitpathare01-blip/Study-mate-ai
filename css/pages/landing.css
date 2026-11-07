@@ -230,6 +230,48 @@
   filter: drop-shadow(0 20px 35px rgba(56, 43, 85, 0.16));
 }
 
+/* Floating Checklist Card (Reference Match) */
+.floating-checklist-card {
+  position: absolute;
+  top: 14%;
+  left: -2%;
+  background: #FFFFFF;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1.25rem;
+  box-shadow: 0 12px 30px rgba(95, 74, 139, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+  animation: floatBounce 4s infinite ease-in-out;
+}
+
+[data-theme="dark"] .floating-checklist-card {
+  background: #282333;
+  border-color: #FEFACD;
+}
+
+.checklist-item {
+  font-size: var(--font-xs);
+  font-weight: 700;
+  color: var(--dark-violet);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+}
+
+[data-theme="dark"] .checklist-item {
+  color: #FEFACD;
+}
+
+.checklist-item .check-icon {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 800;
+}
+
 /* Floating Study Badges around illustration */
 .floating-badge {
   position: absolute;
