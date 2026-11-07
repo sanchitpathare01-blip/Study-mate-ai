@@ -5,10 +5,12 @@
 import { initTheme } from '../theme.js';
 import { loginUser, resetPassword, redirectIfAuthenticated, getFriendlyErrorMessage } from '../auth.js';
 import { showToast, setButtonLoading, openModal, closeModal } from '../ui.js';
+import { initLampExperience } from '../lamp-controller.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   redirectIfAuthenticated();
+  initLampExperience();
 
   const loginForm = document.getElementById('login-form');
   const emailInput = document.getElementById('login-email-input');
