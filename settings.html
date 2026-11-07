@@ -179,14 +179,57 @@
           </div>
         </section>
 
-        <!-- 3. AI Service Configuration (Phase 2 — Active) -->
+        <!-- 3. Study Preferences Section -->
+        <section class="settings-section-card">
+          <div class="settings-section-header">
+            <div>
+              <h2>📚 Study Preferences</h2>
+              <p>Customize your default AI generation style and quiz difficulty</p>
+            </div>
+            <span class="badge badge-purple">Defaults</span>
+          </div>
+
+          <form id="study-preferences-form">
+            <div class="form-group">
+              <label for="pref-explanation-style" class="form-label">Default Explanation Style</label>
+              <select id="pref-explanation-style" class="form-input">
+                <option value="simple">🌱 Simple — Easy language &amp; beginner-friendly</option>
+                <option value="detailed" selected>🔍 Detailed — Deep academic breakdown &amp; core concepts</option>
+                <option value="exam-focused">🎯 Exam-focused — Definitions, formulas &amp; key points</option>
+              </select>
+              <p style="color: var(--text-muted); font-size: var(--font-xs); margin-top: 4px;">
+                Pre-selected when you open the study generator. You can still change it before each session.
+              </p>
+            </div>
+
+            <div class="form-group" style="margin-top: var(--space-4);">
+              <label for="pref-quiz-difficulty" class="form-label">Default Quiz Difficulty</label>
+              <select id="pref-quiz-difficulty" class="form-input">
+                <option value="easy">🟢 Easy — Direct recall &amp; foundational concepts</option>
+                <option value="medium" selected>🟡 Medium — Conceptual comprehension &amp; application</option>
+                <option value="hard">🔴 Hard — Scenario analysis &amp; synthesis</option>
+              </select>
+              <p style="color: var(--text-muted); font-size: var(--font-xs); margin-top: 4px;">
+                Controls the baseline challenge level of your 5-question AI quizzes.
+              </p>
+            </div>
+
+            <div style="margin-top: var(--space-6);">
+              <button type="submit" id="save-preferences-btn" class="btn btn-primary">
+                Save Study Preferences
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- 4. AI Service Configuration -->
         <section class="settings-section-card">
           <div class="settings-section-header">
             <div>
               <h2>⚡ AI Service Configuration</h2>
               <p>Gemini AI Integration — Server-side key management</p>
             </div>
-            <span class="badge badge-purple">Phase 2 — Active</span>
+            <span class="badge badge-purple">Phase 3 — Verified</span>
           </div>
 
           <!-- Status indicator -->

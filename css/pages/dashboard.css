@@ -254,6 +254,13 @@
   margin-bottom: var(--space-10);
 }
 
+.overall-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
 .quick-card {
   padding: var(--space-6);
   display: flex;
@@ -340,36 +347,174 @@
   color: var(--text-muted);
 }
 
-/* 30-Day Calendar Mockup Placeholder */
+/* 30-Day Study Streak Calendar */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.calendar-month-title {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  margin-top: var(--space-4);
+  gap: 6px;
 }
 
 .cal-day {
   aspect-ratio: 1;
   background: var(--bg-card-alt);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: var(--font-xs);
   color: var(--text-secondary);
+  position: relative;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  cursor: default;
 }
 
-.cal-day.has-streak {
-  background: var(--primary);
+.cal-day:hover {
+  transform: translateY(-1px);
+}
+
+/* Completed day: Purple/green highlighted indicator */
+.cal-day.completed {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(124, 58, 237, 0.35));
   color: #ffffff;
   font-weight: 700;
-  border-color: var(--primary-light);
-  box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
+  border: 1px solid rgba(16, 185, 129, 0.6);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
 }
 
+.cal-day.completed::after {
+  content: '✓';
+  font-size: 9px;
+  color: var(--success);
+  margin-top: -2px;
+}
+
+/* Missed past day: Muted or grey indicator */
+.cal-day.missed {
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  opacity: 0.6;
+  border: 1px dashed var(--border-subtle);
+}
+
+/* Today: Special border / highlight */
 .cal-day.today {
   border: 2px solid var(--accent-cyan);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.35);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cal-day.today::before {
+  content: 'TODAY';
+  position: absolute;
+  top: 1px;
+  font-size: 7px;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  letter-spacing: 0.5px;
+}
+
+/* Future day: Disabled or visually different */
+.cal-day.future {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-muted);
+  opacity: 0.35;
+  border: 1px solid transparent;
+}
+
+/* Calendar Legend */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.legend-dot.completed { background: rgba(16, 185, 129, 0.7); }
+.legend-dot.today { border: 2px solid var(--accent-cyan); }
+.legend-dot.missed { background: var(--bg-card-alt); border: 1px dashed var(--border-subtle); }
+.legend-dot.future { background: rgba(255, 255, 255, 0.05); }
+
+/* Streak Stats Cards inside Calendar Panel */
+.streak-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.streak-stat-box {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  text-align: center;
+}
+
+.streak-stat-num {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.streak-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.streak-motivational-banner {
+  padding: var(--space-3);
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--primary-light);
+  font-size: var(--font-xs);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 /* Recent Sessions Placeholder Empty State */
@@ -444,6 +589,37 @@
 
   .dashboard-grid-2col {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .overall-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+  .welcome-banner {
+    padding: var(--space-5);
+  }
+}
+
+@media (max-width: 440px) {
+  .calendar-weekdays {
+    font-size: 10px;
+    gap: 3px;
+  }
+  .calendar-grid {
+    gap: 3px;
+  }
+  .cal-day {
+    font-size: 11px;
+    border-radius: 4px;
+  }
+  .cal-day.today::before {
+    font-size: 6px;
+    letter-spacing: 0;
+  }
+  .streak-stats-grid {
+    gap: var(--space-2);
   }
 }
 

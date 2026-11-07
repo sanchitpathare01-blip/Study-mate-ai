@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="StudyMate AI Dashboard - Overview of your AI summaries, quizzes and study streak.">
+  <meta name="description" content="StudyMate AI Dashboard - Overview of your AI summaries, quizzes, streak calendar and study progress.">
   <title>Dashboard — StudyMate AI</title>
 
   <!-- Google Fonts Preconnect -->
@@ -107,7 +107,7 @@
       </div>
 
       <div class="topbar-actions">
-        <span class="badge badge-purple">Phase 2 — Live</span>
+        <span class="badge badge-purple">Phase 3 — Live</span>
         <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
           <!-- Injected by theme.js -->
         </button>
@@ -121,42 +121,51 @@
       <section class="welcome-banner">
         <div class="welcome-text">
           <h1>Welcome back, <span id="welcome-user-name" class="gradient-text">Student</span> 👋</h1>
-          <p>Ready to power through your study material today?</p>
+          <p id="welcome-date" style="font-size: var(--font-xs); color: var(--text-muted); margin-bottom: 4px;">Loading date...</p>
+          <p id="welcome-motivational-text" style="font-weight: 500; color: var(--primary-light); margin: 0;">Ready to power through your study material today?</p>
         </div>
-        <div>
+        <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
           <a href="study.html" class="btn btn-primary">+ New Study Session</a>
+          <a href="history.html" class="btn btn-outline">Study History</a>
         </div>
       </section>
 
-      <!-- Live Stats Row -->
+      <!-- Overall Statistics Row (Real Data from Firestore) -->
       <section>
         <div class="section-heading-sm">
-          <span>Your Progress</span>
-          <span style="font-size: var(--font-xs); color: var(--text-muted);">Live from Firestore</span>
+          <span>Overall Study Telemetry</span>
+          <span style="font-size: var(--font-xs); color: var(--text-muted);">Real-time metrics</span>
         </div>
-        <div class="quick-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">
-          <!-- Total sessions stat -->
-          <div class="quick-card" style="text-align: center; padding: var(--space-5);">
-            <div style="font-size: 2rem; margin-bottom: var(--space-2);">📚</div>
+        <div class="overall-stats-grid">
+          <!-- Stat 1: Total Sessions -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-4);">
+            <div style="font-size: 1.8rem; margin-bottom: var(--space-1);">📚</div>
             <div id="stat-total-sessions" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
-            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-1);">Total Sessions</div>
+            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: 2px;">Sessions Created</div>
           </div>
-          <!-- Latest quiz score stat -->
-          <div class="quick-card" style="text-align: center; padding: var(--space-5);">
-            <div style="font-size: 2rem; margin-bottom: var(--space-2);">🎯</div>
-            <div id="stat-latest-score" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
-            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-1);">Latest Quiz Score</div>
+          <!-- Stat 2: Quizzes Completed -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-4);">
+            <div style="font-size: 1.8rem; margin-bottom: var(--space-1);">🎯</div>
+            <div id="stat-total-quizzes" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
+            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: 2px;">Quizzes Completed</div>
           </div>
-          <!-- Flashcards reviewed stat -->
-          <div class="quick-card" style="text-align: center; padding: var(--space-5);">
-            <div style="font-size: 2rem; margin-bottom: var(--space-2);">🃏</div>
-            <div id="stat-flashcards" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
-            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-1);">Flashcards Generated</div>
+          <!-- Stat 3: Average Quiz Score -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-4);">
+            <div style="font-size: 1.8rem; margin-bottom: var(--space-1);">📊</div>
+            <div id="stat-avg-score" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
+            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: 2px;">Avg. Quiz Accuracy</div>
           </div>
-          <!-- History link stat card -->
-          <div class="quick-card" style="text-align: center; padding: var(--space-5); display: flex; flex-direction: column; justify-content: center; gap: var(--space-3);">
-            <div style="font-size: 2rem;">🕒</div>
-            <a href="history.html" class="btn btn-outline btn-sm">View History</a>
+          <!-- Stat 4: Flashcards Known -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-4);">
+            <div style="font-size: 1.8rem; margin-bottom: var(--space-1);">🃏</div>
+            <div id="stat-known-flashcards" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
+            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: 2px;">Flashcards Mastered</div>
+          </div>
+          <!-- Stat 5: Current Streak -->
+          <div class="quick-card" style="text-align: center; padding: var(--space-4);">
+            <div style="font-size: 1.8rem; margin-bottom: var(--space-1);">🔥</div>
+            <div id="stat-current-streak" style="font-size: var(--font-2xl); font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">—</div>
+            <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: 2px;">Active Streak</div>
           </div>
         </div>
       </section>
@@ -165,7 +174,7 @@
       <section>
         <div class="section-heading-sm">
           <span>Quick Study Aids</span>
-          <span style="font-size: var(--font-xs); color: var(--text-muted);">AI Generation — Phase 2 Active</span>
+          <span style="font-size: var(--font-xs); color: var(--text-muted);">AI Generation Core</span>
         </div>
 
         <div class="quick-cards-grid">
@@ -174,7 +183,7 @@
             <div>
               <div class="quick-card-top">
                 <div class="quick-card-icon">📝</div>
-                <span class="badge badge-purple">Live</span>
+                <span class="badge badge-purple">Active</span>
               </div>
               <h3>AI Summary</h3>
               <p>Condense complex textbook chapters and lecture notes into high-yield, structured bullet points.</p>
@@ -189,10 +198,10 @@
             <div>
               <div class="quick-card-top">
                 <div class="quick-card-icon">🎯</div>
-                <span class="badge badge-purple">Live</span>
+                <span class="badge badge-purple">Active</span>
               </div>
-              <h3>Smart Quiz</h3>
-              <p>Generate 5-question multiple choice quizzes from your notes to test retention and comprehension.</p>
+              <h3>Take Quiz</h3>
+              <p>Test your knowledge with 5-question AI-generated multiple choice quizzes and explanations.</p>
             </div>
             <a href="study.html?tab=quiz" class="btn btn-secondary btn-block">
               Start Quiz →
@@ -204,81 +213,173 @@
             <div>
               <div class="quick-card-top">
                 <div class="quick-card-icon">🃏</div>
-                <span class="badge badge-purple">Live</span>
+                <span class="badge badge-purple">Active</span>
               </div>
-              <h3>Interactive Flashcards</h3>
-              <p>Practice with interactive 3D flip cards. Mark each card as Known or Needs Revision.</p>
+              <h3>Flashcards</h3>
+              <p>Practice with interactive 3D flip cards and track items as Known or Needs Revision.</p>
             </div>
             <a href="study.html?tab=flashcards" class="btn btn-secondary btn-block">
               Open Flashcards →
             </a>
           </div>
+
+          <!-- Card 4: Study History -->
+          <div class="quick-card">
+            <div>
+              <div class="quick-card-top">
+                <div class="quick-card-icon">🕒</div>
+                <span class="badge badge-purple">Active</span>
+              </div>
+              <h3>Study History</h3>
+              <p>Access, search, review, or reopen past generated study sessions with zero latency.</p>
+            </div>
+            <a href="history.html" class="btn btn-secondary btn-block">
+              Open History →
+            </a>
+          </div>
         </div>
       </section>
 
-      <!-- 2-Column Section: Progress & 30-Day Streak Calendar -->
+      <!-- 2-Column Section: Daily Progress Tracker & 30-Day Study Streak Calendar -->
       <div class="dashboard-grid-2col">
-        <!-- Daily Progress Placeholder -->
+
+        <!-- Column 1: Daily Study Progress -->
         <section class="dashboard-panel">
           <div class="card-header">
             <h4>Daily Study Progress</h4>
-            <span class="badge badge-warning">Phase 3 Tracker</span>
+            <span id="daily-badge-status" class="badge badge-purple">Today's Goals</span>
           </div>
           <div class="card-body">
-            <p>Track your daily revision target and study questions answered.</p>
+            <p style="color: var(--text-secondary); font-size: var(--font-sm);">
+              Complete your daily learning activities to maintain consistent academic retention.
+            </p>
+
+            <!-- Overall Daily Goal Progress Bar -->
             <div class="progress-bar-wrapper">
-              <div class="progress-bar-fill"></div>
+              <div id="daily-progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
             </div>
             <div class="progress-stats">
-              <span>Goal: 1 of 3 materials reviewed</span>
-              <span>33% Completed</span>
+              <span id="daily-goals-count">0 of 3 targets completed today</span>
+              <span id="daily-goals-pct">0%</span>
             </div>
-            <p style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-4);">
-              Full daily progress telemetry and goal setting will be unlocked in Phase 3.
-            </p>
+
+            <!-- Detailed Daily Checklist -->
+            <div style="display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-5);">
+              <!-- Target 1: Generate a session -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-2) var(--space-3); background: var(--bg-card-alt); border-radius: var(--radius-md);">
+                <span style="font-size: var(--font-xs); display: flex; align-items: center; gap: var(--space-2);">
+                  <span id="target-session-icon">⚪</span> 1 New Material Generated
+                </span>
+                <span id="target-session-val" class="badge badge-purple" style="font-size: 10px;">0 / 1</span>
+              </div>
+
+              <!-- Target 2: Complete a quiz -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-2) var(--space-3); background: var(--bg-card-alt); border-radius: var(--radius-md);">
+                <span style="font-size: var(--font-xs); display: flex; align-items: center; gap: var(--space-2);">
+                  <span id="target-quiz-icon">⚪</span> 1 Quiz Completed
+                </span>
+                <span id="target-quiz-val" class="badge badge-purple" style="font-size: 10px;">0 / 1</span>
+              </div>
+
+              <!-- Target 3: Flashcard mastery -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-2) var(--space-3); background: var(--bg-card-alt); border-radius: var(--radius-md);">
+                <span style="font-size: var(--font-xs); display: flex; align-items: center; gap: var(--space-2);">
+                  <span id="target-fc-icon">⚪</span> Flashcard Revision Active
+                </span>
+                <span id="target-fc-val" class="badge badge-purple" style="font-size: 10px;">0 / 1</span>
+              </div>
+            </div>
+
+            <!-- Quick Action button -->
+            <div style="margin-top: var(--space-5);">
+              <a href="study.html" class="btn btn-outline btn-block btn-sm">Start Next Activity →</a>
+            </div>
           </div>
         </section>
 
-        <!-- 30-Day Study Streak Calendar Placeholder -->
+        <!-- Column 2: 30-Day Study Streak Calendar -->
         <section class="dashboard-panel">
           <div class="card-header">
             <h4>30-Day Study Streak</h4>
-            <span class="badge badge-purple">Phase 3 🔥</span>
+            <span id="streak-header-badge" class="badge badge-purple">Streak: 0 Days 🔥</span>
           </div>
           <div class="card-body">
-            <p>Consistency is key to long-term memory consolidation.</p>
-            <!-- Mockup Calendar Grid -->
-            <div class="calendar-grid">
-              <div class="cal-day">1</div>
-              <div class="cal-day">2</div>
-              <div class="cal-day has-streak">3</div>
-              <div class="cal-day has-streak">4</div>
-              <div class="cal-day has-streak today">5</div>
-              <div class="cal-day">6</div>
-              <div class="cal-day">7</div>
-              <div class="cal-day">8</div>
-              <div class="cal-day">9</div>
-              <div class="cal-day">10</div>
-              <div class="cal-day">11</div>
-              <div class="cal-day">12</div>
-              <div class="cal-day">13</div>
-              <div class="cal-day">14</div>
+
+            <!-- Dynamic Motivational Banner -->
+            <div id="streak-motivational-banner" class="streak-motivational-banner">
+              <span>💡</span>
+              <span id="streak-motivational-text">Complete an activity today to start your study streak!</span>
             </div>
-            <p style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--space-3);">
-              Interactive daily check-in and streak tracking will be implemented in Phase 3.
-            </p>
+
+            <!-- Streak Statistics Grid (Current, Longest, Total Active, Sessions) -->
+            <div class="streak-stats-grid">
+              <div class="streak-stat-box">
+                <div id="streak-current-num" class="streak-stat-num">0</div>
+                <div class="streak-stat-label">Current Streak</div>
+              </div>
+              <div class="streak-stat-box">
+                <div id="streak-longest-num" class="streak-stat-num">0</div>
+                <div class="streak-stat-label">Longest Streak</div>
+              </div>
+              <div class="streak-stat-box">
+                <div id="streak-total-active-num" class="streak-stat-num">0</div>
+                <div class="streak-stat-label">Total Active Days</div>
+              </div>
+              <div class="streak-stat-box">
+                <div id="streak-sessions-num" class="streak-stat-num">0</div>
+                <div class="streak-stat-label">Sessions Created</div>
+              </div>
+            </div>
+
+            <!-- Month Title Header -->
+            <div class="calendar-header">
+              <span id="calendar-month-title" class="calendar-month-title">Current Month</span>
+              <span style="font-size: 11px; color: var(--text-muted);">Real Calendar Dates</span>
+            </div>
+
+            <!-- Weekday Labels -->
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+            </div>
+
+            <!-- Calendar Days Grid (Populated dynamically by dashboard.js) -->
+            <div id="calendar-grid" class="calendar-grid" aria-label="Study streak calendar">
+              <!-- Days injected dynamically -->
+            </div>
+
+            <!-- Calendar Legend -->
+            <div class="calendar-legend">
+              <div class="legend-item">
+                <span class="legend-dot completed"></span>
+                <span>Completed</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot today"></span>
+                <span>Today</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot missed"></span>
+                <span>Missed</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot future"></span>
+                <span>Future</span>
+              </div>
+            </div>
+
           </div>
         </section>
+
       </div>
 
-      <!-- Recent Sessions (live from Firestore) -->
+      <!-- Recent Sessions (Latest 5 from Firestore / Session Store) -->
       <section class="dashboard-panel">
         <div class="card-header">
           <h4>Recent Study Sessions</h4>
-          <a href="history.html" style="font-size: var(--font-sm); color: var(--primary-light); text-decoration: none;">View All →</a>
+          <a href="history.html" style="font-size: var(--font-sm); color: var(--primary-light); text-decoration: none;">View All History →</a>
         </div>
         <div id="recent-sessions-container">
-          <!-- Injected by dashboard.js -->
+          <!-- Injected dynamically by dashboard.js -->
           <div class="empty-state">
             <span class="empty-state-icon" aria-hidden="true">📚</span>
             <h4>No sessions yet</h4>

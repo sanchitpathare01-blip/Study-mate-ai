@@ -43,9 +43,67 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nameInput) nameInput.value = displayName;
     if (emailInput) emailInput.value = email;
 
+    // Populate study preferences
+    const prefStyleSelect = document.getElementById('pref-explanation-style');
+    const prefDiffSelect = document.getElementById('pref-quiz-difficulty');
+    try {
+      const storedPrefs = localStorage.getItem(`studymate_preferences_${user.uid}`);
+      const prefs = (userData && userData.preferences) || (storedPrefs ? JSON.parse(storedPrefs) : null);
+      if (prefs) {
+        if (prefStyleSelect && prefs.defaultStyle) prefStyleSelect.value = prefs.defaultStyle;
+        if (prefDiffSelect && prefs.defaultDifficulty) prefDiffSelect.value = prefs.defaultDifficulty;
+      }
+    } catch (e) {
+      console.warn("Could not load stored preferences in settings:", e);
+    }
+
     // Update Theme selector cards based on current active theme
     updateThemeCardsUI(getCurrentTheme());
   });
+
+  // Study Preferences Form Submission
+  const studyPreferencesForm = document.getElementById('study-preferences-form');
+  const savePreferencesBtn = document.getElementById('save-preferences-btn');
+  const prefStyleSelect = document.getElementById('pref-explanation-style');
+  const prefDiffSelect = document.getElementById('pref-quiz-difficulty');
+
+  if (studyPreferencesForm) {
+    studyPreferencesForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const defaultStyle = prefStyleSelect ? prefStyleSelect.value : 'detailed';
+      const defaultDifficulty = prefDiffSelect ? prefDiffSelect.value : 'medium';
+
+      const preferences = { defaultStyle, defaultDifficulty };
+
+      setButtonLoading(savePreferencesBtn, true, 'Saving Preferences...');
+
+      try {
+        // Save to localStorage
+        localStorage.setItem(`studymate_preferences_${currentUser.uid}`, JSON.stringify(preferences));
+
+        // Save to Firestore if configured
+        if (db && isFirebaseConfigured() && !currentUser.isDemo) {
+          try {
+            const userDocRef = doc(db, 'users', currentUser.uid);
+            await updateDoc(userDocRef, {
+              preferences,
+              updatedAt: serverTimestamp()
+            });
+          } catch (dbErr) {
+            console.warn("Could not save preferences to Firestore:", dbErr);
+          }
+        }
+
+        setButtonLoading(savePreferencesBtn, false);
+        showToast('Study preferences saved successfully! New sessions will use these defaults.', 'success');
+      } catch (err) {
+        setButtonLoading(savePreferencesBtn, false);
+        showToast('Error saving preferences. Please try again.', 'error');
+      }
+    });
+  }
 
   // Profile Form Submission
   if (profileForm) {

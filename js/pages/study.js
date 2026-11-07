@@ -10,6 +10,7 @@
 import { initTheme } from '../theme.js';
 import { requireAuth, logoutUser } from '../auth.js';
 import { createSession, getSessionById, updateSessionData } from '../session-store.js';
+import { recordStudyActivity } from '../streak.js';
 import { showToast, setButtonLoading, openModal, closeModal, escapeHtml } from '../ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -90,6 +91,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modeParam === 'topic') {
       selectMode('topic');
     }
+
+    // Load user study preferences as initial defaults
+    try {
+      const storedPrefs = localStorage.getItem(`studymate_preferences_${user.uid}`);
+      const prefs = (userData && userData.preferences) || (storedPrefs ? JSON.parse(storedPrefs) : null);
+      if (prefs) {
+        if (prefs.defaultStyle) selectStyle(prefs.defaultStyle);
+        if (prefs.defaultDifficulty) selectDifficulty(prefs.defaultDifficulty);
+      }
+    } catch (e) {
+      console.warn("Could not load user study preferences:", e);
+    }
   });
 
   // 2. Input Mode Switching (Paste Notes vs Enter a Topic)
@@ -123,16 +136,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function selectStyle(style) {
+    if (!style) return;
+    explanationStyle = style;
+    if (styleSelector) {
+      styleSelector.querySelectorAll('.pill-btn').forEach((b) => {
+        const isActive = b.getAttribute('data-style') === style;
+        b.classList.toggle('active', isActive);
+        b.setAttribute('aria-checked', isActive);
+      });
+    }
+  }
+
+  function selectDifficulty(diff) {
+    if (!diff) return;
+    difficulty = diff;
+    if (difficultySelector) {
+      difficultySelector.querySelectorAll('.pill-btn').forEach((b) => {
+        const isActive = b.getAttribute('data-difficulty') === diff;
+        b.classList.toggle('active', isActive);
+        b.setAttribute('aria-checked', isActive);
+      });
+    }
+  }
+
   // Explanation Style Selector
   if (styleSelector) {
     styleSelector.querySelectorAll('.pill-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
-        explanationStyle = btn.getAttribute('data-style');
-        styleSelector.querySelectorAll('.pill-btn').forEach((b) => {
-          const isActive = b === btn;
-          b.classList.toggle('active', isActive);
-          b.setAttribute('aria-checked', isActive);
-        });
+        selectStyle(btn.getAttribute('data-style'));
       });
     });
   }
@@ -141,12 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (difficultySelector) {
     difficultySelector.querySelectorAll('.pill-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
-        difficulty = btn.getAttribute('data-difficulty');
-        difficultySelector.querySelectorAll('.pill-btn').forEach((b) => {
-          const isActive = b === btn;
-          b.classList.toggle('active', isActive);
-          b.setAttribute('aria-checked', isActive);
-        });
+        selectDifficulty(btn.getAttribute('data-difficulty'));
       });
     });
   }
@@ -271,6 +298,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Render everything
         renderWorkspace(currentSessionData);
         showToast('Study materials generated successfully!', 'success');
+
+        // Record study activity for streak tracking
+        try {
+          await recordStudyActivity(currentUser.uid, 'generation');
+        } catch (streakErr) {
+          console.warn("Could not record streak activity:", streakErr);
+        }
 
         // Update URL query without page reload
         window.history.pushState({}, '', `study.html?session=${newSessionId}`);
@@ -729,6 +763,13 @@ Created with StudyMate AI
       displayCurrentQuestion();
       showQuizScoreCard(score, percentage);
       showToast(`Quiz completed! You scored ${score}/5 (${percentage}%)`, 'success');
+
+      // Record streak activity for quiz completion
+      try {
+        await recordStudyActivity(currentUser.uid, 'quiz');
+      } catch (streakErr) {
+        console.warn("Could not record streak activity for quiz:", streakErr);
+      }
     });
   }
 
@@ -883,6 +924,8 @@ Created with StudyMate AI
     // Persist flashcard status
     try {
       await updateSessionData(currentUser.uid, currentSessionId, { flashcards: cards });
+      // Record streak activity for flashcard review
+      await recordStudyActivity(currentUser.uid, 'flashcard');
     } catch (err) {
       console.warn('Could not save flashcard status:', err);
     }
