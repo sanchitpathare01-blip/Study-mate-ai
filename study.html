@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -31,19 +31,23 @@
   <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
 
   <!-- ========================================================================
-       Sidebar Navigation
+       Sidebar Navigation (Ultra Violet Theme)
        ======================================================================== -->
   <aside id="sidebar" class="sidebar" aria-label="Dashboard Navigation">
     <div class="sidebar-header">
       <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
-        <span class="brand-icon" aria-hidden="true">✦</span>
-        <span>StudyMate<span class="gradient-text">.ai</span></span>
+        <span class="brand-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </span>
+        <span>StudyMate<span style="color: #F4C65B;"> AI</span></span>
       </a>
-      <button type="button" id="sidebar-close-btn" class="modal-close-btn" style="display: none;" aria-label="Close sidebar">✕</button>
+      <button type="button" id="sidebar-close-btn" class="modal-close-btn" style="display: none; color: #FFFFFF;" aria-label="Close sidebar">✕</button>
     </div>
 
     <nav class="sidebar-nav">
-      <span class="nav-category">Main Workspace</span>
       <a href="dashboard.html" class="sidebar-link">
         <span class="sidebar-link-icon">📊</span>
         <span>Dashboard</span>
@@ -68,13 +72,18 @@
         <span class="sidebar-link-icon">🕒</span>
         <span>History</span>
       </a>
-
-      <span class="nav-category" style="margin-top: var(--space-4);">Account & App</span>
       <a href="settings.html" class="sidebar-link">
         <span class="sidebar-link-icon">⚙️</span>
         <span>Settings</span>
       </a>
     </nav>
+
+    <!-- Decorative Botanical Leaves SVG -->
+    <svg class="sidebar-botanical-leaves" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 120 C 30 70, 70 30, 120 20 C 100 60, 60 100, 20 120 Z" fill="#E5DDF3" fill-opacity="0.25"/>
+      <path d="M10 90 C 25 55, 60 40, 95 25 C 80 65, 45 80, 10 90 Z" fill="#F4C65B" fill-opacity="0.2"/>
+      <path d="M20 120 Q 70 70 120 20" stroke="#E5DDF3" stroke-width="2" stroke-opacity="0.3"/>
+    </svg>
 
     <div class="sidebar-footer">
       <div class="sidebar-user-card">
@@ -84,14 +93,14 @@
           <span id="user-display-email" class="user-meta-email">loading...</span>
         </div>
       </div>
-      <button type="button" id="sidebar-logout-btn" class="btn btn-ghost btn-block btn-sm" style="color: var(--error); margin-top: var(--space-1);">
-        🚪 Log Out
+      <button type="button" id="sidebar-logout-btn" class="btn btn-ghost btn-block btn-sm" style="color: #F4C5B5; margin-top: var(--space-1); justify-content: flex-start; padding-left: 0.5rem;">
+        🚪 Logout
       </button>
     </div>
   </aside>
 
   <!-- ========================================================================
-       Main Content Area
+       Main Content Area (Lemon Chiffon Background)
        ======================================================================== -->
   <div class="main-wrapper">
     <!-- Topbar -->
@@ -104,117 +113,190 @@
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
         </button>
-        <h2 class="topbar-title">AI Study Assistant</h2>
+
+        <a href="dashboard.html" class="topbar-back-link" style="display: flex; align-items: center; gap: 6px; color: var(--dark-violet); text-decoration: none; font-weight: 600; font-size: var(--font-sm);">
+          ← Dashboard
+        </a>
       </div>
 
-      <div class="topbar-actions">
-        <span class="badge badge-purple">AI Engine Ready</span>
+      <div class="topbar-right-actions">
         <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
           <!-- Injected by theme.js -->
         </button>
+
+        <button type="button" class="btn-icon" style="background: rgba(95,74,139,0.08); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;" aria-label="Notifications" title="Notifications">
+          🔔
+        </button>
+
+        <a href="settings.html" class="user-avatar" style="width: 36px; height: 36px; font-size: 13px; text-decoration: none; border: 2px solid var(--primary);" title="Account Settings">
+          👤
+        </a>
       </div>
     </header>
 
     <!-- Main Page Content -->
     <main class="dashboard-content">
-      <div class="study-container">
+      <div class="study-main-layout">
 
         <!-- ====================================================================
-             1. Study Generation Input Card
+             1. Study Generation Input Section (2-Column Match to Reference)
              ==================================================================== -->
-        <section class="study-input-card" id="generation-input-section">
-          <div class="study-header">
-            <h1>Create Your Study Materials</h1>
-            <p>Turn your notes into summaries, quizzes and flashcards with AI.</p>
-          </div>
+        <section id="generation-input-section" class="study-generator-section">
 
-          <!-- Input Mode Selector -->
-          <div class="selector-group-label">
-            <span>Input Format:</span>
-          </div>
-          <div class="pill-selector" id="mode-selector" role="radiogroup" aria-label="Input mode selector">
-            <button type="button" class="pill-btn active" data-mode="notes" role="radio" aria-checked="true">
-              <span>📄 Paste Notes</span>
-              <span class="pill-subtitle">Paste lectures, slides, articles</span>
-            </button>
-            <button type="button" class="pill-btn" data-mode="topic" role="radio" aria-checked="false">
-              <span>💡 Enter a Topic</span>
-              <span class="pill-subtitle">Type any academic subject</span>
-            </button>
-          </div>
+          <!-- Left Column: Generator Controls -->
+          <div class="generator-left-col">
+            <!-- Pill Badge -->
+            <div class="study-section-pill">
+              Create Study Materials
+            </div>
 
-          <!-- Input Field Container -->
-          <div class="input-wrapper-container">
-            <label for="study-input-text" class="form-label" id="input-label-text">
-              Enter or Paste Your Study Notes:
-            </label>
-            <textarea 
-              id="study-input-text" 
-              class="study-textarea" 
-              placeholder="Paste your class notes, textbook passage, or lecture transcript here..."
-              required
-            ></textarea>
-            <div class="char-counter-bar">
-              <span>Characters: <strong id="char-count">0</strong> / 30,000</span>
-              <span id="char-hint" style="color: var(--text-muted);">Minimum 5 characters</span>
+            <!-- Heading & Subtitle -->
+            <h1 class="study-main-heading">
+              Turn Your Notes into Study Power
+            </h1>
+            <p class="study-main-subtitle">
+              Get AI-powered summaries, quizzes and flashcards from your notes or topic.
+            </p>
+
+            <!-- Mode Selector Tabs: [ Paste Notes ] [ Enter Topic ] -->
+            <div class="generator-tabs-nav" id="mode-selector" role="radiogroup" aria-label="Input mode selector">
+              <button type="button" class="gen-tab-btn pill-btn active" data-mode="notes" role="radio" aria-checked="true">
+                📄 Paste Notes
+              </button>
+              <button type="button" class="gen-tab-btn pill-btn" data-mode="topic" role="radio" aria-checked="false">
+                💡 Enter Topic
+              </button>
+            </div>
+
+            <!-- Notes / Topic Textarea Card -->
+            <div class="study-textarea-wrapper">
+              <label for="study-input-text" class="visually-hidden" id="input-label-text">
+                Enter or Paste Your Study Notes
+              </label>
+              <textarea 
+                id="study-input-text" 
+                class="study-creative-textarea" 
+                placeholder="Paste your study notes here..."
+                required
+              ></textarea>
+              <div class="textarea-bottom-counter">
+                <span id="char-hint" style="opacity: 0.7;">Min 5 characters</span>
+                <span class="char-counter-text"><strong id="char-count">0</strong> / 30,000</span>
+              </div>
+            </div>
+
+            <!-- Explanation Style Chips -->
+            <div class="chips-selector-row">
+              <span class="chips-row-label">Explanation Style:</span>
+              <div class="chips-container" id="style-selector" role="radiogroup" aria-label="Explanation style selector">
+                <button type="button" class="style-chip pill-btn active" data-style="simple" role="radio" aria-checked="true">
+                  Simple
+                </button>
+                <button type="button" class="style-chip pill-btn" data-style="detailed" role="radio" aria-checked="false">
+                  Detailed
+                </button>
+                <button type="button" class="style-chip pill-btn" data-style="exam-focused" role="radio" aria-checked="false">
+                  Exam-focused
+                </button>
+              </div>
+            </div>
+
+            <!-- Quiz Difficulty Chips -->
+            <div class="chips-selector-row">
+              <span class="chips-row-label">Quiz Difficulty:</span>
+              <div class="chips-container" id="difficulty-selector" role="radiogroup" aria-label="Quiz difficulty selector">
+                <button type="button" class="diff-chip pill-btn active" data-difficulty="easy" role="radio" aria-checked="true">
+                  Easy
+                </button>
+                <button type="button" class="diff-chip pill-btn" data-difficulty="medium" role="radio" aria-checked="false">
+                  Medium
+                </button>
+                <button type="button" class="diff-chip pill-btn" data-difficulty="hard" role="radio" aria-checked="false">
+                  Hard
+                </button>
+              </div>
+            </div>
+
+            <!-- Golden/Orange Warm CTA Button -->
+            <div style="display: flex; gap: var(--space-3); margin-top: var(--space-6); flex-wrap: wrap;">
+              <button type="button" id="generate-btn" class="btn-generate-creative">
+                ✨ Generate Study Materials →
+              </button>
+              <button type="button" id="clear-input-btn" class="btn btn-outline" style="border-radius: var(--radius-full); padding: 0.85rem 1.5rem; font-weight: 600;">
+                Clear
+              </button>
             </div>
           </div>
 
-          <!-- Explanation Style Selector -->
-          <div class="selector-group-label">
-            <span>Explanation Style:</span>
-          </div>
-          <div class="pill-selector" id="style-selector" role="radiogroup" aria-label="Explanation style selector">
-            <button type="button" class="pill-btn" data-style="simple" role="radio" aria-checked="false">
-              <span>🌱 Simple</span>
-              <span class="pill-subtitle">Easy language & analogies</span>
-            </button>
-            <button type="button" class="pill-btn active" data-style="detailed" role="radio" aria-checked="true">
-              <span>🔍 Detailed</span>
-              <span class="pill-subtitle">Deep academic breakdown</span>
-            </button>
-            <button type="button" class="pill-btn" data-style="exam-focused" role="radio" aria-checked="false">
-              <span>🎯 Exam-focused</span>
-              <span class="pill-subtitle">Definitions, formulas, key points</span>
-            </button>
-          </div>
+          <!-- Right Column: 3D Illustration & Why StudyMate AI Card -->
+          <div class="generator-right-col">
+            <!-- 3D Study Book & AI Illustration Card -->
+            <div class="study-art-card">
+              <svg class="study-art-svg" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Floating Paper Sheets -->
+                <rect x="35" y="40" width="70" height="90" rx="8" fill="#E5DDF3" transform="rotate(-15 35 40)" opacity="0.9"/>
+                <line x1="40" y1="65" x2="80" y2="55" stroke="#5F4A8B" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <line x1="43" y1="80" x2="83" y2="70" stroke="#5F4A8B" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <line x1="46" y1="95" x2="75" y2="87" stroke="#5F4A8B" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
 
-          <!-- Quiz Difficulty Selector -->
-          <div class="selector-group-label">
-            <span>Quiz Difficulty:</span>
-          </div>
-          <div class="pill-selector" id="difficulty-selector" role="radiogroup" aria-label="Quiz difficulty selector">
-            <button type="button" class="pill-btn" data-difficulty="easy" role="radio" aria-checked="false">
-              <span>🟢 Easy</span>
-              <span class="pill-subtitle">Direct recall questions</span>
-            </button>
-            <button type="button" class="pill-btn active" data-difficulty="medium" role="radio" aria-checked="true">
-              <span>🟡 Medium</span>
-              <span class="pill-subtitle">Conceptual comprehension</span>
-            </button>
-            <button type="button" class="pill-btn" data-difficulty="hard" role="radio" aria-checked="false">
-              <span>🔴 Hard</span>
-              <span class="pill-subtitle">Scenario analysis & synthesis</span>
-            </button>
-          </div>
+                <rect x="210" y="30" width="70" height="90" rx="8" fill="#FFFDE5" transform="rotate(12 210 30)" opacity="0.9" stroke="rgba(95,74,139,0.1)"/>
+                <line x1="220" y1="60" x2="260" y2="68" stroke="#5F4A8B" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <line x1="218" y1="75" x2="258" y2="83" stroke="#5F4A8B" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
 
-          <!-- Action Buttons -->
-          <div style="display: flex; gap: var(--space-4); margin-top: var(--space-6); flex-wrap: wrap;">
-            <button type="button" id="generate-btn" class="btn btn-primary btn-lg" style="flex: 1; min-width: 240px;">
-              ✨ Generate Study Materials
-            </button>
-            <button type="button" id="clear-input-btn" class="btn btn-outline btn-lg">
-              Clear Input
-            </button>
+                <!-- Glowing Open Book -->
+                <path d="M 60 170 Q 110 145 160 160 Q 210 145 260 170 L 260 185 Q 210 160 160 175 Q 110 160 60 185 Z" fill="#5F4A8B"/>
+                <!-- Left Page -->
+                <path d="M 65 165 Q 112 142 158 155 L 158 140 Q 112 125 65 148 Z" fill="#FEFACD"/>
+                <line x1="80" y1="150" x2="140" y2="138" stroke="#382B55" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                <line x1="82" y1="158" x2="135" y2="147" stroke="#382B55" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+
+                <!-- Right Page -->
+                <path d="M 162 155 Q 208 142 255 165 L 255 148 Q 208 125 162 140 Z" fill="#FFFFFF"/>
+                <line x1="180" y1="138" x2="240" y2="150" stroke="#382B55" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                <line x1="185" y1="147" x2="238" y2="158" stroke="#382B55" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+
+                <!-- Floating AI Chip Badge with Graduation Cap -->
+                <circle cx="160" cy="85" r="32" fill="#5F4A8B" filter="drop-shadow(0 8px 16px rgba(95,74,139,0.3))"/>
+                <rect x="136" y="61" width="48" height="48" rx="10" fill="#382B55"/>
+                <!-- Cap Icon -->
+                <path d="M 160 72 L 175 79 L 160 86 L 145 79 Z" fill="#F4C65B"/>
+                <path d="M 150 82 V 88 Q 160 93 170 88 V 82" stroke="#F4C65B" stroke-width="1.8" fill="none"/>
+                <line x1="175" y1="79" x2="175" y2="90" stroke="#F4C65B" stroke-width="1.5"/>
+
+                <!-- Sparkles -->
+                <circle cx="120" cy="60" r="3" fill="#F4C65B"/>
+                <circle cx="200" cy="55" r="4" fill="#F4C65B"/>
+                <circle cx="160" cy="35" r="2.5" fill="#5F4A8B"/>
+                <circle cx="215" cy="115" r="3" fill="#5F4A8B"/>
+              </svg>
+            </div>
+
+            <!-- "Why StudyMate AI?" Card -->
+            <div class="why-studymate-card">
+              <h4 class="why-card-title">Why StudyMate AI?</h4>
+              <ul class="why-card-list">
+                <li><span class="why-check">✓</span> <strong>Save Time</strong> — Learn in minutes</li>
+                <li><span class="why-check">✓</span> <strong>Learn Better</strong> — Active recall & spaced practice</li>
+                <li><span class="why-check">✓</span> <strong>Score Higher</strong> — High-yield exam breakdowns</li>
+              </ul>
+
+              <!-- Growth Chart Graphic -->
+              <div class="growth-chart-accent">
+                <svg width="100%" height="40" viewBox="0 0 200 40" fill="none">
+                  <path d="M 10 32 Q 60 28 100 18 T 190 6" stroke="#5F4A8B" stroke-width="3" stroke-linecap="round" fill="none"/>
+                  <path d="M 180 6 H 190 V 16" stroke="#5F4A8B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
           </div>
         </section>
 
         <!-- Generation Loading Card -->
-        <div id="generation-spinner" class="study-input-card" style="display: none; text-align: center; padding: var(--space-12);">
+        <div id="generation-spinner" class="study-card-creative" style="display: none; text-align: center; padding: var(--space-12);">
           <div class="spinner spinner-lg" style="margin-bottom: var(--space-4);"></div>
-          <h3 id="spinner-status-title" style="margin-bottom: var(--space-2);">Synthesizing Study Materials...</h3>
+          <h3 id="spinner-status-title" style="margin-bottom: var(--space-2); color: var(--dark-violet);">Synthesizing Study Materials...</h3>
           <p id="spinner-status-desc" style="color: var(--text-secondary); max-width: 480px; margin: 0 auto;">
-            Gemini AI is extracting core concepts, formulating 5 multiple-choice questions, and assembling flashcards.
+            Gemini AI is extracting core concepts, formulating 5 multiple-choice questions, and assembling 3D flashcards.
           </p>
         </div>
 
@@ -228,7 +310,7 @@
               <div>
                 <span class="badge badge-purple" id="ws-badge-style">Detailed Style</span>
                 <span class="badge badge-warning" id="ws-badge-difficulty">Medium Difficulty</span>
-                <h2 id="ws-session-topic" style="font-size: var(--font-2xl); margin-top: var(--space-2);">
+                <h2 id="ws-session-topic" style="font-size: var(--font-2xl); margin-top: var(--space-2); color: var(--dark-violet);">
                   Session Topic
                 </h2>
               </div>
@@ -289,7 +371,7 @@
             </div>
 
             <!-- Summary Body -->
-            <h3 id="summary-display-title" style="margin-bottom: var(--space-4); color: var(--primary-light);">
+            <h3 id="summary-display-title" style="margin-bottom: var(--space-4); color: var(--primary);">
               Summary Title
             </h3>
 
@@ -309,7 +391,7 @@
 
             <!-- Keywords Container -->
             <div>
-              <p style="font-size: var(--font-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted);">
+              <p style="font-size: var(--font-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: var(--space-2);">
                 Key Academic Concepts:
               </p>
               <div class="keywords-container" id="summary-keywords-container">
@@ -319,14 +401,14 @@
           </div>
 
           <!-- ------------------------------------------------------------------
-               Tab Panel 2: AI Quiz Generator
+               Tab Panel 2: AI Quiz Generator (5 Questions with Instant Feedback)
                ------------------------------------------------------------------ -->
           <div class="workspace-tab-panel" id="panel-quiz" role="tabpanel" aria-labelledby="tab-btn-quiz">
             <div class="quiz-wrapper">
               <!-- Quiz Header & 5-question Navigation Dots -->
               <div class="quiz-progress-header">
                 <div>
-                  <span id="quiz-question-counter" style="font-size: var(--font-sm); font-weight: 700; color: var(--primary-light);">
+                  <span id="quiz-question-counter" style="font-size: var(--font-sm); font-weight: 700; color: var(--primary);">
                     Question 1 of 5
                   </span>
                   <span id="quiz-difficulty-tag" class="badge badge-warning" style="margin-left: var(--space-2);">Medium</span>
@@ -357,7 +439,7 @@
               </div>
 
               <!-- Quiz Navigation Buttons -->
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-6);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-6); flex-wrap: wrap; gap: var(--space-3);">
                 <button type="button" id="quiz-prev-btn" class="btn btn-outline" disabled>
                   ← Previous
                 </button>
@@ -382,7 +464,7 @@
                       80% Score
                     </span>
                   </div>
-                  <h3 id="quiz-final-score-title" style="margin-top: var(--space-2);">Great Job!</h3>
+                  <h3 id="quiz-final-score-title" style="margin-top: var(--space-2); color: var(--dark-violet);">Great Job!</h3>
                   <p id="quiz-final-score-desc" style="color: var(--text-secondary); margin-bottom: var(--space-6);">
                     You scored 80% on this assessment.
                   </p>
@@ -400,13 +482,13 @@
           </div>
 
           <!-- ------------------------------------------------------------------
-               Tab Panel 3: Interactive Flashcards
+               Tab Panel 3: Interactive 3D Flashcards
                ------------------------------------------------------------------ -->
           <div class="workspace-tab-panel" id="panel-flashcards" role="tabpanel" aria-labelledby="tab-btn-flashcards">
             <div class="flashcards-workspace">
               <!-- Flashcard Progress Bar -->
               <div class="flashcard-progress-bar">
-                <span id="flashcard-card-indicator" style="font-weight: 700;">
+                <span id="flashcard-card-indicator" style="font-weight: 700; color: var(--dark-violet);">
                   Card 1 of 8
                 </span>
                 <div class="flashcard-status-counts">
@@ -419,14 +501,14 @@
               <!-- 3D Flip Card Scene -->
               <div class="flashcard-scene" id="flashcard-scene" tabindex="0" role="button" aria-label="Flashcard - Click or press space to flip">
                 <div class="flashcard-card-3d" id="flashcard-card-3d">
-                  <!-- Front Face (Question) -->
+                  <!-- Front Face (Question) - Lemon Chiffon -->
                   <div class="card-face card-face-front">
                     <span class="card-face-tag">Question / Concept</span>
                     <p class="card-main-text" id="fc-front-text">Front of card text...</p>
                     <span class="card-hint">💡 Click or press Space to flip to answer</span>
                   </div>
 
-                  <!-- Back Face (Answer) -->
+                  <!-- Back Face (Answer) - Ultra Violet -->
                   <div class="card-face card-face-back">
                     <span class="card-face-tag">Answer & Explanation</span>
                     <p class="card-main-text" id="fc-back-text">Back of card answer...</p>
@@ -437,7 +519,7 @@
 
               <!-- Flashcard Navigation & Mastery Controls -->
               <div class="flashcard-nav-controls">
-                <div style="display: flex; gap: var(--space-2);">
+                <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
                   <button type="button" id="fc-prev-btn" class="btn btn-outline btn-sm" disabled>
                     ← Previous
                   </button>
@@ -488,4 +570,3 @@
   <script type="module" src="js/pages/study.js"></script>
 </body>
 </html>
-

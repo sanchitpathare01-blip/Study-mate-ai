@@ -1,11 +1,8 @@
-/**
- * StudyMate AI — History Page Styles
- * Covers the session cards grid, search bar, stats, empty states and delete modals.
- */
+/* ==========================================================================
+   StudyMate AI - History / Library Page Styles
+   Ultra Violet (#5F4A8B) & Lemon Chiffon (#FEFACD) Palette
+   ========================================================================== */
 
-/* ============================================================
-   Page Header
-   ============================================================ */
 .history-page-header {
   display: flex;
   align-items: flex-start;
@@ -16,19 +13,22 @@
 }
 
 .history-page-title {
-  font-size: var(--font-2xl);
-  font-weight: 700;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--dark-violet);
   margin: 0 0 var(--space-1);
 }
 
+[data-theme="dark"] .history-page-title {
+  color: #FEFACD;
+}
+
 .history-page-subtitle {
-  color: var(--text-muted);
-  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-base);
   margin: 0;
+  max-width: 600px;
 }
 
 .history-header-actions {
@@ -38,9 +38,7 @@
   flex-shrink: 0;
 }
 
-/* ============================================================
-   Controls Row (search + count)
-   ============================================================ */
+/* Controls Row */
 .history-controls-row {
   display: flex;
   align-items: center;
@@ -49,48 +47,6 @@
   flex-wrap: wrap;
   margin-bottom: var(--space-6);
 }
-
-.history-search-wrapper {
-  position: relative;
-  flex: 1;
-  min-width: 200px;
-  max-width: 420px;
-}
-
-.history-search-icon {
-  position: absolute;
-  left: var(--space-3);
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: var(--font-base);
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.history-search-input {
-  width: 100%;
-  padding: var(--space-2) var(--space-3) var(--space-2) calc(var(--space-3) * 2 + 1.2rem);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  color: var(--text-primary);
-  font-size: var(--font-sm);
-  font-family: var(--font-family);
-  outline: none;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.history-search-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-}
-
-.history-search-input::placeholder {
-  color: var(--text-muted);
-}
-
-/* Remove native clear button on search inputs */
-.history-search-input::-webkit-search-cancel-button { display: none; }
 
 .history-stats-row {
   display: flex;
@@ -101,58 +57,51 @@
 
 .history-count-label {
   font-size: var(--font-sm);
-  color: var(--text-muted);
-  white-space: nowrap;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--soft-lavender);
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-full);
 }
 
-/* ============================================================
-   Sessions Grid
-   ============================================================ */
+[data-theme="dark"] .history-count-label {
+  background: rgba(229, 221, 243, 0.12);
+  color: #FEFACD;
+}
+
+/* Sessions Grid */
 .sessions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-6);
 }
 
-/* ============================================================
-   Session Card
-   ============================================================ */
+/* Creative Session Card */
 .session-card {
-  background: var(--surface-1);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
+  background: #FFFFFF;
+  border: 1.5px solid rgba(95, 74, 139, 0.14);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
-.session-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--gradient-primary);
-  opacity: 0;
-  transition: opacity var(--transition-fast);
+[data-theme="dark"] .session-card {
+  background: var(--bg-card);
+  border-color: rgba(254, 250, 205, 0.1);
 }
 
 .session-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
   border-color: var(--primary);
 }
 
-.session-card:hover::before {
-  opacity: 1;
-}
-
-/* Card header row */
 .session-card-header {
   display: flex;
   align-items: flex-start;
@@ -160,196 +109,83 @@
   gap: var(--space-3);
 }
 
-.session-topic {
+.session-card-topic {
   font-size: var(--font-base);
-  font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1.4;
-  flex: 1;
-  /* Clamp to 2 lines */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-weight: 800;
+  font-family: var(--font-heading);
+  color: var(--dark-violet);
+  margin: 0;
+  line-height: 1.3;
 }
 
-.session-delete-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
+[data-theme="dark"] .session-card-topic {
+  color: #FEFACD;
+}
+
+.session-card-date {
+  font-size: 11px;
   color: var(--text-muted);
-  font-size: var(--font-base);
-  padding: var(--space-1);
-  border-radius: var(--radius-sm);
-  transition: color var(--transition-fast), background var(--transition-fast);
-  flex-shrink: 0;
-  line-height: 1;
+  margin-top: 4px;
 }
 
-.session-delete-btn:hover {
-  color: var(--error);
-  background: rgba(239, 68, 68, 0.1);
-}
-
-/* Meta chips row */
-.session-meta-row {
+.session-card-badges {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--space-2);
+  flex-wrap: wrap;
 }
 
-.session-chip {
-  font-size: var(--font-xs);
-  padding: 2px var(--space-2);
+.session-badge-item {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-full);
-  font-weight: 500;
-  white-space: nowrap;
 }
 
-.session-chip--style {
-  background: rgba(139, 92, 246, 0.15);
-  color: var(--primary-light);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-}
-
-.session-chip--difficulty {
-  background: rgba(245, 158, 11, 0.12);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.session-chip--difficulty.easy {
-  background: rgba(16, 185, 129, 0.12);
-  color: var(--success);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.session-chip--difficulty.hard {
-  background: rgba(239, 68, 68, 0.12);
-  color: var(--error);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-/* Stats row inside card */
-.session-stats-row {
-  display: flex;
-  gap: var(--space-4);
-  font-size: var(--font-xs);
-  color: var(--text-muted);
-}
-
-.session-stat {
+.session-card-footer {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-}
-
-/* Quiz score badge */
-.session-quiz-score {
-  font-size: var(--font-xs);
-  font-weight: 600;
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-full);
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--success);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.session-quiz-score.score-low {
-  background: rgba(239, 68, 68, 0.12);
-  color: var(--error);
-  border-color: rgba(239, 68, 68, 0.3);
-}
-
-.session-quiz-score.score-mid {
-  background: rgba(245, 158, 11, 0.12);
-  color: #fbbf24;
-  border-color: rgba(245, 158, 11, 0.3);
-}
-
-/* Date/time */
-.session-date {
-  font-size: var(--font-xs);
-  color: var(--text-muted);
+  justify-content: space-between;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
   margin-top: auto;
 }
 
-/* Open button */
-.session-open-btn {
-  width: 100%;
-  margin-top: var(--space-1);
-}
-
-/* ============================================================
-   History Loading State
-   ============================================================ */
-.history-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  padding: var(--space-16) var(--space-4);
-  color: var(--text-muted);
-}
-
-/* ============================================================
-   Empty / No-results State
-   ============================================================ */
+/* Empty / Loading States */
+.history-loading,
 .history-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  padding: var(--space-16) var(--space-4);
   text-align: center;
-  color: var(--text-muted);
+  padding: var(--space-16) var(--space-6);
+  background: #FFFFFF;
+  border: 1.5px solid rgba(95, 74, 139, 0.14);
+  border-radius: var(--radius-2xl);
+  max-width: 600px;
+  margin: var(--space-8) auto;
+}
+
+[data-theme="dark"] .history-loading,
+[data-theme="dark"] .history-empty {
+  background: var(--bg-card);
+  border-color: rgba(254, 250, 205, 0.1);
 }
 
 .history-empty-icon {
-  font-size: 3rem;
-  line-height: 1;
-  margin-bottom: var(--space-2);
+  font-size: 3.5rem;
+  margin-bottom: var(--space-3);
 }
 
 .history-empty h3 {
-  font-size: var(--font-lg);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
+  font-size: var(--font-xl);
+  font-family: var(--font-heading);
+  color: var(--dark-violet);
+  margin-bottom: var(--space-2);
+}
+
+[data-theme="dark"] .history-empty h3 {
+  color: #FEFACD;
 }
 
 .history-empty p {
+  color: var(--text-secondary);
   font-size: var(--font-sm);
-  max-width: 320px;
   margin: 0;
 }
-
-/* ============================================================
-   Responsive
-   ============================================================ */
-@media (max-width: 640px) {
-  .history-page-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .history-header-actions {
-    justify-content: flex-end;
-  }
-
-  .history-controls-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .history-search-wrapper {
-    max-width: 100%;
-  }
-
-  .sessions-grid {
-    grid-template-columns: 1fr;
-  }
-}
-

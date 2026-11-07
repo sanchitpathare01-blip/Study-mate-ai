@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -31,19 +31,23 @@
   <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
 
   <!-- ========================================================================
-       Sidebar Navigation
+       Sidebar Navigation (Ultra Violet Theme)
        ======================================================================== -->
   <aside id="sidebar" class="sidebar" aria-label="Dashboard Navigation">
     <div class="sidebar-header">
       <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
-        <span class="brand-icon" aria-hidden="true">✦</span>
-        <span>StudyMate<span class="gradient-text">.ai</span></span>
+        <span class="brand-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </span>
+        <span>StudyMate<span style="color: #F4C65B;"> AI</span></span>
       </a>
-      <button type="button" id="sidebar-close-btn" class="modal-close-btn" style="display: none;" aria-label="Close sidebar">✕</button>
+      <button type="button" id="sidebar-close-btn" class="modal-close-btn" style="display: none; color: #FFFFFF;" aria-label="Close sidebar">✕</button>
     </div>
 
     <nav class="sidebar-nav">
-      <span class="nav-category">Main Workspace</span>
       <a href="dashboard.html" class="sidebar-link">
         <span class="sidebar-link-icon">📊</span>
         <span>Dashboard</span>
@@ -68,13 +72,18 @@
         <span class="sidebar-link-icon">🕒</span>
         <span>History</span>
       </a>
-
-      <span class="nav-category" style="margin-top: var(--space-4);">Account &amp; App</span>
       <a href="settings.html" class="sidebar-link">
         <span class="sidebar-link-icon">⚙️</span>
         <span>Settings</span>
       </a>
     </nav>
+
+    <!-- Decorative Botanical Leaves SVG -->
+    <svg class="sidebar-botanical-leaves" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 120 C 30 70, 70 30, 120 20 C 100 60, 60 100, 20 120 Z" fill="#E5DDF3" fill-opacity="0.25"/>
+      <path d="M10 90 C 25 55, 60 40, 95 25 C 80 65, 45 80, 10 90 Z" fill="#F4C65B" fill-opacity="0.2"/>
+      <path d="M20 120 Q 70 70 120 20" stroke="#E5DDF3" stroke-width="2" stroke-opacity="0.3"/>
+    </svg>
 
     <div class="sidebar-footer">
       <div class="sidebar-user-card">
@@ -84,14 +93,14 @@
           <span id="user-display-email" class="user-meta-email">loading...</span>
         </div>
       </div>
-      <button type="button" id="sidebar-logout-btn" class="btn btn-ghost btn-block btn-sm" style="color: var(--error); margin-top: var(--space-1);">
-        🚪 Log Out
+      <button type="button" id="sidebar-logout-btn" class="btn btn-ghost btn-block btn-sm" style="color: #F4C5B5; margin-top: var(--space-1); justify-content: flex-start; padding-left: 0.5rem;">
+        🚪 Logout
       </button>
     </div>
   </aside>
 
   <!-- ========================================================================
-       Main Content Area
+       Main Content Area (Lemon Chiffon Background)
        ======================================================================== -->
   <div class="main-wrapper">
     <!-- Topbar -->
@@ -104,14 +113,24 @@
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
         </button>
-        <h2 class="topbar-title">Study History</h2>
+
+        <a href="dashboard.html" class="topbar-back-link" style="display: flex; align-items: center; gap: 6px; color: var(--dark-violet); text-decoration: none; font-weight: 600; font-size: var(--font-sm);">
+          ← Dashboard
+        </a>
       </div>
 
-      <div class="topbar-actions">
-        <span class="badge badge-purple">Session Archive</span>
+      <div class="topbar-right-actions">
         <button type="button" class="theme-toggle-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
           <!-- Injected by theme.js -->
         </button>
+
+        <button type="button" class="btn-icon" style="background: rgba(95,74,139,0.08); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;" aria-label="Notifications" title="Notifications">
+          🔔
+        </button>
+
+        <a href="settings.html" class="user-avatar" style="width: 36px; height: 36px; font-size: 13px; text-decoration: none; border: 2px solid var(--primary);" title="Account Settings">
+          👤
+        </a>
       </div>
     </header>
 
@@ -121,8 +140,9 @@
       <!-- Page Header Row -->
       <section class="history-page-header">
         <div>
-          <h1 class="history-page-title">Your Study Sessions</h1>
-          <p class="history-page-subtitle">Review, revisit or delete any past session. Opening a session never re-calls the AI.</p>
+          <div class="study-section-pill">Session Archive</div>
+          <h1 class="history-page-title">Your Study Library</h1>
+          <p class="history-page-subtitle">Revisit, review or practice any past study session. Opening a session never re-calls the AI.</p>
         </div>
         <div class="history-header-actions">
           <a href="study.html" class="btn btn-primary btn-sm">+ New Session</a>
@@ -132,12 +152,12 @@
 
       <!-- Search & Stats Row -->
       <section class="history-controls-row">
-        <div class="history-search-wrapper">
-          <span class="history-search-icon">🔍</span>
+        <div class="topbar-search-box" style="width: 100%; max-width: 420px;">
+          <span style="font-size: 14px; opacity: 0.6;" aria-hidden="true">🔍</span>
           <input
             type="search"
             id="history-search-input"
-            class="history-search-input"
+            class="topbar-search-input"
             placeholder="Search sessions by topic…"
             aria-label="Search study sessions"
             autocomplete="off"
@@ -156,22 +176,22 @@
       <!-- Loading State (shown while fetching from Firestore) -->
       <div id="history-loading" class="history-loading" aria-live="polite">
         <div class="spinner spinner-lg"></div>
-        <p>Loading your sessions…</p>
+        <p>Loading your study library…</p>
       </div>
 
       <!-- Empty State (shown when no sessions exist) -->
       <div id="history-empty" class="history-empty" style="display: none;" aria-live="polite">
         <div class="history-empty-icon">📚</div>
         <h3>No study sessions yet</h3>
-        <p>Generate your first summary, quiz or flashcard set to see it here.</p>
+        <p>Generate your first summary, quiz or flashcard set to see it here in your study archive.</p>
         <a href="study.html" class="btn btn-primary" style="margin-top: var(--space-4);">Create First Session</a>
       </div>
 
       <!-- No Search Results State -->
       <div id="history-no-results" class="history-empty" style="display: none;" aria-live="polite">
         <div class="history-empty-icon">🔎</div>
-        <h3>No matching sessions</h3>
-        <p>Try a different search term.</p>
+        <h3>No matching sessions found</h3>
+        <p>Try searching with another keyword or topic title.</p>
       </div>
 
     </main>
@@ -237,4 +257,3 @@
 </body>
 
 </html>
-

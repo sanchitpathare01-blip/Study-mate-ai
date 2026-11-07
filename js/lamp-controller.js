@@ -315,3 +315,4 @@ export function initLampExperience() {
   // Initialize cord at resting length
   updateCord(0);
 }
+

@@ -1,22 +1,22 @@
 /* ==========================================================================
-   StudyMate AI - Interactive Lamp Login Experience
+   StudyMate AI - Interactive Lamp Login (Creative Lemon & Violet Reference)
    ========================================================================== */
 
-/* 1. Fullscreen Dark Room Background */
+/* 1. Fullscreen Dark Violet Atmospheric Room */
 .lamp-page {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: #06070a;
+  background-color: #17151C;
   color: var(--text-primary);
-  font-family: var(--font-family);
+  font-family: var(--font-sans);
   overflow-x: hidden;
   position: relative;
   transition: background 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .lamp-page.scene-illuminated {
-  background: radial-gradient(circle at 30% 35%, #181920 0%, #0d0e14 45%, #06070a 100%);
+  background: radial-gradient(circle at 35% 35%, #2a223a 0%, #17151C 65%, #0e0c12 100%);
 }
 
 /* Header branding overlay */
@@ -32,6 +32,10 @@
   z-index: 50;
 }
 
+.lamp-header .brand-logo {
+  color: #FEFACD;
+}
+
 /* 2. Main Stage Split Layout */
 .lamp-scene-container {
   min-height: 100vh;
@@ -41,10 +45,10 @@
 }
 
 /* ==========================================================================
-   LEFT: Floor Lamp & Lighting Effects Stage
+   LEFT: Floor Lamp & Books Atmosphere Stage
    ========================================================================== */
 .lamp-stage {
-  flex: 0 0 45%;
+  flex: 0 0 50%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -62,9 +66,9 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 520px;
-  height: 140px;
-  background: radial-gradient(ellipse at 50% 60%, rgba(245, 158, 11, 0.32) 0%, rgba(245, 158, 11, 0.08) 45%, transparent 75%);
+  width: 580px;
+  height: 160px;
+  background: radial-gradient(ellipse at 50% 60%, rgba(254, 250, 205, 0.38) 0%, rgba(244, 198, 91, 0.15) 45%, transparent 75%);
   border-radius: 50%;
   opacity: 0;
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
@@ -79,19 +83,19 @@
 /* Conical Light Beam projecting downward */
 .light-cone {
   position: absolute;
-  top: 260px;
+  top: 250px;
   left: 50%;
   transform: translateX(-50%);
-  width: 480px;
-  height: 600px;
+  width: 520px;
+  height: 620px;
   background: linear-gradient(
     180deg,
-    rgba(254, 240, 138, 0.38) 0%,
-    rgba(245, 158, 11, 0.16) 40%,
-    rgba(245, 158, 11, 0.03) 85%,
+    rgba(254, 250, 205, 0.48) 0%,
+    rgba(244, 198, 91, 0.22) 40%,
+    rgba(244, 198, 91, 0.04) 85%,
     transparent 100%
   );
-  clip-path: polygon(36% 0%, 64% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(34% 0%, 66% 0%, 100% 100%, 0% 100%);
   opacity: 0;
   filter: blur(2px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
@@ -106,12 +110,12 @@
 /* Ambient Radial Bulb Glow */
 .light-ambient-glow {
   position: absolute;
-  top: 170px;
+  top: 160px;
   left: 50%;
   transform: translateX(-50%);
-  width: 440px;
-  height: 440px;
-  background: radial-gradient(circle, rgba(253, 224, 71, 0.28) 0%, rgba(245, 158, 11, 0.12) 40%, transparent 70%);
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle, rgba(254, 250, 205, 0.32) 0%, rgba(244, 198, 91, 0.12) 40%, transparent 70%);
   border-radius: 50%;
   opacity: 0;
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -126,11 +130,11 @@
 /* Golden Dust Particles Canvas */
 .particles-canvas {
   position: absolute;
-  top: 250px;
+  top: 240px;
   left: 50%;
   transform: translateX(-50%);
-  width: 460px;
-  height: 580px;
+  width: 500px;
+  height: 600px;
   opacity: 0;
   pointer-events: none;
   z-index: 3;
@@ -142,7 +146,7 @@
 }
 
 /* ==========================================================================
-   THE FLOOR LAMP (Lampshade, Rod, Base & Pull Cord)
+   THE FLOOR LAMP & BOOKS COMPOSITION
    ========================================================================== */
 .floor-lamp {
   position: relative;
@@ -151,28 +155,26 @@
   align-items: center;
   z-index: 5;
   height: 700px;
-  width: 320px;
+  width: 360px;
 }
 
 /* Top Finial / Cap */
 .lamp-finial {
   width: 14px;
   height: 16px;
-  background: linear-gradient(135deg, #71717a 0%, #27272a 100%);
+  background: linear-gradient(135deg, #a18bc5 0%, #382B55 100%);
   border-radius: 4px 4px 0 0;
-  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.6);
   z-index: 6;
 }
 
-/* Lampshade */
+/* Lampshade (Round Dome Silhouette inspired by reference) */
 .lamp-shade {
   position: relative;
-  width: 220px;
+  width: 230px;
   height: 130px;
-  background: linear-gradient(180deg, #1c1d24 0%, #12131a 100%);
-  clip-path: polygon(24% 0%, 76% 0%, 100% 100%, 0% 100%);
-  border-radius: 2px;
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.05), 0 4px 14px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(180deg, #2b223c 0%, #1e172a 100%);
+  border-radius: 115px 115px 12px 12px;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 6px 18px rgba(0, 0, 0, 0.6);
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 6;
   overflow: hidden;
@@ -183,17 +185,16 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 100%, #fef08a 0%, #f59e0b 45%, #b45309 80%);
+  background: radial-gradient(ellipse at 50% 100%, #FEFACD 0%, #F4C65B 45%, #b45309 85%);
   opacity: 0;
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* When Lamp is ON */
 .lamp-lit .lamp-shade {
   box-shadow: 
-    0 0 40px rgba(250, 204, 21, 0.45),
-    inset 0 -10px 20px rgba(255, 255, 255, 0.5),
-    0 10px 30px rgba(245, 158, 11, 0.3);
+    0 0 50px rgba(244, 198, 91, 0.55),
+    inset 0 -12px 24px rgba(255, 255, 255, 0.6),
+    0 12px 35px rgba(244, 198, 91, 0.35);
 }
 
 .lamp-lit .lamp-shade::before {
@@ -207,13 +208,13 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
   transition: background 0.6s ease;
 }
 
 .lamp-lit .lamp-shade-rim {
   background: linear-gradient(90deg, transparent 5%, #ffffff 50%, transparent 95%);
-  box-shadow: 0 0 12px #fef08a;
+  box-shadow: 0 0 14px #FEFACD;
 }
 
 /* Socket / Under-shade Junction */
@@ -221,8 +222,8 @@
   position: relative;
   width: 28px;
   height: 22px;
-  background: linear-gradient(135deg, #52525b 0%, #18181b 100%);
-  border-radius: 2px;
+  background: linear-gradient(135deg, #5F4A8B 0%, #382B55 100%);
+  border-radius: 3px;
   margin-top: -2px;
   z-index: 5;
 }
@@ -231,7 +232,7 @@
 .lamp-pole {
   width: 8px;
   flex: 1;
-  background: linear-gradient(90deg, #3f3f46 0%, #71717a 50%, #18181b 100%);
+  background: linear-gradient(90deg, #5F4A8B 0%, #8771b0 50%, #382B55 100%);
   box-shadow: -1px 0 3px rgba(0, 0, 0, 0.5);
   z-index: 4;
 }
@@ -240,11 +241,20 @@
 .lamp-base {
   width: 140px;
   height: 20px;
-  background: linear-gradient(180deg, #52525b 0%, #27272a 60%, #09090b 100%);
+  background: linear-gradient(180deg, #5F4A8B 0%, #382B55 70%, #17151C 100%);
   border-radius: 50%;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.9);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.85);
+  border-top: 1.5px solid rgba(254, 250, 205, 0.2);
   z-index: 5;
+}
+
+/* Sleeping Cat on Books Accessory (Inspired by Reference) */
+.lamp-desk-companion {
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  z-index: 6;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
 }
 
 /* ==========================================================================
@@ -252,8 +262,8 @@
    ========================================================================== */
 .pull-cord-system {
   position: absolute;
-  top: 146px; /* Just below lampshade rim */
-  left: 195px; /* Offset to the right of the central pole */
+  top: 146px;
+  left: 215px;
   width: 44px;
   display: flex;
   flex-direction: column;
@@ -270,14 +280,14 @@
 
 .cord-path {
   fill: none;
-  stroke: #cbd5e1;
+  stroke: #E5DDF3;
   stroke-width: 1.5;
   stroke-dasharray: 2, 2;
   transition: stroke 0.3s ease;
 }
 
 .lamp-lit .cord-path {
-  stroke: #fef08a;
+  stroke: #FEFACD;
 }
 
 /* Interactive Golden Pull Handle */
@@ -301,7 +311,7 @@
 }
 
 .pull-handle:focus-visible .pull-bead {
-  box-shadow: 0 0 0 3px #f59e0b, 0 0 16px #facc15;
+  box-shadow: 0 0 0 3px #FEFACD, 0 0 16px #F4C65B;
 }
 
 .pull-handle.is-pulling {
@@ -312,24 +322,22 @@
 .pull-bead {
   width: 14px;
   height: 22px;
-  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+  background: linear-gradient(135deg, #FEFACD 0%, #F4C65B 50%, #b45309 100%);
   border-radius: 7px;
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.7),
-    0 0 12px rgba(250, 204, 21, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7), 0 0 14px rgba(244, 198, 91, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pull-handle:hover .pull-bead {
-  transform: scale(1.1);
-  box-shadow: 0 0 18px rgba(250, 204, 21, 0.85);
+  transform: scale(1.12);
+  box-shadow: 0 0 20px rgba(254, 250, 205, 0.9);
 }
 
 .pull-handle.trigger-ready .pull-bead {
-  transform: scale(1.18);
-  box-shadow: 0 0 24px rgba(254, 240, 138, 1);
+  transform: scale(1.2);
+  box-shadow: 0 0 26px rgba(254, 250, 205, 1);
 }
 
 /* Pulsing Golden Aura around Handle when OFF */
@@ -338,7 +346,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(250, 204, 21, 0.45) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(244, 198, 91, 0.5) 0%, transparent 70%);
   pointer-events: none;
   animation: handlePulse 2.2s infinite ease-in-out;
 }
@@ -357,18 +365,19 @@
 .lamp-instruction {
   position: absolute;
   top: 190px;
-  left: 235px;
+  left: 250px;
   white-space: nowrap;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  padding: 6px 14px;
+  background: rgba(32, 28, 41, 0.9);
+  border: 1px solid rgba(244, 198, 91, 0.4);
+  padding: 8px 16px;
   border-radius: var(--radius-full);
   font-size: var(--font-xs);
-  color: #fef08a;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 15px rgba(245, 158, 11, 0.2);
+  font-weight: 600;
+  color: #FEFACD;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 15px rgba(244, 198, 91, 0.25);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   pointer-events: none;
   opacity: 1;
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -386,18 +395,18 @@
 }
 
 /* ==========================================================================
-   RIGHT: Login Panel & Glassmorphism Reveal Stage
+   RIGHT: Elegant Lemon Chiffon Arched Login Card
    ========================================================================== */
 .login-stage {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-8) var(--space-8);
   position: relative;
   z-index: 10;
   opacity: 0;
-  transform: translateX(36px);
+  transform: translateX(40px);
   pointer-events: none;
   transition: 
     opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
@@ -410,28 +419,17 @@
   pointer-events: auto;
 }
 
-/* Illuminated Glassmorphism Card */
+/* Arched Lemon Chiffon Card (Matches Reference Art Exactly) */
 .lamp-login-card {
   width: 100%;
   max-width: 440px;
-  background: rgba(17, 24, 39, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: var(--radius-xl);
-  padding: var(--space-8);
-  box-shadow: 
-    0 20px 45px rgba(0, 0, 0, 0.6),
-    0 0 35px rgba(245, 158, 11, 0.08);
+  background: #FEFACD;
+  border: 1.5px solid rgba(95, 74, 139, 0.2);
+  border-radius: 40px;
+  padding: var(--space-10) var(--space-8);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
   position: relative;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
-}
-
-.lamp-login-card:hover {
-  border-color: rgba(245, 158, 11, 0.35);
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.7),
-    0 0 45px rgba(245, 158, 11, 0.14);
+  color: #17151C;
 }
 
 .lamp-login-header {
@@ -439,11 +437,27 @@
   margin-bottom: var(--space-6);
 }
 
-.lamp-login-header h1 {
-  font-size: var(--font-2xl);
+.lamp-login-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-family: var(--font-heading);
   font-weight: 700;
-  color: #ffffff;
+  font-size: var(--font-base);
   margin-bottom: var(--space-2);
+}
+
+.lamp-login-badge span:first-child {
+  font-size: 1.5rem;
+}
+
+.lamp-login-header h1 {
+  font-size: var(--font-3xl);
+  font-weight: 800;
+  color: var(--dark-violet);
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.02em;
 }
 
 .lamp-login-header p {
@@ -451,51 +465,65 @@
   font-size: var(--font-sm);
 }
 
-/* Warm Golden Glow Sign In Button */
+/* Inputs styled with crisp white pills inside Lemon Chiffon */
+.lamp-login-card .form-label {
+  color: var(--dark-violet);
+  font-weight: 600;
+}
+
+.lamp-login-card .form-input {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(95, 74, 139, 0.22);
+  border-radius: var(--radius-full);
+  color: #17151C;
+  padding: 0.85rem 1.25rem;
+}
+
+.lamp-login-card .form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(95, 74, 139, 0.25);
+}
+
+.lamp-login-card .form-checkbox {
+  color: var(--text-secondary);
+}
+
+/* Ultra Violet Pill Sign In Button */
 .btn-lamp-primary {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: #0b0c10;
+  background: var(--primary);
+  color: #FFFFFF;
   font-weight: 700;
+  border-radius: var(--radius-full);
   border: none;
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+  box-shadow: var(--shadow-purple);
+  padding: 0.9rem;
   transition: all var(--transition-fast);
 }
 
 .btn-lamp-primary:hover {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+  background: var(--primary-hover);
+  box-shadow: 0 10px 28px rgba(95, 74, 139, 0.5);
   transform: translateY(-2px);
-  color: #000000;
+  color: #FFFFFF;
 }
 
-.btn-lamp-primary:active {
-  transform: translateY(0);
-}
-
-/* Form input focus state with warm highlight */
-.lamp-login-card .form-input:focus {
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
-}
-
-/* Forgot password link with warm accent */
 .lamp-forgot-link {
-  color: #fcd34d;
+  color: var(--primary);
   font-size: var(--font-sm);
+  font-weight: 600;
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: color var(--transition-fast);
 }
 
 .lamp-forgot-link:hover {
-  color: #ffffff;
+  color: var(--dark-violet);
   text-decoration: underline;
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN (Tablets & Mobile)
+   RESPONSIVE (Tablets & Mobile)
    ========================================================================== */
 @media (max-width: 900px) {
   .lamp-scene-container {
@@ -507,14 +535,14 @@
   .lamp-stage {
     flex: none;
     width: 100%;
-    min-height: 280px;
-    height: 280px;
+    min-height: 290px;
+    height: 290px;
     padding-bottom: 0;
     justify-content: flex-start;
   }
 
   .floor-lamp {
-    height: 260px;
+    height: 270px;
   }
 
   .lamp-pole {
@@ -523,7 +551,7 @@
 
   .light-cone {
     top: 150px;
-    width: 380px;
+    width: 400px;
     height: 480px;
   }
 
@@ -535,15 +563,19 @@
 
   .particles-canvas {
     top: 150px;
-    width: 360px;
+    width: 380px;
     height: 440px;
+  }
+
+  .lamp-desk-companion {
+    display: none;
   }
 
   .lamp-instruction {
     left: 50%;
     transform: translateX(30px);
     font-size: 11px;
-    top: 155px;
+    top: 160px;
   }
 
   .login-stage {
@@ -559,12 +591,12 @@
 
 @media (max-width: 480px) {
   .lamp-shade {
-    width: 180px;
+    width: 190px;
     height: 110px;
   }
 
   .pull-cord-system {
-    left: 170px;
+    left: 175px;
     top: 124px;
   }
 
@@ -575,23 +607,11 @@
   }
 
   .lamp-instruction {
-    display: none; /* Keep clean on small mobile */
+    display: none;
   }
 
   .lamp-login-card {
     padding: var(--space-6);
-  }
-}
-
-/* Reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .lamp-page,
-  .light-cone,
-  .light-ambient-glow,
-  .light-floor-glow,
-  .login-stage,
-  .lamp-instruction {
-    transition: none !important;
-    animation: none !important;
+    border-radius: var(--radius-2xl);
   }
 }

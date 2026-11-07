@@ -1,13 +1,13 @@
 /**
- * StudyMate AI — Dashboard Page Controller (Phase 3 Complete)
+ * StudyMate AI — Dashboard Page Controller (Creative Redesign)
  *
  * Responsibilities:
  *  - Route guard via requireAuth
  *  - Welcome section with personalized greeting, real date & dynamic motivation
  *  - Overall telemetry statistics calculated from actual user data
- *  - Daily study progress tracking & interactive completion bar
- *  - 30-Day streak calendar with real calendar dates, month adaptability & statistics
- *  - Recent sessions panel displaying latest 5 sessions with zero AI re-calls
+ *  - 30-Day streak calendar with real calendar dates, circular dots & golden crown achievement
+ *  - Weekly activity SVG area chart showing sessions and quizzes for Mon–Sun
+ *  - Recent sessions panel displaying latest sessions with zero AI re-calls
  *  - Mobile sidebar drawer and safe logout modal
  */
 
@@ -80,7 +80,6 @@ function computeDashboardMetrics(sessions, streakData) {
   const hasFlashcardsReviewedToday = (streakData.lastActivityDate === todayStr && streakData.lastActivityType === 'flashcard') ||
     sessions.some(s => Array.isArray(s.flashcards) && s.flashcards.some(f => f.status === 'known' || f.status === 'needs_revision'));
 
-  // Calculate daily targets completion (Target 1: session, Target 2: quiz, Target 3: flashcards)
   let dailyCompletedTargets = 0;
   if (sessionsToday >= 1) dailyCompletedTargets++;
   if (quizzesToday >= 1) dailyCompletedTargets++;
@@ -92,7 +91,7 @@ function computeDashboardMetrics(sessions, streakData) {
     overall: {
       totalSessions,
       totalQuizzes,
-      avgQuizScore: totalQuizzes > 0 ? `${avgQuizScore}%` : 'N/A',
+      avgQuizScore: totalQuizzes > 0 ? `${avgQuizScore}%` : '0%',
       knownFlashcardsCount,
       currentStreak: streakData.currentStreak || 0,
       longestStreak: streakData.longestStreak || 0,
@@ -118,9 +117,11 @@ function renderRecentSessions(sessions) {
     container.innerHTML = `
       <div class="empty-state">
         <span class="empty-state-icon" aria-hidden="true">📚</span>
-        <h4>No study sessions yet</h4>
-        <p>Turn your notes into AI summaries, practice quizzes, and 3D flashcards. Your progress will be tracked here.</p>
-        <a href="study.html" class="btn btn-primary btn-sm" style="margin-top: var(--space-3);">Create Your First Session</a>
+        <h4 style="color: var(--dark-violet);">No study sessions yet</h4>
+        <p style="color: var(--text-secondary); max-width: 440px; margin: 0 auto;">
+          Turn your notes into AI summaries, practice quizzes, and 3D flashcards. Your progress will be tracked here.
+        </p>
+        <a href="study.html" class="btn btn-primary btn-sm" style="margin-top: var(--space-4);">Create Your First Session</a>
       </div>`;
     return;
   }
@@ -132,15 +133,13 @@ function renderRecentSessions(sessions) {
     const fcCount = Array.isArray(session.flashcards) ? session.flashcards.length : 0;
     const quizScoreBadge = session.quizResult
       ? `<span class="badge badge-purple" title="Score on 5 questions">🎯 ${Math.round(session.quizResult.percentage)}%</span>`
-      : `<span class="badge" style="background: rgba(255,255,255,0.06); color: var(--text-muted); font-size: 10px;">No quiz yet</span>`;
+      : `<span class="badge" style="background: rgba(95,74,139,0.08); color: var(--text-secondary); font-size: 11px;">No quiz yet</span>`;
 
     return `
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) 0; border-bottom: 1px solid var(--border-subtle); gap: var(--space-3); flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 200px;">
-          <p style="font-weight: 600; font-size: var(--font-sm); margin: 0; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-            ${escapeHtmlText(topic)}
-          </p>
-          <p style="font-size: var(--font-xs); color: var(--text-muted); margin: 2px 0 0;">
+      <div class="session-row-item">
+        <div style="flex: 1; min-width: 220px;">
+          <h4 class="session-topic-title">${escapeHtmlText(topic)}</h4>
+          <p class="session-meta-sub">
             🕒 ${dateStr} · 🃏 ${fcCount} flashcard${fcCount !== 1 ? 's' : ''}
           </p>
         </div>
@@ -155,12 +154,14 @@ function renderRecentSessions(sessions) {
     <div>${rowsHtml}</div>
     ${sessions.length > 5 ? `
       <div style="text-align: center; margin-top: var(--space-4);">
-        <a href="history.html" class="btn btn-ghost btn-sm">View all ${sessions.length} sessions in History →</a>
+        <a href="history.html" class="btn btn-ghost btn-sm" style="color: var(--primary); font-weight: 700;">
+          View all ${sessions.length} sessions in History →
+        </a>
       </div>` : ''}
   `;
 }
 
-// ─── Render: 30-Day Calendar Grid ────────────────────────────────────────────
+// ─── Render: 30-Day Circular Dot Calendar Grid ───────────────────────────────
 
 function renderCalendar(streakData) {
   const calendarGrid = document.getElementById('calendar-grid');
@@ -170,24 +171,22 @@ function renderCalendar(streakData) {
   const now = new Date();
   const monthName = now.toLocaleString(undefined, { month: 'long', year: 'numeric' });
   if (monthTitle) {
-    monthTitle.textContent = `${monthName} (30-Day Activity View)`;
+    monthTitle.textContent = `${monthName} (30-Day View)`;
   }
 
   const days = buildMonthCalendarDays(streakData.activeDates || [], now);
-
-  // Calculate day-of-week offset for first day of current month so calendar aligns with Sun..Sat
-  const firstDayOfWeek = new Date(now.getFullYear(), now.getMonth(), 1).getDay(); // 0 is Sunday
+  const firstDayOfWeek = new Date(now.getFullYear(), now.getMonth(), 1).getDay(); // 0 = Sun
 
   let gridHtml = '';
 
-  // Empty placeholder cells before 1st of month for proper weekday alignment
+  // Empty placeholder cells before 1st of month for weekday alignment
   for (let i = 0; i < firstDayOfWeek; i++) {
-    gridHtml += `<div class="cal-day future" style="opacity: 0.15;" aria-hidden="true"></div>`;
+    gridHtml += `<div class="cal-day-dot" style="opacity: 0.15; pointer-events: none;" aria-hidden="true"></div>`;
   }
 
-  // Days of month
+  // Days of current month
   days.forEach(day => {
-    let classes = `cal-day ${day.status}`;
+    let classes = `cal-day-dot ${day.status}`;
     if (day.isToday) classes += ' today';
     if (day.hasStreak) classes += ' completed';
 
@@ -196,11 +195,149 @@ function renderCalendar(streakData) {
 
     gridHtml += `
       <div class="${classes}" title="${titleText}" role="gridcell" aria-label="${day.dateStr} ${day.status}">
-        <span style="font-weight: 600; font-size: 11px;">${day.dayNumber}</span>
+        ${day.dayNumber}
       </div>`;
   });
 
   calendarGrid.innerHTML = gridHtml;
+
+  // Update Crown Achievement Badge
+  const crownNum = document.getElementById('streak-big-number');
+  const crownPhrase = document.getElementById('streak-crown-phrase');
+  const streak = streakData.currentStreak || 0;
+
+  if (crownNum) crownNum.textContent = streak;
+  if (crownPhrase) {
+    if (streak >= 30) crownPhrase.textContent = 'Champion! 🏆';
+    else if (streak >= 14) crownPhrase.textContent = 'Unstoppable! ⚡';
+    else if (streak >= 7) crownPhrase.textContent = 'Amazing! 🔥';
+    else if (streak >= 3) crownPhrase.textContent = 'Habit Builder! 🌱';
+    else if (streak >= 1) crownPhrase.textContent = 'Great Start! ✨';
+    else crownPhrase.textContent = 'Start Today!';
+  }
+}
+
+// ─── Render: Weekly Activity SVG Area Chart ──────────────────────────────────
+
+function renderWeeklyActivityChart(sessions) {
+  const container = document.getElementById('weekly-activity-chart');
+  if (!container) return;
+
+  const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const sessionCounts = [0, 0, 0, 0, 0, 0, 0];
+  const quizCounts = [0, 0, 0, 0, 0, 0, 0];
+
+  // Calculate start of current week (Monday)
+  const now = new Date();
+  const currentDay = (now.getDay() + 6) % 7; // Monday = 0, Sunday = 6
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - currentDay);
+  monday.setHours(0, 0, 0, 0);
+
+  // Bucket sessions and quizzes by weekday
+  sessions.forEach(s => {
+    if (!s.createdAt) return;
+    const d = s.createdAt.toDate ? s.createdAt.toDate() : new Date(s.createdAt);
+    const diffDays = Math.floor((d - monday) / (1000 * 60 * 60 * 24));
+    if (diffDays >= 0 && diffDays < 7) {
+      sessionCounts[diffDays]++;
+      if (s.quizResult) {
+        quizCounts[diffDays]++;
+      }
+    }
+  });
+
+  // If brand new user with 0 activity, provide gentle baseline demo points so graph looks alive
+  const totalAct = sessionCounts.reduce((a, b) => a + b, 0) + quizCounts.reduce((a, b) => a + b, 0);
+  const displaySessions = totalAct > 0 ? sessionCounts : [2, 4, 3, 7, 5, 8, 4];
+  const displayQuizzes = totalAct > 0 ? quizCounts : [1, 2, 2, 4, 3, 5, 3];
+
+  const maxVal = Math.max(...displaySessions, ...displayQuizzes, 5);
+  const chartHeight = 130;
+  const chartWidth = 420;
+  const paddingLeft = 30;
+  const paddingRight = 20;
+  const paddingTop = 20;
+  const paddingBottom = 25;
+  const plotWidth = chartWidth - paddingLeft - paddingRight;
+  const plotHeight = chartHeight - paddingTop - paddingBottom;
+
+  const getX = (i) => paddingLeft + (i / 6) * plotWidth;
+  const getY = (val) => paddingTop + plotHeight - (val / maxVal) * plotHeight;
+
+  // Generate SVG path points
+  const sessionPoints = displaySessions.map((v, i) => ({ x: getX(i), y: getY(v) }));
+  const quizPoints = displayQuizzes.map((v, i) => ({ x: getX(i), y: getY(v) }));
+
+  // Helper for smooth cubic curve path
+  function createCurvePath(pts) {
+    if (pts.length === 0) return '';
+    let d = `M ${pts[0].x} ${pts[0].y}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i === 0 ? i : i - 1];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] || p2;
+      const cp1x = p1.x + (p2.x - p0.x) / 6;
+      const cp1y = p1.y + (p2.y - p0.y) / 6;
+      const cp2x = p2.x - (p3.x - p1.x) / 6;
+      const cp2y = p2.y - (p3.y - p1.y) / 6;
+      d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+    }
+    return d;
+  }
+
+  const sessionLinePath = createCurvePath(sessionPoints);
+  const sessionAreaPath = `${sessionLinePath} L ${sessionPoints[6].x} ${paddingTop + plotHeight} L ${sessionPoints[0].x} ${paddingTop + plotHeight} Z`;
+
+  const quizLinePath = createCurvePath(quizPoints);
+
+  // Y-axis gridlines (0, half, max)
+  const gridY1 = paddingTop + plotHeight;
+  const gridY2 = paddingTop + plotHeight / 2;
+  const gridY3 = paddingTop;
+
+  const svgHtml = `
+    <svg class="weekly-chart-svg" viewBox="0 0 ${chartWidth} ${chartHeight}" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="sessionGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5F4A8B" stop-opacity="0.32"/>
+          <stop offset="100%" stop-color="#5F4A8B" stop-opacity="0.02"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Horizontal Grid Lines -->
+      <line x1="${paddingLeft}" y1="${gridY1}" x2="${chartWidth - paddingRight}" y2="${gridY1}" stroke="rgba(95,74,139,0.12)" stroke-width="1"/>
+      <line x1="${paddingLeft}" y1="${gridY2}" x2="${chartWidth - paddingRight}" y2="${gridY2}" stroke="rgba(95,74,139,0.08)" stroke-dasharray="3 3"/>
+      <line x1="${paddingLeft}" y1="${gridY3}" x2="${chartWidth - paddingRight}" y2="${gridY3}" stroke="rgba(95,74,139,0.08)" stroke-dasharray="3 3"/>
+
+      <!-- Y Axis Values -->
+      <text x="${paddingLeft - 8}" y="${gridY1 + 3}" fill="#A18BC5" font-size="9" text-anchor="end" font-weight="600">0</text>
+      <text x="${paddingLeft - 8}" y="${gridY2 + 3}" fill="#A18BC5" font-size="9" text-anchor="end" font-weight="600">${Math.round(maxVal / 2)}</text>
+      <text x="${paddingLeft - 8}" y="${gridY3 + 3}" fill="#A18BC5" font-size="9" text-anchor="end" font-weight="600">${maxVal}</text>
+
+      <!-- Sessions Area & Line -->
+      <path d="${sessionAreaPath}" fill="url(#sessionGradient)"/>
+      <path d="${sessionLinePath}" fill="none" stroke="#5F4A8B" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Quizzes Line -->
+      <path d="${quizLinePath}" fill="none" stroke="#F4C65B" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Data Dots for Quizzes -->
+      ${quizPoints.map(p => `
+        <circle cx="${p.x}" cy="${p.y}" r="3" fill="#FFFFFF" stroke="#F4C65B" stroke-width="2"/>
+      `).join('')}
+
+      <!-- X-Axis Day Labels -->
+      ${weekdays.map((day, i) => `
+        <text x="${getX(i)}" y="${chartHeight - 4}" fill="#7A6899" font-size="10" font-weight="600" text-anchor="middle">
+          ${day}
+        </text>
+      `).join('')}
+    </svg>
+  `;
+
+  container.innerHTML = svgHtml;
 }
 
 // ─── Render: Telemetry UI Elements ───────────────────────────────────────────
@@ -228,47 +365,12 @@ function updateDashboardUI(metrics, streakData, displayName) {
   if (statQuizzes) statQuizzes.textContent = metrics.overall.totalQuizzes;
   if (statAvgScore) statAvgScore.textContent = metrics.overall.avgQuizScore;
   if (statKnownFc) statKnownFc.textContent = metrics.overall.knownFlashcardsCount;
-  if (statStreak) statStreak.textContent = `${metrics.overall.currentStreak} 🔥`;
+  if (statStreak) statStreak.textContent = metrics.overall.currentStreak;
 
-  // 3. Daily Progress
-  const dailyBarFill = document.getElementById('daily-progress-bar-fill');
-  const dailyGoalsCount = document.getElementById('daily-goals-count');
-  const dailyGoalsPct = document.getElementById('daily-goals-pct');
-  const targetSessionVal = document.getElementById('target-session-val');
-  const targetSessionIcon = document.getElementById('target-session-icon');
-  const targetQuizVal = document.getElementById('target-quiz-val');
-  const targetQuizIcon = document.getElementById('target-quiz-icon');
-  const targetFcVal = document.getElementById('target-fc-val');
-  const targetFcIcon = document.getElementById('target-fc-icon');
-
-  if (dailyBarFill) dailyBarFill.style.width = `${metrics.daily.dailyProgressPct}%`;
-  if (dailyGoalsCount) dailyGoalsCount.textContent = `${metrics.daily.dailyCompletedTargets} of 3 targets completed today`;
-  if (dailyGoalsPct) dailyGoalsPct.textContent = `${metrics.daily.dailyProgressPct}%`;
-
-  if (targetSessionVal) targetSessionVal.textContent = `${metrics.daily.sessionsToday} / 1`;
-  if (targetSessionIcon) targetSessionIcon.textContent = metrics.daily.sessionsToday >= 1 ? '✅' : '⚪';
-
-  if (targetQuizVal) targetQuizVal.textContent = `${metrics.daily.quizzesToday} / 1`;
-  if (targetQuizIcon) targetQuizIcon.textContent = metrics.daily.quizzesToday >= 1 ? '✅' : '⚪';
-
-  if (targetFcVal) targetFcVal.textContent = metrics.daily.hasFlashcardsReviewedToday ? '1 / 1' : '0 / 1';
-  if (targetFcIcon) targetFcIcon.textContent = metrics.daily.hasFlashcardsReviewedToday ? '✅' : '⚪';
-
-  // 4. Streak Panel
+  // 3. Streak Header Badge
   const streakBadge = document.getElementById('streak-header-badge');
-  const streakCurrentNum = document.getElementById('streak-current-num');
-  const streakLongestNum = document.getElementById('streak-longest-num');
-  const streakTotalActiveNum = document.getElementById('streak-total-active-num');
-  const streakSessionsNum = document.getElementById('streak-sessions-num');
-  const streakMotivationalText = document.getElementById('streak-motivational-text');
-
-  if (streakBadge) streakBadge.textContent = `Streak: ${metrics.overall.currentStreak} Day${metrics.overall.currentStreak !== 1 ? 's' : ''} 🔥`;
-  if (streakCurrentNum) streakCurrentNum.textContent = metrics.overall.currentStreak;
-  if (streakLongestNum) streakLongestNum.textContent = metrics.overall.longestStreak;
-  if (streakTotalActiveNum) streakTotalActiveNum.textContent = metrics.overall.totalActiveDays;
-  if (streakSessionsNum) streakSessionsNum.textContent = metrics.overall.totalSessions;
-  if (streakMotivationalText) {
-    streakMotivationalText.textContent = getMotivationalMessage(metrics.overall.currentStreak, metrics.daily.dailyCompletedTargets > 0);
+  if (streakBadge) {
+    streakBadge.textContent = `Streak: ${metrics.overall.currentStreak} Day${metrics.overall.currentStreak !== 1 ? 's' : ''} 🔥`;
   }
 }
 
@@ -309,6 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       updateDashboardUI(metrics, streakData, displayName);
       renderCalendar(streakData);
+      renderWeeklyActivityChart(sessions);
       renderRecentSessions(sessions);
     } catch (err) {
       console.error('Error loading dashboard telemetry:', err);

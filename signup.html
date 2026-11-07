@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -29,8 +29,8 @@
   <!-- Header with Brand & Theme Toggle -->
   <header class="auth-header">
     <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
-      <span class="brand-icon" aria-hidden="true">✦</span>
-      <span>StudyMate<span class="gradient-text">.ai</span></span>
+      <span class="brand-icon" aria-hidden="true">🎓</span>
+      <span>StudyMate AI</span>
     </a>
 
     <div class="nav-actions">
@@ -46,14 +46,17 @@
 
     <div class="auth-card">
       <div class="auth-card-header">
+        <div style="font-size: 2rem; margin-bottom: var(--space-2);">🎓</div>
         <h1>Create an Account</h1>
-        <p>Start studying smarter with AI-generated study aids</p>
+        <p>Start studying smarter with AI-generated summaries, quizzes and flashcards.</p>
       </div>
 
       <form id="signup-form" class="auth-form" novalidate>
         <!-- Full Name Field -->
         <div class="form-group">
-          <label for="name-input" class="form-label">Full Name</label>
+          <label for="name-input" class="form-label">
+            <span>👤 Full Name</span>
+          </label>
           <div class="form-input-wrapper">
             <input 
               type="text" 
@@ -70,7 +73,9 @@
 
         <!-- Email Field -->
         <div class="form-group">
-          <label for="email-input" class="form-label">Email Address</label>
+          <label for="email-input" class="form-label">
+            <span>✉️ Email Address</span>
+          </label>
           <div class="form-input-wrapper">
             <input 
               type="email" 
@@ -87,7 +92,9 @@
 
         <!-- Password Field -->
         <div class="form-group">
-          <label for="password-input" class="form-label">Password</label>
+          <label for="password-input" class="form-label">
+            <span>🔒 Password</span>
+          </label>
           <div class="form-input-wrapper">
             <input 
               type="password" 
@@ -102,20 +109,22 @@
               👁️
             </button>
           </div>
-          <p class="password-hint">Must be at least 6 characters long.</p>
           <span id="password-error" class="form-error">Password must be at least 6 characters.</span>
+          <span class="password-hint">Must be at least 6 characters long.</span>
         </div>
 
         <!-- Confirm Password Field -->
         <div class="form-group">
-          <label for="confirm-password-input" class="form-label">Confirm Password</label>
+          <label for="confirm-password-input" class="form-label">
+            <span>🔒 Confirm Password</span>
+          </label>
           <div class="form-input-wrapper">
             <input 
               type="password" 
               id="confirm-password-input" 
               name="confirmPassword" 
               class="form-input" 
-              placeholder="Repeat your password" 
+              placeholder="Confirm your password" 
               autocomplete="new-password" 
               required
             >
@@ -127,11 +136,11 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: var(--space-4);">
-          Create Account
+        <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: var(--space-3);">
+          Create Account →
         </button>
 
-        <button type="button" id="demo-mode-btn" class="btn btn-secondary btn-block" style="margin-top: var(--space-3);">
+        <button type="button" id="demo-mode-btn" class="btn btn-secondary btn-block" style="margin-top: var(--space-3); border-radius: var(--radius-full);">
           ⚡ Instant Demo Access (1-Click)
         </button>
       </form>
@@ -146,4 +155,3 @@
   <script type="module" src="js/pages/signup.js"></script>
 </body>
 </html>
-

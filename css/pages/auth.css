@@ -1,5 +1,5 @@
 /* ==========================================================================
-   StudyMate AI - Authentication Pages (Login & Signup)
+   StudyMate AI - Authentication Pages (Creative Lemon & Ultra Violet Edition)
    ========================================================================== */
 
 .auth-page {
@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 10;
 }
 
 .auth-main {
@@ -27,39 +28,56 @@
   position: relative;
 }
 
-/* Background glow effects */
+/* Background subtle ambient shapes */
 .auth-glow-top {
   position: absolute;
-  top: 10%;
+  top: 5%;
   left: 50%;
   transform: translateX(-50%);
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(95, 74, 139, 0.12) 0%, rgba(229, 221, 243, 0.4) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
 
+[data-theme="dark"] .auth-glow-top {
+  background: radial-gradient(circle, rgba(95, 74, 139, 0.25) 0%, transparent 70%);
+}
+
 .auth-card {
   width: 100%;
-  max-width: 460px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-xl);
-  padding: var(--space-8);
-  box-shadow: var(--shadow-lg), 0 0 40px rgba(124, 58, 237, 0.12);
+  max-width: 480px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-default);
+  border-radius: 36px;
+  padding: var(--space-10) var(--space-8);
+  box-shadow: 0 20px 50px rgba(56, 43, 85, 0.12);
   position: relative;
   z-index: 1;
 }
 
+[data-theme="dark"] .auth-card {
+  background: var(--bg-surface);
+  border-color: rgba(254, 250, 205, 0.14);
+  box-shadow: var(--shadow-xl);
+}
+
 .auth-card-header {
   text-align: center;
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
 }
 
 .auth-card-header h1 {
-  font-size: var(--font-2xl);
+  font-size: var(--font-3xl);
+  font-weight: 800;
+  color: var(--dark-violet);
   margin-bottom: var(--space-2);
+  letter-spacing: -0.02em;
+}
+
+[data-theme="dark"] .auth-card-header h1 {
+  color: #FEFACD;
 }
 
 .auth-card-header p {
@@ -81,8 +99,8 @@
 }
 
 .auth-forgot-link {
-  color: var(--primary-light);
-  font-weight: 500;
+  color: var(--primary);
+  font-weight: 600;
   cursor: pointer;
   background: transparent;
   border: none;
@@ -91,6 +109,7 @@
 }
 
 .auth-forgot-link:hover {
+  color: var(--dark-violet);
   text-decoration: underline;
 }
 
@@ -102,23 +121,20 @@
 }
 
 .auth-footer-text a {
-  color: var(--primary-light);
-  font-weight: 600;
+  color: var(--primary);
+  font-weight: 700;
 }
 
 .auth-footer-text a:hover {
   text-decoration: underline;
 }
 
-/* Password strength hint or match indicator */
 .password-hint {
   font-size: var(--font-xs);
   color: var(--text-muted);
   margin-top: var(--space-1);
 }
 
-/* Modal styling overrides for auth reset */
 #forgot-password-modal .form-group {
   margin-bottom: 0;
 }
-

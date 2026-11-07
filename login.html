@@ -30,8 +30,8 @@
   <!-- Header with Brand & Theme Toggle -->
   <header class="lamp-header">
     <a href="index.html" class="brand-logo" aria-label="StudyMate AI Home">
-      <span class="brand-icon" aria-hidden="true">✦</span>
-      <span>StudyMate<span class="gradient-text">.ai</span></span>
+      <span class="brand-icon" aria-hidden="true">🎓</span>
+      <span>StudyMate AI</span>
     </a>
 
     <div class="nav-actions">
@@ -71,6 +71,29 @@
         <div class="lamp-pole" aria-hidden="true"></div>
         <div class="lamp-base" aria-hidden="true"></div>
 
+        <!-- Sleeping Cat on Stack of Books (Matching Reference Art) -->
+        <svg class="lamp-desk-companion" width="160" height="90" viewBox="0 0 160 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Book Stack -->
+          <rect x="25" y="65" width="95" height="15" rx="3" fill="#E5DDF3" stroke="#A18BC5" stroke-width="1.5"/>
+          <rect x="20" y="50" width="105" height="15" rx="3" fill="#5F4A8B" stroke="#382B55" stroke-width="1.5"/>
+          
+          <!-- Cute Sleeping Orange Cat -->
+          <ellipse cx="68" cy="40" rx="28" ry="16" fill="#F4C65B"/>
+          <!-- Cat Head -->
+          <circle cx="92" cy="36" r="14" fill="#F4C65B"/>
+          <!-- Ears -->
+          <polygon points="84,24 92,16 95,25" fill="#E2A638"/>
+          <polygon points="96,25 102,17 106,26" fill="#E2A638"/>
+          <!-- Sleeping eyes -->
+          <path d="M 88 36 Q 91 39 94 36" stroke="#583B10" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M 97 36 Q 100 39 103 36" stroke="#583B10" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Tail curled -->
+          <path d="M 40 42 C 34 38, 32 48, 44 48" stroke="#E2A638" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <!-- Sleeping zZZ float -->
+          <text x="112" y="24" font-size="10" font-weight="bold" fill="#FEFACD" opacity="0.8">z</text>
+          <text x="118" y="16" font-size="12" font-weight="bold" fill="#FEFACD" opacity="0.9">Z</text>
+        </svg>
+
         <!-- Pull-Cord System with Dynamic SVG & Interactive Bead -->
         <div class="pull-cord-system">
           <svg id="lamp-cord-svg" class="cord-svg" viewBox="0 0 40 180" aria-hidden="true">
@@ -83,7 +106,7 @@
             id="lamp-pull-handle" 
             class="pull-handle" 
             role="switch" 
-            aria-label="Pull lamp cord to turn on lights" 
+            aria-label="Pull lamp cord to start your learning journey" 
             aria-checked="false"
             tabindex="0"
           >
@@ -94,24 +117,30 @@
 
         <!-- Floating Guidance Tooltip -->
         <div id="lamp-instruction" class="lamp-instruction">
-          <span>Pull to illuminate your learning space</span>
+          <span>Pull the lamp to start your learning journey...</span>
           <span aria-hidden="true">↓</span>
         </div>
       </div>
     </div>
 
-    <!-- RIGHT STAGE: Glassmorphism Login Panel -->
+    <!-- RIGHT STAGE: Lemon Chiffon Arched Login Card -->
     <div class="login-stage" id="login-stage">
       <div class="lamp-login-card">
         <div class="lamp-login-header">
-          <h1>Welcome Back</h1>
+          <div class="lamp-login-badge">
+            <span>🎓</span>
+            <span>StudyMate AI</span>
+          </div>
+          <h1>Welcome Back!</h1>
           <p>Your smarter learning journey continues here.</p>
         </div>
 
         <form id="login-form" class="auth-form" novalidate>
           <!-- Email Field -->
           <div class="form-group">
-            <label for="login-email-input" class="form-label">Email Address</label>
+            <label for="login-email-input" class="form-label">
+              <span>👤 Email Address</span>
+            </label>
             <div class="form-input-wrapper">
               <input 
                 type="email" 
@@ -128,7 +157,9 @@
 
           <!-- Password Field -->
           <div class="form-group">
-            <label for="login-password-input" class="form-label">Password</label>
+            <label for="login-password-input" class="form-label">
+              <span>🔒 Password</span>
+            </label>
             <div class="form-input-wrapper">
               <input 
                 type="password" 
@@ -154,23 +185,23 @@
             </label>
 
             <button type="button" id="forgot-password-link" class="lamp-forgot-link">
-              Forgot password?
+              Forgot Password?
             </button>
           </div>
 
           <!-- Submit Button -->
           <button type="submit" id="login-submit-btn" class="btn btn-lamp-primary btn-block btn-lg">
-            Sign In
+            Sign In →
           </button>
 
           <!-- 1-Click Demo Mode Button -->
-          <button type="button" id="demo-mode-btn" class="btn btn-secondary btn-block" style="margin-top: var(--space-3);">
+          <button type="button" id="demo-mode-btn" class="btn btn-secondary btn-block" style="margin-top: var(--space-3); border-radius: var(--radius-full);">
             ⚡ Instant Demo Access (1-Click)
           </button>
         </form>
 
-        <p class="auth-footer-text">
-          Don't have an account? <a href="signup.html" style="color: #fcd34d; font-weight: 600;">Sign Up</a>
+        <p class="auth-footer-text" style="color: var(--text-secondary); margin-top: var(--space-6);">
+          Don't have an account? <a href="signup.html" style="color: var(--primary); font-weight: 700;">Sign Up</a>
         </p>
       </div>
     </div>
